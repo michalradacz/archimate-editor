@@ -1,0 +1,394 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archimate.example.org/ajx-schema.json",
+  "title": "AJX - ArchiMate JSON Exchange Format",
+  "description": "JSON schema for ArchiMate 3.2 model exchange format (.ajx files)",
+  "type": "object",
+  "required": ["archimateVersion", "model", "elements", "relationships", "diagrams"],
+  "properties": {
+    "exportDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the model was exported"
+    },
+    "archimateVersion": {
+      "type": "string",
+      "enum": ["3.2", "3.1", "3.0"],
+      "description": "ArchiMate specification version"
+    },
+    "model": {
+      "$ref": "#/$defs/modelMetadata"
+    },
+    "elements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/element"
+      },
+      "description": "Array of ArchiMate elements"
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationship"
+      },
+      "description": "Array of ArchiMate relationships"
+    },
+    "diagrams": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/diagram"
+      },
+      "description": "Array of ArchiMate views/diagrams"
+    }
+  },
+  "$defs": {
+    "modelMetadata": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the model"
+        },
+        "name": {
+          "type": "string",
+          "description": "Model name"
+        },
+        "version": {
+          "type": "string",
+          "description": "Model version"
+        },
+        "documentation": {
+          "type": "string",
+          "description": "Model documentation/description"
+        },
+        "dublinCore": {
+          "$ref": "#/$defs/dublinCore"
+        },
+        "properties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/property"
+          },
+          "description": "Custom properties for the model"
+        }
+      }
+    },
+    "dublinCore": {
+      "type": "object",
+      "description": "Dublin Core metadata elements (ISO 15836)",
+      "properties": {
+        "creator": {
+          "type": "string",
+          "description": "Entity primarily responsible for making the model"
+        },
+        "publisher": {
+          "type": "string",
+          "description": "Entity responsible for making the model available"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date of creation or publication"
+        },
+        "language": {
+          "type": "string",
+          "description": "Language of the model content (ISO 639-1 code)",
+          "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+          "examples": ["cs", "en", "de", "en-US"]
+        },
+        "rights": {
+          "type": "string",
+          "description": "Information about rights held in and over the model"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Topic of the model"
+        },
+        "description": {
+          "type": "string",
+          "description": "Account of the model content"
+        }
+      }
+    },
+    "property": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Property name"
+        },
+        "value": {
+          "type": "string",
+          "description": "Property value"
+        }
+      }
+    },
+    "element": {
+      "type": "object",
+      "required": ["id", "layer", "type"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the element"
+        },
+        "layer": {
+          "$ref": "#/$defs/layer"
+        },
+        "type": {
+          "$ref": "#/$defs/elementType"
+        },
+        "name": {
+          "type": "string",
+          "description": "Element name"
+        },
+        "stereotype": {
+          "type": "string",
+          "description": "Optional stereotype extending the element type"
+        },
+        "určuje": {
+          "type": "string",
+          "description": "Defines/determines relationship - links to laws, standards, or governing documents"
+        },
+        "příznaky": {
+          "type": "string",
+          "description": "Tags/flags for categorization (comma-separated values)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Element documentation/description"
+        }
+      }
+    },
+    "layer": {
+      "type": "string",
+      "enum": [
+        "strategy",
+        "business",
+        "application",
+        "technology",
+        "physical",
+        "implementation",
+        "motivation",
+        "composite"
+      ],
+      "description": "ArchiMate layer"
+    },
+    "elementType": {
+      "type": "string",
+      "enum": [
+        "Resource",
+        "Capability",
+        "ValueStream",
+        "CourseOfAction",
+        "BusinessActor",
+        "BusinessRole",
+        "BusinessCollaboration",
+        "BusinessInterface",
+        "BusinessProcess",
+        "BusinessFunction",
+        "BusinessInteraction",
+        "BusinessEvent",
+        "BusinessService",
+        "BusinessObject",
+        "Contract",
+        "Representation",
+        "Product",
+        "ApplicationComponent",
+        "ApplicationCollaboration",
+        "ApplicationInterface",
+        "ApplicationFunction",
+        "ApplicationProcess",
+        "ApplicationInteraction",
+        "ApplicationEvent",
+        "ApplicationService",
+        "DataObject",
+        "Node",
+        "Device",
+        "SystemSoftware",
+        "TechnologyCollaboration",
+        "TechnologyInterface",
+        "Path",
+        "CommunicationNetwork",
+        "TechnologyFunction",
+        "TechnologyProcess",
+        "TechnologyInteraction",
+        "TechnologyEvent",
+        "TechnologyService",
+        "Artifact",
+        "Equipment",
+        "Facility",
+        "DistributionNetwork",
+        "Material",
+        "WorkPackage",
+        "Deliverable",
+        "ImplementationEvent",
+        "Plateau",
+        "Gap",
+        "Stakeholder",
+        "Driver",
+        "Assessment",
+        "Goal",
+        "Outcome",
+        "Principle",
+        "Requirement",
+        "Constraint",
+        "Meaning",
+        "Value",
+        "Location",
+        "Grouping"
+      ],
+      "description": "ArchiMate 3.2 element type"
+    },
+    "relationship": {
+      "type": "object",
+      "required": ["id", "sourceId", "targetId", "type"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the relationship"
+        },
+        "sourceId": {
+          "type": "string",
+          "description": "ID of the source element"
+        },
+        "targetId": {
+          "type": "string",
+          "description": "ID of the target element"
+        },
+        "type": {
+          "$ref": "#/$defs/relationshipType"
+        },
+        "name": {
+          "type": "string",
+          "description": "Optional relationship name/label"
+        },
+        "description": {
+          "type": "string",
+          "description": "Relationship documentation/description"
+        },
+        "příznaky": {
+          "type": "string",
+          "description": "Tags/flags for categorization (comma-separated values)"
+        }
+      }
+    },
+    "relationshipType": {
+      "type": "string",
+      "enum": [
+        "Composition",
+        "Aggregation",
+        "Assignment",
+        "Realization",
+        "Serving",
+        "Access",
+        "Influence",
+        "Triggering",
+        "Flow",
+        "Specialization",
+        "Association"
+      ],
+      "description": "ArchiMate 3.2 relationship type"
+    },
+    "diagram": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the diagram"
+        },
+        "name": {
+          "type": "string",
+          "description": "Diagram name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Diagram documentation/description"
+        },
+        "layoutType": {
+          "type": "string",
+          "enum": ["layered", "free", "hierarchical", "grid"],
+          "default": "layered",
+          "description": "Layout algorithm type for automatic arrangement"
+        },
+        "elementIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Array of element IDs included in this diagram"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "exportDate": "2025-01-15T10:30:00.000Z",
+      "archimateVersion": "3.2",
+      "model": {
+        "id": "id-model-001",
+        "name": "Enterprise Architecture Model",
+        "version": "1.0",
+        "documentation": "Main enterprise architecture model",
+        "dublinCore": {
+          "creator": "Architecture Team",
+          "publisher": "Example Corp",
+          "date": "2025-01-15",
+          "language": "cs",
+          "rights": "Internal use only",
+          "subject": "Enterprise Architecture",
+          "description": "Complete EA model for Example Corp"
+        },
+        "properties": [
+          {
+            "name": "status",
+            "value": "approved"
+          }
+        ]
+      },
+      "elements": [
+        {
+          "id": "el-001",
+          "layer": "business",
+          "type": "BusinessProcess",
+          "name": "Order Processing",
+          "stereotype": "",
+          "určuje": "",
+          "příznaky": "core, customer-facing",
+          "description": "Main order processing workflow"
+        },
+        {
+          "id": "el-002",
+          "layer": "application",
+          "type": "ApplicationComponent",
+          "name": "Order Management System",
+          "stereotype": "microservice",
+          "určuje": "",
+          "příznaky": "core",
+          "description": "Central system for order management"
+        }
+      ],
+      "relationships": [
+        {
+          "id": "el-001el-002",
+          "sourceId": "el-002",
+          "targetId": "el-001",
+          "type": "Serving",
+          "name": "",
+          "description": "OMS supports order processing",
+          "příznaky": ""
+        }
+      ],
+      "diagrams": [
+        {
+          "id": "diagram-001",
+          "name": "Order Processing Overview",
+          "description": "High-level view of order processing",
+          "layoutType": "layered",
+          "elementIds": ["el-001", "el-002"]
+        }
+      ]
+    }
+  ]
+}
