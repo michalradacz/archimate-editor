@@ -1411,8 +1411,8 @@
                     <h2 data-i18n="export">Export</h2>
                     
                     <div class="actions">
-                        <button type="button" class="btn-success" onclick="exportJSON()" data-i18n="exportJson">Export JSON</button>
-                        <button type="button" class="btn-secondary" onclick="copyJSONToClipboard()" data-i18n="copyJsonClipboard">📋 Zkopírovat JSON</button>
+                        <button type="button" class="btn-success" onclick="exportJSON()" data-i18n="exportJson">Export AJX</button>
+                        <button type="button" class="btn-secondary" onclick="copyJSONToClipboard()" data-i18n="copyJsonClipboard">📋 Zkopírovat AJX</button>
                         <button type="button" class="btn-success" onclick="exportCSV()" data-i18n="exportCsv">Export CSV</button>
                         <button type="button" class="btn-success" onclick="exportArchiMateXML()" data-i18n="exportXml">Export ArchiMate XML</button>
                     </div>
@@ -1432,13 +1432,16 @@
                         <p data-i18n="or">nebo</p>
                         <div class="file-input-wrapper">
                             <button type="button" class="btn-primary" data-i18n="selectFile">Vyberte soubor</button>
-                            <input type="file" id="import-file" accept=".json,.xml" onchange="handleFileSelect(event)">
+                            <input type="file" id="import-file" accept=".ajx,.xml" onchange="handleFileSelect(event)">
                         </div>
-                        <p style="margin-top: 10px; color: #666; font-size: 13px;" data-i18n="supportedFormats">Podporované formáty: JSON, ArchiMate XML</p>
+                        <p style="margin-top: 10px; color: #666; font-size: 13px;" data-i18n="supportedFormats">Podporované formáty: AJX, ArchiMate XML</p>
                     </div>
                     
-                    <label for="import-data" data-i18n="pasteDataManually">Nebo vložte data ručně:</label>
-                    <textarea id="import-data" placeholder='JSON nebo ArchiMate XML...' rows="8"></textarea>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <label for="import-data" data-i18n="pasteDataManually">Nebo vložte data ručně:</label>
+                        <button type="button" class="btn-secondary" onclick="pasteFromClipboard()" style="font-size: 12px; padding: 4px 8px;" data-i18n="pasteFromClipboard">📋 Vložit ze schránky</button>
+                    </div>
+                    <textarea id="import-data" placeholder='AJX nebo ArchiMate XML...' rows="8"></textarea>
                     
                     <div class="actions">
                         <button type="button" class="btn-primary" onclick="importData()" data-i18n="import">Importovat</button>
@@ -1461,7 +1464,7 @@
                         </div>
                         <div class="form-group">
                             <label for="merge-file" data-i18n="fileToMerge">Soubor ke sloučení:</label>
-                            <input type="file" id="merge-file" accept=".json,.xml" style="padding: 6px;" onchange="loadMergePreview()">
+                            <input type="file" id="merge-file" accept=".ajx,.xml" style="padding: 6px;" onchange="loadMergePreview()">
                         </div>
                     </div>
                     
@@ -1788,12 +1791,12 @@
             relationshipTypes: 'Typy vazeb',
             
             // Export/Import tab
-            exportJson: 'Export JSON',
-            downloadJson: 'Stáhnout JSON',
-            copyJsonClipboard: '📋 Zkopírovat JSON',
+            exportJson: 'Export AJX',
+            downloadJson: 'Stáhnout AJX',
+            copyJsonClipboard: '📋 Zkopírovat AJX',
             exportXml: 'Export XML (ArchiMate Open Exchange)',
             downloadXml: 'Stáhnout XML',
-            importJson: 'Import JSON',
+            importJson: 'Import AJX',
             importXml: 'Import XML (ArchiMate Open Exchange)',
             selectFile: 'Vyberte soubor',
             import: 'Importovat',
@@ -1802,7 +1805,7 @@
             keepExisting: 'Ponechat stávající',
             overwriteNew: 'Přepsat novými',
             manualSelect: 'Ručně vybrat',
-            mergeSelectFile: 'Vyberte soubor ke sloučení (JSON nebo XML)',
+            mergeSelectFile: 'Vyberte soubor ke sloučení (AJX nebo XML)',
             merge: 'Sloučit modely',
             selectElementsToImport: 'Vyberte prvky k importu',
             selectRelationshipsToImport: 'Vyberte vazby k importu',
@@ -1973,7 +1976,7 @@
             selectExportPreview: 'Vyberte export pro náhled...',
             dragFileHere: 'Přetáhněte soubor sem',
             or: 'nebo',
-            supportedFormats: 'Podporované formáty: JSON, ArchiMate XML',
+            supportedFormats: 'Podporované formáty: AJX, ArchiMate XML',
             pasteDataManually: 'Nebo vložte data ručně:',
             deleteAll: 'Smazat vše',
             mergeDescription: 'Importuje prvky, vazby a diagramy z jiného modelu do aktuálního. K nově přidaným položkám se přidá příznak s názvem zdrojového modelu.',
@@ -1993,7 +1996,11 @@
             relationshipExists: 'Vazba mezi těmito prvky již existuje (ID: "{0}").',
             copyFailed: 'Nepodařilo se zkopírovat do schránky. Použijte Ctrl+C z náhledu.',
             pasteDataToImport: 'Vložte prosím data k importu.',
-            unrecognizedFormat: 'Nerozpoznaný formát. Podporované formáty: JSON, ArchiMate XML',
+            pasteFromClipboard: '📋 Vložit ze schránky',
+            pasteManuallyTitle: 'Vložit ze schránky',
+            pasteManuallyDesc: 'Automatické vložení není na tomto zařízení k dispozici. Vložte obsah ručně (Ctrl+V nebo dlouhý stisk):',
+            pasteAndLoad: 'Vložit a načíst',
+            unrecognizedFormat: 'Nerozpoznaný formát. Podporované formáty: AJX, ArchiMate XML',
             alertSelectFile: 'Vyberte prosím soubor ke sloučení.',
             alertWaitForFile: 'Počkejte na načtení souboru.',
             alertSelectAtLeastOne: 'Vyberte alespoň jeden prvek k importu.',
@@ -2024,7 +2031,7 @@
             
             // Import messages
             importSuccess: 'Import úspěšný!',
-            jsonParseError: 'Chyba při parsování JSON',
+            jsonParseError: 'Chyba při parsování AJX',
             xmlImportSuccess: 'Import ArchiMate XML úspěšný!',
             xmlImportError: 'Chyba při importu XML',
             modelLabel: 'Model',
@@ -2189,12 +2196,12 @@
             relationshipTypes: 'Relationship Types',
             
             // Export/Import tab
-            exportJson: 'Export JSON',
-            downloadJson: 'Download JSON',
-            copyJsonClipboard: '📋 Copy JSON',
+            exportJson: 'Export AJX',
+            downloadJson: 'Download AJX',
+            copyJsonClipboard: '📋 Copy AJX',
             exportXml: 'Export XML (ArchiMate Open Exchange)',
             downloadXml: 'Download XML',
-            importJson: 'Import JSON',
+            importJson: 'Import AJX',
             importXml: 'Import XML (ArchiMate Open Exchange)',
             selectFile: 'Select file',
             import: 'Import',
@@ -2203,7 +2210,7 @@
             keepExisting: 'Keep existing',
             overwriteNew: 'Overwrite with new',
             manualSelect: 'Manual selection',
-            mergeSelectFile: 'Select file to merge (JSON or XML)',
+            mergeSelectFile: 'Select file to merge (AJX or XML)',
             merge: 'Merge Models',
             selectElementsToImport: 'Select elements to import',
             selectRelationshipsToImport: 'Select relationships to import',
@@ -2374,7 +2381,7 @@
             selectExportPreview: 'Select export for preview...',
             dragFileHere: 'Drag file here',
             or: 'or',
-            supportedFormats: 'Supported formats: JSON, ArchiMate XML',
+            supportedFormats: 'Supported formats: AJX, ArchiMate XML',
             pasteDataManually: 'Or paste data manually:',
             deleteAll: 'Delete All',
             mergeDescription: 'Imports elements, relationships and diagrams from another model. A tag with source model name will be added to imported items.',
@@ -2394,7 +2401,11 @@
             relationshipExists: 'Relationship between these elements already exists (ID: "{0}").',
             copyFailed: 'Failed to copy to clipboard. Use Ctrl+C from preview.',
             pasteDataToImport: 'Please paste data to import.',
-            unrecognizedFormat: 'Unrecognized format. Supported formats: JSON, ArchiMate XML',
+            pasteFromClipboard: '📋 Paste from clipboard',
+            pasteManuallyTitle: 'Paste from clipboard',
+            pasteManuallyDesc: 'Automatic paste is not available on this device. Paste content manually (Ctrl+V or long press):',
+            pasteAndLoad: 'Paste and load',
+            unrecognizedFormat: 'Unrecognized format. Supported formats: AJX, ArchiMate XML',
             alertSelectFile: 'Please select a file to merge.',
             alertWaitForFile: 'Wait for file to load.',
             alertSelectAtLeastOne: 'Select at least one element to import.',
@@ -2425,7 +2436,7 @@
             
             // Import messages
             importSuccess: 'Import successful!',
-            jsonParseError: 'JSON parse error',
+            jsonParseError: 'AJX parse error',
             xmlImportSuccess: 'ArchiMate XML import successful!',
             xmlImportError: 'XML import error',
             modelLabel: 'Model',
@@ -5445,7 +5456,7 @@
         const json = JSON.stringify(data, null, 2);
         document.getElementById('export-preview').textContent = json;
         
-        downloadFile(json, `${modelMetadata.name || 'archimate-model'}.json`, 'application/json');
+        downloadFile(json, `${modelMetadata.name || 'archimate-model'}.ajx`, 'application/json');
     }
     
     function copyJSONToClipboard() {
@@ -5480,6 +5491,62 @@
             document.body.removeChild(textarea);
         });
     }
+    
+    function pasteFromClipboard() {
+        // Try modern clipboard API first
+        if (navigator.clipboard && navigator.clipboard.readText) {
+            navigator.clipboard.readText().then(text => {
+                if (text && text.trim()) {
+                    document.getElementById('import-data').value = text;
+                } else {
+                    // Empty clipboard, show modal
+                    showClipboardModal();
+                }
+            }).catch(err => {
+                // Clipboard API failed (permissions denied, mobile, etc.)
+                showClipboardModal();
+            });
+        } else {
+            // Clipboard API not available
+            showClipboardModal();
+        }
+    }
+    
+    function showClipboardModal() {
+        const modal = document.getElementById('clipboard-paste-modal');
+        const textarea = document.getElementById('clipboard-paste-textarea');
+        textarea.value = '';
+        modal.style.display = 'flex';
+        
+        // Focus textarea for immediate paste
+        setTimeout(() => textarea.focus(), 100);
+        
+        // Update translations
+        applyTranslations();
+    }
+    
+    function closeClipboardModal() {
+        document.getElementById('clipboard-paste-modal').style.display = 'none';
+    }
+    
+    function confirmClipboardPaste() {
+        const textarea = document.getElementById('clipboard-paste-textarea');
+        const content = textarea.value.trim();
+        
+        if (content) {
+            document.getElementById('import-data').value = content;
+            closeClipboardModal();
+        } else {
+            alert(t('pasteDataToImport'));
+        }
+    }
+    
+    // Close modal on backdrop click
+    document.getElementById('clipboard-paste-modal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeClipboardModal();
+        }
+    });
     
     function exportCSV() {
         let csv = `# Model: ${modelMetadata.name || 'ArchiMate Model'}\n`;
@@ -7780,5 +7847,18 @@
         loadColumnVisibility('diagrams-table');
     });
     </script>
+    <!-- Clipboard Paste Modal -->
+    <div id="clipboard-paste-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 20px; border-radius: 8px; max-width: 90%; width: 500px; max-height: 80vh; display: flex; flex-direction: column;">
+            <h3 style="margin: 0 0 15px 0;" data-i18n="pasteManuallyTitle">Vložit ze schránky</h3>
+            <p style="color: #666; font-size: 13px; margin-bottom: 10px;" data-i18n="pasteManuallyDesc">Automatické vložení není na tomto zařízení k dispozici. Vložte obsah ručně (Ctrl+V nebo dlouhý stisk):</p>
+            <textarea id="clipboard-paste-textarea" style="flex: 1; min-height: 200px; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; font-family: monospace; font-size: 12px;" placeholder="Vložte sem obsah schránky..."></textarea>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
+                <button type="button" class="btn-secondary" onclick="closeClipboardModal()" data-i18n="cancel">Zrušit</button>
+                <button type="button" class="btn-primary" onclick="confirmClipboardPaste()" data-i18n="pasteAndLoad">Vložit a načíst</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
