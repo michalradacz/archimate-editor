@@ -1473,6 +1473,7 @@
                             <div>
                                 <button type="button" class="btn-secondary merge-tab-btn active" onclick="switchMergeTab('elements')" id="merge-tab-btn-elements" data-i18n="elements">Prvky</button>
                                 <button type="button" class="btn-secondary merge-tab-btn" onclick="switchMergeTab('relationships')" id="merge-tab-btn-relationships" data-i18n="relationships">Vazby</button>
+                                <button type="button" class="btn-secondary merge-tab-btn" onclick="switchMergeTab('diagrams')" id="merge-tab-btn-diagrams" data-i18n="diagrams">Diagramy</button>
                             </div>
                             <div>
                                 <button type="button" class="btn-secondary" onclick="mergeSelectAll(true)" style="margin-right: 5px;" data-i18n="selectAll">☑ Vybrat vše</button>
@@ -1487,6 +1488,9 @@
                             <p style="color: #666;" data-i18n="selectFileFirst">Nejprve vyberte soubor...</p>
                         </div>
                         <div id="merge-relationships-list" style="display:none; max-height: 400px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; padding: 10px; background: #fafafa;">
+                            <p style="color: #666;" data-i18n="selectFileFirst">Nejprve vyberte soubor...</p>
+                        </div>
+                        <div id="merge-diagrams-list" style="display:none; max-height: 400px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; padding: 10px; background: #fafafa;">
                             <p style="color: #666;" data-i18n="selectFileFirst">Nejprve vyberte soubor...</p>
                         </div>
                         <div id="merge-selection-stats" style="margin-top: 10px; color: #666;"></div>
@@ -1810,6 +1814,10 @@
             selectElementsToImport: 'Vyberte prvky k importu',
             selectRelationshipsToImport: 'Vyberte vazby k importu',
             relImportNote: 'Při výběru vazby se automaticky vyberou i její zdrojový a cílový prvek.',
+            selectDiagramsToImport: 'Vyberte diagramy k importu',
+            diagImportNote: 'Při výběru diagramu se automaticky vyberou i jeho prvky a jejich vazby.',
+            diagSelectedCount: 'diagramů vybráno',
+            diagToImport: 'diagramů k importu',
             existsWarning: 'existuje',
             newItem: 'nový',
             selectedToImport: 'Vybráno k importu',
@@ -2215,6 +2223,10 @@
             selectElementsToImport: 'Select elements to import',
             selectRelationshipsToImport: 'Select relationships to import',
             relImportNote: 'Selecting a relationship will automatically select its source and target elements.',
+            selectDiagramsToImport: 'Select diagrams to import',
+            diagImportNote: 'Selecting a diagram will automatically select its elements and their relationships.',
+            diagSelectedCount: 'diagrams selected',
+            diagToImport: 'diagrams to import',
             existsWarning: 'exists',
             newItem: 'new',
             selectedToImport: 'Selected to import',
@@ -6124,10 +6136,27 @@
         // Show/hide lists
         document.getElementById('merge-elements-list').style.display = tab === 'elements' ? 'block' : 'none';
         document.getElementById('merge-relationships-list').style.display = tab === 'relationships' ? 'block' : 'none';
+        document.getElementById('merge-diagrams-list').style.display = tab === 'diagrams' ? 'block' : 'none';
         
         // When switching to relationships tab, uncheck all elements so user can select via relationships
         if (tab === 'relationships') {
             document.querySelectorAll('.merge-element-checkbox').forEach(cb => {
+                cb.checked = false;
+            });
+            document.querySelectorAll('.merge-relationship-checkbox').forEach(cb => {
+                cb.checked = false;
+            });
+        }
+        
+        // When switching to diagrams tab, uncheck all elements and relationships so user can select via diagrams
+        if (tab === 'diagrams') {
+            document.querySelectorAll('.merge-element-checkbox').forEach(cb => {
+                cb.checked = false;
+            });
+            document.querySelectorAll('.merge-relationship-checkbox').forEach(cb => {
+                cb.checked = false;
+            });
+            document.querySelectorAll('.merge-diagram-checkbox').forEach(cb => {
                 cb.checked = false;
             });
         }
@@ -6169,7 +6198,7 @@
             } else {
                 searchStatsDiv.innerHTML = '';
             }
-        } else {
+        } else if (currentMergeTab === 'relationships') {
             const labels = document.querySelectorAll('#merge-relationships-list label');
             let visibleCount = 0;
             let totalCount = labels.length;
@@ -6193,6 +6222,23 @@
             } else {
                 searchStatsDiv.innerHTML = '';
             }
+        } else if (currentMergeTab === 'diagrams') {
+            const labels = document.querySelectorAll('#merge-diagrams-list label');
+            let visibleCount = 0;
+            let totalCount = labels.length;
+            
+            labels.forEach(label => {
+                const text = label.textContent.toLowerCase();
+                const matches = searchTerm === '' || text.includes(searchTerm);
+                label.style.display = matches ? 'flex' : 'none';
+                if (matches) visibleCount++;
+            });
+            
+            if (searchTerm) {
+                searchStatsDiv.innerHTML = `${t('searchResults')}: ${visibleCount} ${t('of')} ${totalCount} ${t('diagramsLabel').toLowerCase()}`;
+            } else {
+                searchStatsDiv.innerHTML = '';
+            }
         }
     }
     
@@ -6200,6 +6246,7 @@
         const fileInput = document.getElementById('merge-file');
         const listDiv = document.getElementById('merge-elements-list');
         const relListDiv = document.getElementById('merge-relationships-list');
+        const diagListDiv = document.getElementById('merge-diagrams-list');
         const statsDiv = document.getElementById('merge-selection-stats');
         const resultDiv = document.getElementById('merge-result');
         const searchInput = document.getElementById('merge-search-input');
@@ -6215,6 +6262,7 @@
             mergePreviewData = null;
             listDiv.innerHTML = `<p style="color: #666;">${t('selectFileFirst')}</p>`;
             relListDiv.innerHTML = `<p style="color: #666;">${t('selectFileFirst')}</p>`;
+            diagListDiv.innerHTML = `<p style="color: #666;">${t('selectFileFirst')}</p>`;
             statsDiv.innerHTML = '';
             return;
         }
@@ -6246,10 +6294,12 @@
                 
                 renderMergeElementsList();
                 renderMergeRelationshipsList();
+                renderMergeDiagramsList();
                 
             } catch (err) {
                 listDiv.innerHTML = `<p style="color: #c00;">${t('error')}: ${escapeHtml(err.message)}</p>`;
                 relListDiv.innerHTML = `<p style="color: #c00;">${t('error')}: ${escapeHtml(err.message)}</p>`;
+                diagListDiv.innerHTML = `<p style="color: #c00;">${t('error')}: ${escapeHtml(err.message)}</p>`;
                 statsDiv.innerHTML = '';
                 mergePreviewData = null;
             }
@@ -6422,16 +6472,96 @@
         });
     }
     
+    function renderMergeDiagramsList() {
+        const listDiv = document.getElementById('merge-diagrams-list');
+        
+        if (!mergePreviewData) {
+            listDiv.innerHTML = `<p style="color: #666;">${t('selectFileFirst')}</p>`;
+            return;
+        }
+        
+        const importedDiagrams = mergePreviewData.diagrams;
+        const importedElements = mergePreviewData.elements;
+        
+        // Create element lookup map
+        const elementMap = {};
+        importedElements.forEach(el => {
+            elementMap[el.id] = el;
+        });
+        
+        if (importedDiagrams.length === 0) {
+            listDiv.innerHTML = '<p style="color: #666;">Soubor neobsahuje žádné diagramy.</p>';
+            return;
+        }
+        
+        let html = `<p style="color: #666; font-size: 12px; margin-bottom: 10px;">${t('diagImportNote')}</p>`;
+        
+        importedDiagrams.forEach(diag => {
+            const existsInModel = diagrams.some(d => d.id === diag.id);
+            const existsLabel = existsInModel ? '<span style="color: #c90; font-size: 11px;">⚠️ existuje</span>' : '<span style="color: #090; font-size: 11px;">nový</span>';
+            
+            const elementCount = diag.elementIds ? diag.elementIds.length : 0;
+            const elementNames = diag.elementIds ? diag.elementIds.slice(0, 3).map(id => {
+                const el = elementMap[id];
+                return el ? (el.name || el.id) : id;
+            }).join(', ') + (elementCount > 3 ? '...' : '') : '';
+            
+            html += `
+                <label style="display: flex; align-items: center; padding: 8px 10px; margin: 4px 0; background: ${existsInModel ? '#fff8e6' : '#fff'}; border-radius: 3px; cursor: pointer; border: 1px solid #eee;">
+                    <input type="checkbox" class="merge-diagram-checkbox" value="${escapeHtml(diag.id)}" data-elements="${escapeHtml(JSON.stringify(diag.elementIds || []))}" style="margin-right: 10px;">
+                    <span style="flex: 1;">
+                        <strong style="font-size: 14px;">${escapeHtml(diag.name || diag.id)}</strong>
+                        <br>
+                        <span style="font-size: 12px; color: #666;">${elementCount} ${t('elementsSmall')}${elementNames ? ': ' + escapeHtml(elementNames) : ''}</span>
+                    </span>
+                    ${existsLabel}
+                </label>
+            `;
+        });
+        
+        listDiv.innerHTML = html;
+        
+        // Add change listeners - when diagram is selected, select its elements and their relationships too
+        listDiv.querySelectorAll('.merge-diagram-checkbox').forEach(cb => {
+            cb.addEventListener('change', function() {
+                if (this.checked) {
+                    // Select all elements in the diagram
+                    const elementIds = JSON.parse(this.dataset.elements || '[]');
+                    elementIds.forEach(id => {
+                        const elementCheckbox = document.querySelector(`.merge-element-checkbox[value="${id}"]`);
+                        if (elementCheckbox && !elementCheckbox.checked) {
+                            elementCheckbox.checked = true;
+                        }
+                    });
+                    
+                    // Also select relationships where both source and target are in this diagram
+                    const elementIdSet = new Set(elementIds);
+                    document.querySelectorAll('.merge-relationship-checkbox').forEach(relCb => {
+                        const sourceId = relCb.dataset.source;
+                        const targetId = relCb.dataset.target;
+                        if (elementIdSet.has(sourceId) && elementIdSet.has(targetId)) {
+                            relCb.checked = true;
+                        }
+                    });
+                }
+                updateMergeSelectionStats();
+            });
+        });
+    }
+    
     function updateMergeSelectionStats() {
         const elementCheckboxes = document.querySelectorAll('.merge-element-checkbox');
         const elementChecked = document.querySelectorAll('.merge-element-checkbox:checked');
         const relCheckboxes = document.querySelectorAll('.merge-relationship-checkbox');
         const relChecked = document.querySelectorAll('.merge-relationship-checkbox:checked');
+        const diagCheckboxes = document.querySelectorAll('.merge-diagram-checkbox');
+        const diagChecked = document.querySelectorAll('.merge-diagram-checkbox:checked');
         const statsDiv = document.getElementById('merge-selection-stats');
         
         if (mergePreviewData) {
             const selectedElementIds = new Set([...elementChecked].map(cb => cb.value));
             const selectedRelIds = new Set([...relChecked].map(cb => cb.value));
+            const selectedDiagIds = new Set([...diagChecked].map(cb => cb.value));
             
             // Count relationships that would be imported:
             // - explicitly selected in relationships tab
@@ -6443,15 +6573,17 @@
                 }
             });
             
-            // Count diagrams that have at least one selected element
+            // Count diagrams that will be imported:
+            // - explicitly selected in diagrams tab
+            // - OR have at least one selected element
             let diagCount = 0;
             mergePreviewData.diagrams.forEach(d => {
-                if (d.elementIds.some(id => selectedElementIds.has(id))) {
+                if (selectedDiagIds.has(d.id) || d.elementIds.some(id => selectedElementIds.has(id))) {
                     diagCount++;
                 }
             });
             
-            statsDiv.innerHTML = `<strong>${t('modelLabel')}:</strong> ${escapeHtml(mergeSourceModelName)} | <strong>${t('selectedCount')}:</strong> ${elementChecked.length} ${t('of')} ${elementCheckboxes.length} ${t('elementsSmall')} | <strong>${t('relSelectedCount')}:</strong> ${relChecked.length} | <strong>${t('relToImport')}:</strong> ${relCount} | <strong>${t('diagramsLabel')}:</strong> ${diagCount}`;
+            statsDiv.innerHTML = `<strong>${t('modelLabel')}:</strong> ${escapeHtml(mergeSourceModelName)} | <strong>${t('selectedCount')}:</strong> ${elementChecked.length} ${t('of')} ${elementCheckboxes.length} ${t('elementsSmall')} | <strong>${t('relSelectedCount')}:</strong> ${relChecked.length} | <strong>${t('diagSelectedCount')}:</strong> ${diagChecked.length} | <strong>${t('relToImport')}:</strong> ${relCount} | <strong>${t('diagToImport')}:</strong> ${diagCount}`;
         }
     }
     
@@ -6464,7 +6596,7 @@
                     if (cb) cb.checked = select;
                 }
             });
-        } else {
+        } else if (currentMergeTab === 'relationships') {
             // Only affect visible checkboxes (not hidden by search filter)
             document.querySelectorAll('#merge-relationships-list label').forEach(label => {
                 if (label.style.display !== 'none') {
@@ -6479,6 +6611,35 @@
                             const targetCheckbox = document.querySelector(`.merge-element-checkbox[value="${targetId}"]`);
                             if (sourceCheckbox) sourceCheckbox.checked = true;
                             if (targetCheckbox) targetCheckbox.checked = true;
+                        }
+                    }
+                }
+            });
+        } else if (currentMergeTab === 'diagrams') {
+            // Only affect visible checkboxes (not hidden by search filter)
+            document.querySelectorAll('#merge-diagrams-list label').forEach(label => {
+                if (label.style.display !== 'none') {
+                    const cb = label.querySelector('.merge-diagram-checkbox');
+                    if (cb) {
+                        cb.checked = select;
+                        // When selecting diagrams, also select their elements and relationships
+                        if (select) {
+                            const elementIds = JSON.parse(cb.dataset.elements || '[]');
+                            const elementIdSet = new Set(elementIds);
+                            
+                            elementIds.forEach(id => {
+                                const elementCheckbox = document.querySelector(`.merge-element-checkbox[value="${id}"]`);
+                                if (elementCheckbox) elementCheckbox.checked = true;
+                            });
+                            
+                            // Also select relationships where both source and target are in this diagram
+                            document.querySelectorAll('.merge-relationship-checkbox').forEach(relCb => {
+                                const sourceId = relCb.dataset.source;
+                                const targetId = relCb.dataset.target;
+                                if (elementIdSet.has(sourceId) && elementIdSet.has(targetId)) {
+                                    relCb.checked = true;
+                                }
+                            });
                         }
                     }
                 }
@@ -6552,9 +6713,11 @@
         const resultDiv = document.getElementById('merge-result');
         const selectedElementCheckboxes = document.querySelectorAll('.merge-element-checkbox:checked');
         const selectedRelCheckboxes = document.querySelectorAll('.merge-relationship-checkbox:checked');
+        const selectedDiagCheckboxes = document.querySelectorAll('.merge-diagram-checkbox:checked');
         
         const selectedElementIds = new Set([...selectedElementCheckboxes].map(cb => cb.value));
         const selectedRelIds = new Set([...selectedRelCheckboxes].map(cb => cb.value));
+        const selectedDiagIds = new Set([...selectedDiagCheckboxes].map(cb => cb.value));
         
         // Add source and target element IDs from selected relationships
         selectedRelCheckboxes.forEach(cb => {
@@ -6562,7 +6725,13 @@
             selectedElementIds.add(cb.dataset.target);
         });
         
-        if (selectedElementIds.size === 0) {
+        // Add element IDs from explicitly selected diagrams
+        selectedDiagCheckboxes.forEach(cb => {
+            const elementIds = JSON.parse(cb.dataset.elements || '[]');
+            elementIds.forEach(id => selectedElementIds.add(id));
+        });
+        
+        if (selectedElementIds.size === 0 && selectedDiagIds.size === 0) {
             alert(t('alertSelectAtLeastOne'));
             return;
         }
@@ -6621,19 +6790,25 @@
             }
         });
         
-        // Import diagrams that contain at least one selected element
+        // Import diagrams:
+        // - explicitly selected in diagrams tab (with all their elements)
+        // - OR those that contain at least one selected element (filtered to selected elements only)
         mergePreviewData.diagrams.forEach(importedDiag => {
-            // Filter diagram's elements to only include selected ones
+            const isExplicitlySelected = selectedDiagIds.has(importedDiag.id);
             const filteredElementIds = importedDiag.elementIds.filter(id => selectedElementIds.has(id));
-            if (filteredElementIds.length === 0) return;
+            
+            // Skip if not selected and no elements selected
+            if (!isExplicitlySelected && filteredElementIds.length === 0) return;
             
             // Clone the diagram to avoid modifying source data
             const diagToImport = JSON.parse(JSON.stringify(importedDiag));
             
             const existingIndex = diagrams.findIndex(d => d.id === diagToImport.id);
             
-            // Update element list to only selected
-            diagToImport.elementIds = filteredElementIds;
+            // If explicitly selected, keep all elements; otherwise filter to selected
+            if (!isExplicitlySelected) {
+                diagToImport.elementIds = filteredElementIds;
+            }
             
             if (!diagToImport.description) {
                 diagToImport.description = importTag;
