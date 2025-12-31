@@ -117,6 +117,167 @@
         .btn-success:hover {
             background: #218838;
         }
+        .btn-small {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+        
+        /* ADR Styles */
+        .adr-status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .adr-status-draft { background: #e0e0e0; color: #555; }
+        .adr-status-proposed { background: #2196F3; color: white; }
+        .adr-status-discussion { background: #03A9F4; color: white; }
+        .adr-status-returned { background: #FF5722; color: white; }
+        .adr-status-accepted { background: #4CAF50; color: white; }
+        .adr-status-rejected { background: #f44336; color: white; }
+        .adr-status-updated { background: #00BCD4; color: white; }
+        .adr-status-implemented { background: #9C27B0; color: white; }
+        .adr-status-monitored { background: #3F51B5; color: white; }
+        .adr-status-deprecated { background: #FF9800; color: white; }
+        .adr-status-superseded { background: #607D8B; color: white; }
+        .adr-status-closed { background: #795548; color: white; }
+        
+        /* Task status badges */
+        .task-status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .task-status-new { background: #9E9E9E; color: white; }
+        .task-status-in_progress { background: #2196F3; color: white; }
+        .task-status-blocked { background: #f44336; color: white; }
+        .task-status-review { background: #FFC107; color: #333; }
+        .task-status-done { background: #4CAF50; color: white; }
+        .task-status-cancelled { background: #607D8B; color: white; }
+        
+        /* Task priority badges */
+        .task-priority-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .task-priority-low { background: #8BC34A; color: white; }
+        .task-priority-medium { background: #FFC107; color: #333; }
+        .task-priority-high { background: #FF9800; color: white; }
+        .task-priority-critical { background: #f44336; color: white; }
+        
+        .adr-list-container {
+            min-height: 60px;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            margin-bottom: 5px;
+            background: #fafafa;
+        }
+        .adr-list-item {
+            display: flex;
+            align-items: center;
+            padding: 4px 8px;
+            margin: 2px 0;
+            background: white;
+            border-radius: 3px;
+            border: 1px solid #eee;
+        }
+        .adr-list-item input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 2px;
+        }
+        .adr-list-item button {
+            padding: 2px 6px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .adr-alternative-card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #fafafa;
+        }
+        .adr-alternative-card .form-group {
+            margin-bottom: 8px;
+        }
+        .adr-link-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        .adr-link-row input {
+            flex: 1;
+        }
+        .adr-history-item {
+            display: flex;
+            gap: 15px;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .adr-history-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Markdown content styles */
+        .markdown-content h1 { font-size: 1.8em; margin: 1em 0 0.5em 0; border-bottom: 2px solid #eee; padding-bottom: 0.3em; }
+        .markdown-content h2 { font-size: 1.5em; margin: 1em 0 0.5em 0; border-bottom: 1px solid #eee; padding-bottom: 0.2em; }
+        .markdown-content h3 { font-size: 1.3em; margin: 1em 0 0.5em 0; }
+        .markdown-content h4 { font-size: 1.1em; margin: 1em 0 0.5em 0; }
+        .markdown-content p { margin: 0.5em 0; }
+        .markdown-content ul, .markdown-content ol { margin: 0.5em 0; padding-left: 2em; }
+        .markdown-content li { margin: 0.3em 0; }
+        .markdown-content code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 0.9em; }
+        .markdown-content pre { background: #f4f4f4; padding: 12px; border-radius: 4px; overflow-x: auto; margin: 0.5em 0; }
+        .markdown-content pre code { background: none; padding: 0; }
+        .markdown-content blockquote { border-left: 4px solid #ddd; margin: 0.5em 0; padding-left: 1em; color: #666; }
+        .markdown-content a { color: #0066cc; }
+        .markdown-content table { border-collapse: collapse; margin: 0.5em 0; }
+        .markdown-content th, .markdown-content td { border: 1px solid #ddd; padding: 8px; }
+        .markdown-content th { background: #f5f5f5; }
+        .markdown-content hr { border: none; border-top: 1px solid #ddd; margin: 1em 0; }
+        .markdown-content img { max-width: 100%; }
+        
+        /* Note version list */
+        .note-version-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .note-version-item:hover {
+            background: #f0f0f0;
+        }
+        .note-version-item.active {
+            background: #e3f2fd;
+            border-color: #2196F3;
+        }
+        .note-version-item.current {
+            border-left: 3px solid #4CAF50;
+        }
+        .note-version-date {
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .note-version-time {
+            font-size: 12px;
+            color: #666;
+        }
+        
         table {
             width: 100%;
             border-collapse: collapse;
@@ -680,14 +841,23 @@
             <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-diagrams" id="btn-diagrams" onclick="switchTab('diagrams')" data-i18n="tabDiagrams">
                 Diagramy
             </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-reference" id="btn-reference" onclick="switchTab('reference')" data-i18n="tabReference">
-                Reference
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tasks" id="btn-tasks" onclick="switchTab('tasks')" data-i18n="tasksTab">
+                Úkoly
+            </button>
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-notes" id="btn-notes" onclick="switchTab('notes')" data-i18n="notesTab">
+                Poznámky
+            </button>
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-adr" id="btn-adr" onclick="switchTab('adr')" data-i18n="adrTab">
+                ADR
+            </button>
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tools" id="btn-tools" onclick="switchTab('tools')" data-i18n="tabTools">
+                Nástroje
             </button>
             <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-export" id="btn-export" onclick="switchTab('export')" data-i18n="tabExport">
                 Export / Import
             </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tools" id="btn-tools" onclick="switchTab('tools')" data-i18n="tabTools">
-                Nástroje
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-reference" id="btn-reference" onclick="switchTab('reference')" data-i18n="tabReference">
+                Reference
             </button>
         </nav>
 
@@ -815,6 +985,12 @@
                         <label for="filter-příznaky" data-i18n="tag">Příznak:</label>
                         <select id="filter-příznaky" onchange="filterElements()">
                             <option value="" data-i18n="allTags">Všechny příznaky</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label for="filter-diagram" data-i18n="diagram">Diagram:</label>
+                        <select id="filter-diagram" onchange="filterElements()">
+                            <option value="" data-i18n="allDiagrams">Všechny diagramy</option>
                         </select>
                     </div>
                     <div class="filter-item">
@@ -980,7 +1156,13 @@
                             <option value="" data-i18n="allTags">Všechny příznaky</option>
                         </select>
                     </div>
-                    <div class="filter-item" style="flex:3;">
+                    <div class="filter-item">
+                        <label for="filter-rel-diagram" data-i18n="diagram">Diagram:</label>
+                        <select id="filter-rel-diagram" onchange="filterRelationships()">
+                            <option value="" data-i18n="allDiagrams">Všechny diagramy</option>
+                        </select>
+                    </div>
+                    <div class="filter-item" style="flex:2;">
                         <label for="filter-rel-search" data-i18n="search">Hledat:</label>
                         <input type="text" id="filter-rel-search" data-i18n-placeholder="searchRelPlaceholder" placeholder="Zdroj, cíl, příznaky, statement..." oninput="filterRelationships()" style="margin-bottom:0;">
                     </div>
@@ -1598,9 +1780,611 @@
                 </div>
             </div>
         </div>
+
+        <!-- TAB: Tasks -->
+        <div id="tab-tasks" class="tab-content" role="tabpanel" aria-labelledby="btn-tasks">
+            <div class="panels">
+                <div class="panel full-width">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h2 data-i18n="tasksTitle">Úkoly</h2>
+                        <div>
+                            <button type="button" class="btn-secondary" onclick="exportAllTasksMarkdown()" style="margin-right: 10px;" data-i18n="tasksExportAll">📦 Exportovat všechny úkoly</button>
+                            <button type="button" class="btn-primary" onclick="openTaskEditor()" data-i18n="tasksNew">+ Nový úkol</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Filtry -->
+                    <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
+                        <div style="flex: 0 0 150px;">
+                            <select id="task-filter-status" onchange="renderTasksTable()" style="width: 100%;">
+                                <option value="" data-i18n="taskFilterAllStatuses">Všechny stavy</option>
+                                <option value="new" data-i18n="taskStatusNew">Nový</option>
+                                <option value="in_progress" data-i18n="taskStatusInProgress">Probíhá</option>
+                                <option value="blocked" data-i18n="taskStatusBlocked">Blokováno</option>
+                                <option value="review" data-i18n="taskStatusReview">Ke kontrole</option>
+                                <option value="done" data-i18n="taskStatusDone">Hotovo</option>
+                                <option value="cancelled" data-i18n="taskStatusCancelled">Zrušeno</option>
+                            </select>
+                        </div>
+                        <div style="flex: 0 0 150px;">
+                            <select id="task-filter-priority" onchange="renderTasksTable()" style="width: 100%;">
+                                <option value="" data-i18n="taskFilterAllPriorities">Všechny priority</option>
+                                <option value="critical" data-i18n="taskPriorityCritical">Kritická</option>
+                                <option value="high" data-i18n="taskPriorityHigh">Vysoká</option>
+                                <option value="medium" data-i18n="taskPriorityMedium">Střední</option>
+                                <option value="low" data-i18n="taskPriorityLow">Nízká</option>
+                            </select>
+                        </div>
+                        <div style="flex: 0 0 150px;">
+                            <select id="task-filter-assignee" onchange="renderTasksTable()" style="width: 100%;">
+                                <option value="" data-i18n="taskFilterAllAssignees">Všichni řešitelé</option>
+                            </select>
+                        </div>
+                        <div style="flex: 1; min-width: 200px;">
+                            <input type="text" id="task-search" placeholder="Hledat v úkolech..." oninput="renderTasksTable()" style="width: 100%;" data-i18n-placeholder="searchPlaceholder">
+                        </div>
+                    </div>
+                    
+                    <!-- Tabulka úkolů -->
+                    <div class="table-container">
+                        <table id="tasks-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;" data-i18n="taskNumber">#</th>
+                                    <th data-i18n="taskTitleLabel">Název</th>
+                                    <th style="width: 100px;" data-i18n="taskStatus">Stav</th>
+                                    <th style="width: 90px;" data-i18n="taskPriority">Priorita</th>
+                                    <th style="width: 120px;" data-i18n="taskAssignee">Řešitel</th>
+                                    <th style="width: 100px;" data-i18n="taskDueDate">Termín</th>
+                                    <th style="width: 130px;" data-i18n="actions">Akce</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tasks-table-body">
+                                <tr><td colspan="7" style="text-align: center; color: #666;" data-i18n="taskNoRecords">Zatím nejsou vytvořeny žádné úkoly.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: Notes -->
+        <div id="tab-notes" class="tab-content" role="tabpanel" aria-labelledby="btn-notes">
+            <div class="panels">
+                <div class="panel full-width">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h2 data-i18n="notesTitle">Poznámky</h2>
+                        <button type="button" class="btn-primary" onclick="openNoteEditor()" data-i18n="notesNew">+ Nová poznámka</button>
+                    </div>
+                    
+                    <!-- Vyhledávání -->
+                    <div style="margin-bottom: 15px;">
+                        <input type="text" id="notes-search" placeholder="Hledat v poznámkách..." oninput="renderNotesTable()" style="width: 100%; max-width: 400px;" data-i18n-placeholder="searchPlaceholder">
+                    </div>
+                    
+                    <!-- Tabulka poznámek -->
+                    <div class="table-container">
+                        <table id="notes-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="noteName">Název</th>
+                                    <th style="width: 120px;" data-i18n="noteAuthor">Autor</th>
+                                    <th style="width: 150px;" data-i18n="tags">Příznaky</th>
+                                    <th style="width: 150px;" data-i18n="noteUpdated">Poslední úprava</th>
+                                    <th style="width: 60px;" data-i18n="noteVersions">Verze</th>
+                                    <th style="width: 130px;" data-i18n="actions">Akce</th>
+                                </tr>
+                            </thead>
+                            <tbody id="notes-table-body">
+                                <tr><td colspan="6" style="text-align: center; color: #666;" data-i18n="noteNoRecords">Zatím nejsou vytvořeny žádné poznámky.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: ADR -->
+        <div id="tab-adr" class="tab-content" role="tabpanel" aria-labelledby="btn-adr">
+            <div class="panels">
+                <div class="panel full-width">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h2 data-i18n="adrTitle">Architektonická rozhodnutí (ADR)</h2>
+                        <div>
+                            <button type="button" class="btn-secondary" onclick="exportAllAdrMarkdown()" style="margin-right: 10px;" data-i18n="adrExportAll">📦 Exportovat všechny ADR</button>
+                            <button type="button" class="btn-primary" onclick="openAdrEditor()" data-i18n="adrNew">+ Nové ADR</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Filtry -->
+                    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                        <div style="flex: 0 0 200px;">
+                            <select id="adr-filter-status" onchange="renderAdrTable()" style="width: 100%;">
+                                <option value="" data-i18n="adrFilterAll">Všechny stavy</option>
+                                <option value="draft" data-i18n="adrStatusDraft">Rozpracováno</option>
+                                <option value="proposed" data-i18n="adrStatusProposed">Navrženo</option>
+                                <option value="under_discussion" data-i18n="adrStatusUnderDiscussion">Projednáváno</option>
+                                <option value="returned" data-i18n="adrStatusReturned">Vráceno</option>
+                                <option value="accepted" data-i18n="adrStatusAccepted">Schváleno</option>
+                                <option value="rejected" data-i18n="adrStatusRejected">Zamítnuto</option>
+                                <option value="updated" data-i18n="adrStatusUpdated">Aktualizováno</option>
+                                <option value="implemented" data-i18n="adrStatusImplemented">Implementováno</option>
+                                <option value="monitored" data-i18n="adrStatusMonitored">Sledováno</option>
+                                <option value="deprecated" data-i18n="adrStatusDeprecated">Zastaralé</option>
+                                <option value="superseded" data-i18n="adrStatusSuperseded">Nahrazeno</option>
+                                <option value="closed" data-i18n="adrStatusClosed">Uzavřeno</option>
+                            </select>
+                        </div>
+                        <div style="flex: 1;">
+                            <input type="text" id="adr-search" placeholder="Hledat v ADR..." oninput="renderAdrTable()" style="width: 100%;" data-i18n-placeholder="searchPlaceholder">
+                        </div>
+                    </div>
+                    
+                    <!-- Tabulka ADR -->
+                    <div class="table-container">
+                        <table id="adr-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;" data-i18n="adrNumber">#</th>
+                                    <th data-i18n="adrTitleLabel">Název</th>
+                                    <th style="width: 120px;" data-i18n="adrStatus">Stav</th>
+                                    <th style="width: 150px;" data-i18n="adrAuthor">Autor</th>
+                                    <th style="width: 100px;" data-i18n="adrUpdated">Aktualizováno</th>
+                                    <th style="width: 150px;" data-i18n="actions">Akce</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adr-table-body">
+                                <tr><td colspan="6" style="text-align: center; color: #666;" data-i18n="adrNoRecords">Zatím nejsou vytvořena žádná ADR.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Modal: Hromadná správa příznaků -->
+    <!-- Modal: ADR Editor -->
+    <div id="adr-editor-modal" class="modal-overlay" onclick="closeAdrEditorOnOverlay(event)">
+        <div class="modal" style="max-width: 900px; width: 95%;">
+            <div class="modal-header">
+                <h2 id="adr-editor-title" data-i18n="adrNew">Nové ADR</h2>
+                <button type="button" class="modal-close" onclick="closeAdrEditor()">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <input type="hidden" id="adr-edit-id">
+                
+                <!-- Základní informace -->
+                <fieldset class="fieldset">
+                    <legend data-i18n="adrBasicInfo">Základní informace</legend>
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="form-group">
+                            <label for="adr-number" data-i18n="adrNumber">#</label>
+                            <input type="text" id="adr-number" style="width: 100px;" placeholder="1, E1, A-01...">
+                        </div>
+                        <div class="form-group">
+                            <label for="adr-status" data-i18n="adrStatus">Stav</label>
+                            <select id="adr-status" onchange="handleAdrStatusChange()">
+                                <option value="draft" data-i18n="adrStatusDraft">Rozpracováno</option>
+                                <option value="proposed" data-i18n="adrStatusProposed">Navrženo</option>
+                                <option value="under_discussion" data-i18n="adrStatusUnderDiscussion">Projednáváno</option>
+                                <option value="returned" data-i18n="adrStatusReturned">Vráceno</option>
+                                <option value="accepted" data-i18n="adrStatusAccepted">Schváleno</option>
+                                <option value="rejected" data-i18n="adrStatusRejected">Zamítnuto</option>
+                                <option value="updated" data-i18n="adrStatusUpdated">Aktualizováno</option>
+                                <option value="implemented" data-i18n="adrStatusImplemented">Implementováno</option>
+                                <option value="monitored" data-i18n="adrStatusMonitored">Sledováno</option>
+                                <option value="deprecated" data-i18n="adrStatusDeprecated">Zastaralé</option>
+                                <option value="superseded" data-i18n="adrStatusSuperseded">Nahrazeno</option>
+                                <option value="closed" data-i18n="adrStatusClosed">Uzavřeno</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="adr-title-input" data-i18n="adrTitleLabel">Název</label>
+                        <input type="text" id="adr-title-input" style="width: 100%;">
+                    </div>
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="form-group">
+                            <label for="adr-author" data-i18n="adrAuthor">Autor</label>
+                            <input type="text" id="adr-author">
+                        </div>
+                        <div class="form-group">
+                            <label for="adr-approver" data-i18n="adrApprover">Schvalovatel</label>
+                            <input type="text" id="adr-approver">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="adr-deciders" data-i18n="adrDeciders">Rozhodovatelé</label>
+                        <input type="text" id="adr-deciders" placeholder="Oddělte čárkou..." data-i18n-placeholder="separateByComma">
+                    </div>
+                    <div class="form-group">
+                        <label for="adr-tags" data-i18n="adrTags">Tagy</label>
+                        <input type="text" id="adr-tags" placeholder="Oddělte čárkou..." data-i18n-placeholder="separateByComma">
+                    </div>
+                </fieldset>
+                
+                <!-- Kontext -->
+                <fieldset class="fieldset">
+                    <legend data-i18n="adrContext">Kontext</legend>
+                    <div class="form-group">
+                        <textarea id="adr-context" rows="4" style="width: 100%;" placeholder="Popište kontext a důvody pro toto rozhodnutí..." data-i18n-placeholder="adrContextPlaceholder"></textarea>
+                    </div>
+                </fieldset>
+                
+                <!-- Rozhodnutí -->
+                <fieldset class="fieldset">
+                    <legend data-i18n="adrDecision">Rozhodnutí</legend>
+                    <div class="form-group">
+                        <textarea id="adr-decision" rows="4" style="width: 100%;" placeholder="Popište rozhodnutí, které bylo učiněno..." data-i18n-placeholder="adrDecisionPlaceholder"></textarea>
+                    </div>
+                </fieldset>
+                
+                <!-- Důsledky -->
+                <fieldset class="fieldset">
+                    <legend data-i18n="adrConsequences">Důsledky</legend>
+                    <div class="form-group">
+                        <textarea id="adr-consequences" rows="4" style="width: 100%;" placeholder="Popište důsledky tohoto rozhodnutí..." data-i18n-placeholder="adrConsequencesPlaceholder"></textarea>
+                    </div>
+                </fieldset>
+                
+                <!-- Alternativy -->
+                <fieldset class="fieldset">
+                    <legend data-i18n="adrAlternatives">Zvažované alternativy</legend>
+                    <div id="adr-alternatives-container"></div>
+                    <button type="button" class="btn-secondary" onclick="addAdrAlternative()" data-i18n="adrAddAlternative">+ Přidat alternativu</button>
+                    
+                    <div style="margin-top: 15px; padding: 15px; background: #e8f5e9; border-radius: 4px; border: 1px solid #c8e6c9;">
+                        <div class="form-group">
+                            <label for="adr-selected-alternative" style="font-weight: bold; color: #2e7d32;" data-i18n="adrSelectedAlternative">Vybraná varianta</label>
+                            <select id="adr-selected-alternative" style="width: 100%;">
+                                <option value="">-- Vyberte --</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="adr-selection-reason" data-i18n="adrSelectionReason">Odůvodnění výběru</label>
+                            <textarea id="adr-selection-reason" rows="3" style="width: 100%;" placeholder="Proč byla tato varianta vybrána..." data-i18n-placeholder="adrSelectionReasonPlaceholder"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                <!-- Implementace -->
+                <fieldset class="fieldset">
+                    <legend data-i18n="adrImplementation">Implementace</legend>
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                        <div class="form-group">
+                            <label for="adr-impl-status" data-i18n="adrImplStatus">Stav implementace</label>
+                            <select id="adr-impl-status">
+                                <option value="not_started" data-i18n="adrImplNotStarted">Nezahájeno</option>
+                                <option value="in_progress" data-i18n="adrImplInProgress">Probíhá</option>
+                                <option value="completed" data-i18n="adrImplCompleted">Dokončeno</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="adr-impl-start" data-i18n="adrImplStartDate">Datum zahájení</label>
+                            <input type="date" id="adr-impl-start">
+                        </div>
+                        <div class="form-group">
+                            <label for="adr-impl-target" data-i18n="adrImplTargetDate">Cílové datum</label>
+                            <input type="date" id="adr-impl-target">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="adr-impl-notes" data-i18n="adrImplNotes">Poznámky k implementaci</label>
+                        <textarea id="adr-impl-notes" rows="2" style="width: 100%;"></textarea>
+                    </div>
+                </fieldset>
+                
+                <!-- Související ADR -->
+                <fieldset class="fieldset">
+                    <legend data-i18n="adrRelatedAdr">Související ADR</legend>
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                        <div class="form-group">
+                            <label for="adr-supersedes" data-i18n="adrSupersedes">Nahrazuje</label>
+                            <select id="adr-supersedes" multiple size="3" style="width: 100%;"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="adr-superseded-by" data-i18n="adrSupersededBy">Nahrazeno</label>
+                            <select id="adr-superseded-by" multiple size="3" style="width: 100%;"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="adr-related-to" data-i18n="adrRelatedTo">Souvisí s</label>
+                            <select id="adr-related-to" multiple size="3" style="width: 100%;"></select>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                <!-- Odkazy -->
+                <fieldset class="fieldset">
+                    <legend data-i18n="adrLinks">Odkazy</legend>
+                    <div id="adr-links-container"></div>
+                    <button type="button" class="btn-secondary" onclick="addAdrLink()" data-i18n="adrAddLink">+ Přidat odkaz</button>
+                </fieldset>
+                
+                <!-- Propojené položky -->
+                <fieldset class="fieldset">
+                    <legend data-i18n="linkedItems">Propojené položky</legend>
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="form-group">
+                            <label for="adr-linked-elements" data-i18n="linkedElements">Propojené prvky</label>
+                            <select id="adr-linked-elements" multiple size="4" style="width: 100%;"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="adr-linked-relationships" data-i18n="linkedRelationships">Propojené vazby</label>
+                            <select id="adr-linked-relationships" multiple size="4" style="width: 100%;"></select>
+                        </div>
+                    </div>
+                    <small style="color: #666;" data-i18n="linkedItemsHelp">Držte Ctrl/Cmd pro výběr více položek</small>
+                </fieldset>
+                
+                <!-- Historie stavů -->
+                <fieldset class="fieldset" id="adr-status-history-fieldset" style="display: none;">
+                    <legend data-i18n="adrStatusHistory">Historie stavů</legend>
+                    <div id="adr-status-history"></div>
+                </fieldset>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                <div>
+                    <button type="button" class="btn-secondary" onclick="saveAdrAsMarkdown()" style="margin-right: 5px;" data-i18n="adrSaveMarkdown">📄 Uložit jako Markdown</button>
+                    <button type="button" class="btn-secondary" onclick="copyAdrAsMarkdown()" data-i18n="adrCopyMarkdown">📋 Kopírovat Markdown</button>
+                </div>
+                <div>
+                    <button type="button" class="btn-secondary" onclick="closeAdrEditor()" data-i18n="cancel">Zrušit</button>
+                    <button type="button" class="btn-primary" onclick="saveAdr()" data-i18n="save">Uložit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: ADR Preview -->
+    <div id="adr-preview-modal" class="modal-overlay" onclick="closeAdrPreviewOnOverlay(event)">
+        <div class="modal" style="max-width: 800px; width: 95%;">
+            <div class="modal-header">
+                <h2 id="adr-preview-title" data-i18n="adrPreview">Náhled ADR</h2>
+                <button type="button" class="modal-close" onclick="closeAdrPreview()">&times;</button>
+            </div>
+            <div class="modal-body" id="adr-preview-content" style="max-height: 70vh; overflow-y: auto;">
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                <div>
+                    <button type="button" class="btn-secondary" onclick="previewAdrSaveMarkdown()" style="margin-right: 5px;" data-i18n="adrSaveMarkdown">📄 Uložit jako Markdown</button>
+                    <button type="button" class="btn-secondary" onclick="previewAdrCopyMarkdown()" data-i18n="adrCopyMarkdown">📋 Kopírovat Markdown</button>
+                </div>
+                <div>
+                    <button type="button" class="btn-secondary" onclick="closeAdrPreview()" style="margin-right: 5px;" data-i18n="close">Zavřít</button>
+                    <button type="button" class="btn-primary" onclick="previewAdrEdit()" data-i18n="edit">Upravit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Task Editor -->
+    <div id="task-editor-modal" class="modal-overlay" onclick="closeTaskEditorOnOverlay(event)">
+        <div class="modal" style="max-width: 900px; width: 95%;">
+            <div class="modal-header">
+                <h2 id="task-editor-title" data-i18n="tasksNew">Nový úkol</h2>
+                <button type="button" class="modal-close" onclick="closeTaskEditor()">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <input type="hidden" id="task-edit-id">
+                
+                <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                    <div class="form-group">
+                        <label for="task-number" data-i18n="taskNumber">Číslo</label>
+                        <input type="text" id="task-number" style="width: 100%;">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-status" data-i18n="taskStatus">Stav</label>
+                        <select id="task-status" onchange="handleTaskStatusChange()">
+                            <option value="new" data-i18n="taskStatusNew">Nový</option>
+                            <option value="in_progress" data-i18n="taskStatusInProgress">Probíhá</option>
+                            <option value="blocked" data-i18n="taskStatusBlocked">Blokováno</option>
+                            <option value="review" data-i18n="taskStatusReview">Ke kontrole</option>
+                            <option value="done" data-i18n="taskStatusDone">Hotovo</option>
+                            <option value="cancelled" data-i18n="taskStatusCancelled">Zrušeno</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-priority" data-i18n="taskPriority">Priorita</label>
+                        <select id="task-priority">
+                            <option value="low" data-i18n="taskPriorityLow">Nízká</option>
+                            <option value="medium" data-i18n="taskPriorityMedium" selected>Střední</option>
+                            <option value="high" data-i18n="taskPriorityHigh">Vysoká</option>
+                            <option value="critical" data-i18n="taskPriorityCritical">Kritická</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="task-title-input" data-i18n="taskTitleLabel">Název</label>
+                    <input type="text" id="task-title-input" style="width: 100%;">
+                </div>
+                
+                <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+                    <div class="form-group">
+                        <label for="task-assignee" data-i18n="taskAssignee">Řešitel</label>
+                        <input type="text" id="task-assignee">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-reporter" data-i18n="taskReporter">Zadavatel</label>
+                        <input type="text" id="task-reporter">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-due-date" data-i18n="taskDueDate">Termín</label>
+                        <input type="date" id="task-due-date">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="task-tags" data-i18n="tags">Příznaky (oddělené čárkou)</label>
+                    <input type="text" id="task-tags" style="width: 100%;" placeholder="tag1, tag2, tag3...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="task-description" data-i18n="taskDescription">Popis úkolu</label>
+                    <textarea id="task-description" rows="6" style="width: 100%; font-family: monospace;" placeholder="Detailní popis úkolu (podporuje Markdown)..." data-i18n-placeholder="taskDescriptionPlaceholder"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="task-current-state" data-i18n="taskCurrentState">Aktuální stav / Poznámky k řešení</label>
+                    <textarea id="task-current-state" rows="4" style="width: 100%; font-family: monospace;" placeholder="Popis aktuálního stavu řešení..." data-i18n-placeholder="taskCurrentStatePlaceholder"></textarea>
+                </div>
+                
+                <fieldset style="margin-top: 15px; border: 1px solid #ddd; border-radius: 4px; padding: 15px;">
+                    <legend style="font-weight: bold;" data-i18n="linkedItems">Propojené položky</legend>
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="form-group">
+                            <label for="task-linked-elements" data-i18n="linkedElements">Propojené prvky</label>
+                            <select id="task-linked-elements" multiple size="4" style="width: 100%;"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="task-linked-relationships" data-i18n="linkedRelationships">Propojené vazby</label>
+                            <select id="task-linked-relationships" multiple size="4" style="width: 100%;"></select>
+                        </div>
+                    </div>
+                    <small style="color: #666;" data-i18n="linkedItemsHelp">Držte Ctrl/Cmd pro výběr více položek</small>
+                </fieldset>
+                
+                <!-- Historie stavů -->
+                <fieldset class="fieldset" id="task-status-history-fieldset" style="display: none; margin-top: 15px;">
+                    <legend data-i18n="taskStatusHistory">Historie stavů</legend>
+                    <div id="task-status-history" style="max-height: 200px; overflow-y: auto;"></div>
+                </fieldset>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                <div>
+                    <button type="button" class="btn-secondary" onclick="saveTaskAsMarkdown()" style="margin-right: 5px;" data-i18n="taskSaveMarkdown">📄 Uložit jako Markdown</button>
+                    <button type="button" class="btn-secondary" onclick="copyTaskAsMarkdown()" data-i18n="taskCopyMarkdown">📋 Kopírovat Markdown</button>
+                </div>
+                <div>
+                    <button type="button" class="btn-secondary" onclick="closeTaskEditor()" data-i18n="cancel">Zrušit</button>
+                    <button type="button" class="btn-primary" onclick="saveTask()" data-i18n="save">Uložit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Task Preview -->
+    <div id="task-preview-modal" class="modal-overlay" onclick="closeTaskPreviewOnOverlay(event)">
+        <div class="modal" style="max-width: 800px; width: 95%;">
+            <div class="modal-header">
+                <h2 id="task-preview-title" data-i18n="taskPreview">Náhled úkolu</h2>
+                <button type="button" class="modal-close" onclick="closeTaskPreview()">&times;</button>
+            </div>
+            <div class="modal-body" id="task-preview-content" style="max-height: 70vh; overflow-y: auto;">
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                <div>
+                    <button type="button" class="btn-secondary" onclick="previewTaskSaveMarkdown()" style="margin-right: 5px;" data-i18n="taskSaveMarkdown">📄 Uložit jako Markdown</button>
+                    <button type="button" class="btn-secondary" onclick="previewTaskCopyMarkdown()" data-i18n="taskCopyMarkdown">📋 Kopírovat Markdown</button>
+                </div>
+                <div>
+                    <button type="button" class="btn-secondary" onclick="closeTaskPreview()" style="margin-right: 5px;" data-i18n="close">Zavřít</button>
+                    <button type="button" class="btn-primary" onclick="previewTaskEdit()" data-i18n="edit">Upravit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Note Editor -->
+    <div id="note-editor-modal" class="modal-overlay" onclick="closeNoteEditorOnOverlay(event)">
+        <div class="modal" style="max-width: 800px; width: 95%;">
+            <div class="modal-header">
+                <h2 id="note-editor-title" data-i18n="notesNew">Nová poznámka</h2>
+                <button type="button" class="modal-close" onclick="closeNoteEditor()">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <input type="hidden" id="note-edit-id">
+                
+                <div class="form-grid" style="grid-template-columns: 2fr 1fr;">
+                    <div class="form-group">
+                        <label for="note-name" data-i18n="noteName">Název</label>
+                        <input type="text" id="note-name" style="width: 100%;">
+                    </div>
+                    <div class="form-group">
+                        <label for="note-author" data-i18n="noteAuthor">Autor</label>
+                        <input type="text" id="note-author">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="note-tags" data-i18n="tags">Příznaky (oddělené čárkou)</label>
+                    <input type="text" id="note-tags" style="width: 100%;" placeholder="tag1, tag2, tag3...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="note-content" data-i18n="noteContent">Obsah</label>
+                    <textarea id="note-content" rows="12" style="width: 100%; font-family: monospace;" placeholder="Obsah poznámky (podporuje Markdown)..." data-i18n-placeholder="noteContentPlaceholder"></textarea>
+                </div>
+                
+                <fieldset style="margin-top: 15px; border: 1px solid #ddd; border-radius: 4px; padding: 15px;">
+                    <legend style="font-weight: bold;" data-i18n="linkedItems">Propojené položky</legend>
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="form-group">
+                            <label for="note-linked-elements" data-i18n="linkedElements">Propojené prvky</label>
+                            <select id="note-linked-elements" multiple size="5" style="width: 100%;"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="note-linked-relationships" data-i18n="linkedRelationships">Propojené vazby</label>
+                            <select id="note-linked-relationships" multiple size="5" style="width: 100%;"></select>
+                        </div>
+                    </div>
+                    <small style="color: #666;" data-i18n="linkedItemsHelp">Držte Ctrl/Cmd pro výběr více položek</small>
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeNoteEditor()" data-i18n="cancel">Zrušit</button>
+                <button type="button" class="btn-primary" onclick="saveNote()" data-i18n="save">Uložit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Note Preview -->
+    <div id="note-preview-modal" class="modal-overlay" onclick="closeNotePreviewOnOverlay(event)">
+        <div class="modal" style="max-width: 800px; width: 95%;">
+            <div class="modal-header">
+                <h2 id="note-preview-title" data-i18n="notePreview">Náhled poznámky</h2>
+                <button type="button" class="modal-close" onclick="closeNotePreview()">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div id="note-preview-meta" style="margin-bottom: 15px; padding: 10px; background: #f5f5f5; border-radius: 4px;"></div>
+                <div id="note-preview-linked" style="margin-bottom: 15px; display: none;"></div>
+                <div id="note-preview-content" class="markdown-content" style="line-height: 1.6;"></div>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                <div>
+                    <button type="button" class="btn-secondary" onclick="openNoteVersions()" data-i18n="noteShowVersions">📜 Historie verzí</button>
+                    <button type="button" class="btn-secondary" onclick="copyNoteContent()" style="margin-left: 5px;" data-i18n="copyContent">📋 Kopírovat</button>
+                </div>
+                <div>
+                    <button type="button" class="btn-secondary" onclick="closeNotePreview()" style="margin-right: 5px;" data-i18n="close">Zavřít</button>
+                    <button type="button" class="btn-primary" onclick="previewNoteEdit()" data-i18n="edit">Upravit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Note Versions -->
+    <div id="note-versions-modal" class="modal-overlay" onclick="closeNoteVersionsOnOverlay(event)">
+        <div class="modal" style="max-width: 900px; width: 95%;">
+            <div class="modal-header">
+                <h2 id="note-versions-title" data-i18n="noteVersions">Historie verzí</h2>
+                <button type="button" class="modal-close" onclick="closeNoteVersions()">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div style="display: flex; gap: 20px;">
+                    <div id="note-versions-list" style="flex: 0 0 250px; border-right: 1px solid #ddd; padding-right: 15px; max-height: 60vh; overflow-y: auto;"></div>
+                    <div id="note-version-preview" style="flex: 1; overflow-y: auto;">
+                        <div id="note-version-meta" style="margin-bottom: 15px; padding: 10px; background: #f5f5f5; border-radius: 4px;"></div>
+                        <div id="note-version-content" class="markdown-content" style="line-height: 1.6;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeNoteVersions()" data-i18n="close">Zavřít</button>
+                <button type="button" class="btn-primary" id="note-restore-btn" onclick="restoreNoteVersion()" style="display: none;" data-i18n="noteRestoreVersion">Obnovit tuto verzi</button>
+            </div>
+        </div>
+    </div>
     <div id="bulk-tag-modal" class="modal-overlay" onclick="closeBulkTagModalOnOverlay(event)">
         <div class="modal">
             <div class="modal-header">
@@ -1723,6 +2507,7 @@
             noStereotype: '(bez stereotypu)',
             filterByTag: 'Filtr podle příznaku',
             allTags: 'Všechny příznaky',
+            allDiagrams: 'Všechny diagramy',
             noTags: '(bez příznaku)',
             search: 'Hledat',
             searchPlaceholder: 'ID, název, stereotyp, příznaky...',
@@ -1818,6 +2603,152 @@
             diagImportNote: 'Při výběru diagramu se automaticky vyberou i jeho prvky a jejich vazby.',
             diagSelectedCount: 'diagramů vybráno',
             diagToImport: 'diagramů k importu',
+            
+            // Notes translations
+            tasksTab: 'Úkoly',
+            notesTab: 'Poznámky',
+            notesTitle: 'Poznámky',
+            notesNew: '+ Nová poznámka',
+            noteName: 'Název',
+            noteAuthor: 'Autor',
+            noteContent: 'Obsah',
+            noteUpdated: 'Poslední úprava',
+            noteNoRecords: 'Zatím nejsou vytvořeny žádné poznámky.',
+            
+            // Tasks
+            tasksTitle: 'Úkoly',
+            tasksNew: '+ Nový úkol',
+            tasksExportAll: '📦 Exportovat všechny úkoly',
+            taskNumber: '#',
+            taskTitleLabel: 'Název',
+            taskStatus: 'Stav',
+            taskPriority: 'Priorita',
+            taskAssignee: 'Řešitel',
+            taskReporter: 'Zadavatel',
+            taskDueDate: 'Termín',
+            taskDescription: 'Popis úkolu',
+            taskDescriptionPlaceholder: 'Detailní popis úkolu (podporuje Markdown)...',
+            taskCurrentState: 'Aktuální stav / Poznámky k řešení',
+            taskCurrentStatePlaceholder: 'Popis aktuálního stavu řešení...',
+            taskStatusHistory: 'Historie stavů',
+            taskPreview: 'Náhled úkolu',
+            taskSaveMarkdown: '📄 Uložit jako Markdown',
+            taskCopyMarkdown: '📋 Kopírovat Markdown',
+            taskNoRecords: 'Zatím nejsou vytvořeny žádné úkoly.',
+            taskFilterAllStatuses: 'Všechny stavy',
+            taskFilterAllPriorities: 'Všechny priority',
+            taskFilterAllAssignees: 'Všichni řešitelé',
+            taskStatusNew: 'Nový',
+            taskStatusInProgress: 'Probíhá',
+            taskStatusBlocked: 'Blokováno',
+            taskStatusReview: 'Ke kontrole',
+            taskStatusDone: 'Hotovo',
+            taskStatusCancelled: 'Zrušeno',
+            taskPriorityLow: 'Nízká',
+            taskPriorityMedium: 'Střední',
+            taskPriorityHigh: 'Vysoká',
+            taskPriorityCritical: 'Kritická',
+            taskCreated: 'Vytvořeno',
+            taskUpdated: 'Aktualizováno',
+            taskConfirmDelete: 'Opravdu chcete smazat tento úkol?',
+            taskOverdue: 'Po termínu',
+            noteConfirmDelete: 'Opravdu chcete smazat tuto poznámku včetně všech jejích verzí?',
+            notePreview: 'Náhled poznámky',
+            noteVersions: 'Historie verzí',
+            noteVersion: 'Verze',
+            noteCurrentVersion: 'Aktuální verze',
+            noteRestoreVersion: 'Obnovit tuto verzi',
+            noteVersionRestored: 'Verze byla obnovena',
+            noteContentPlaceholder: 'Obsah poznámky (podporuje Markdown)...',
+            noteShowVersions: '📜 Historie verzí',
+            linkedItems: 'Propojené položky',
+            linkedElements: 'Propojené prvky',
+            linkedRelationships: 'Propojené vazby',
+            linkedItemsHelp: 'Držte Ctrl/Cmd pro výběr více položek',
+            copyContent: '📋 Kopírovat',
+            contentCopied: 'Obsah zkopírován do schránky',
+            
+            // ADR translations
+            adrTab: 'ADR',
+            adrTitle: 'Architektonická rozhodnutí (ADR)',
+            adrNew: '+ Nové ADR',
+            adrNumber: '#',
+            adrTitleLabel: 'Název',
+            adrStatus: 'Stav',
+            adrAuthor: 'Autor',
+            adrCreated: 'Vytvořeno',
+            adrUpdated: 'Aktualizováno',
+            adrApprover: 'Schvalovatel',
+            adrDeciders: 'Rozhodovatelé',
+            adrContext: 'Kontext',
+            adrDecision: 'Rozhodnutí',
+            adrConsequences: 'Důsledky',
+            adrConsequencesPlaceholder: 'Popište důsledky tohoto rozhodnutí...',
+            adrPositive: 'Pozitivní',
+            adrNegative: 'Negativní',
+            adrNeutral: 'Neutrální',
+            adrSelectedAlternative: 'Vybraná varianta',
+            adrSelectionReason: 'Odůvodnění výběru',
+            adrSelectionReasonPlaceholder: 'Proč byla tato varianta vybrána...',
+            adrMarkAsSelected: 'Označit jako vybranou',
+            adrSelected: 'VYBRANÁ',
+            adrPreview: 'Náhled ADR',
+            adrAlternatives: 'Zvažované alternativy',
+            adrAlternative: 'Varianta',
+            adrAlternativeTitle: 'Název alternativy',
+            adrAlternativeDesc: 'Popis',
+            adrRejectedReason: 'Důvod zamítnutí',
+            adrImplementation: 'Implementace',
+            adrImplStatus: 'Stav implementace',
+            adrImplStartDate: 'Datum zahájení',
+            adrImplTargetDate: 'Cílové datum',
+            adrImplNotes: 'Poznámky k implementaci',
+            adrRelatedAdr: 'Související ADR',
+            adrSupersedes: 'Nahrazuje',
+            adrSupersededBy: 'Nahrazeno',
+            adrRelatedTo: 'Souvisí s',
+            adrTags: 'Tagy',
+            adrLinks: 'Odkazy',
+            adrLinkTitle: 'Název odkazu',
+            adrLinkUrl: 'URL',
+            adrStatusHistory: 'Historie stavů',
+            adrAddAlternative: '+ Přidat alternativu',
+            adrAddLink: '+ Přidat odkaz',
+            adrAddConsequence: '+ Přidat',
+            adrSaveMarkdown: '📄 Uložit jako Markdown',
+            adrCopyMarkdown: '📋 Kopírovat Markdown',
+            adrExportAll: '📦 Exportovat všechny ADR',
+            adrNoRecords: 'Zatím nejsou vytvořena žádná ADR.',
+            adrConfirmDelete: 'Opravdu chcete smazat toto ADR?',
+            adrMarkdownCopied: 'Markdown zkopírován do schránky',
+            adrBasicInfo: 'Základní informace',
+            adrFilterAll: 'Všechny stavy',
+            
+            // ADR statuses
+            adrStatusDraft: 'Rozpracováno',
+            adrStatusProposed: 'Navrženo',
+            adrStatusAccepted: 'Schváleno',
+            adrStatusRejected: 'Zamítnuto',
+            adrStatusImplemented: 'Implementováno',
+            adrStatusDeprecated: 'Zastaralé',
+            adrStatusSuperseded: 'Nahrazeno',
+            adrStatusUnderDiscussion: 'Projednáváno',
+            adrStatusReturned: 'Vráceno',
+            adrStatusUpdated: 'Aktualizováno',
+            adrStatusMonitored: 'Sledováno',
+            adrStatusClosed: 'Uzavřeno',
+            
+            // ADR implementation statuses
+            adrImplNotStarted: 'Nezahájeno',
+            adrImplInProgress: 'Probíhá',
+            adrImplCompleted: 'Dokončeno',
+            generatedFrom: 'Vygenerováno z',
+            statistics: 'Statistiky',
+            total: 'Celkem',
+            date: 'Datum',
+            separateByComma: 'Oddělte čárkou...',
+            adrContextPlaceholder: 'Popište kontext a důvody pro toto rozhodnutí...',
+            adrDecisionPlaceholder: 'Popište rozhodnutí, které bylo učiněno...',
             existsWarning: 'existuje',
             newItem: 'nový',
             selectedToImport: 'Vybráno k importu',
@@ -2132,6 +3063,7 @@
             noStereotype: '(no stereotype)',
             filterByTag: 'Filter by tag',
             allTags: 'All tags',
+            allDiagrams: 'All diagrams',
             noTags: '(no tags)',
             search: 'Search',
             searchPlaceholder: 'ID, name, stereotype, tags...',
@@ -2227,6 +3159,152 @@
             diagImportNote: 'Selecting a diagram will automatically select its elements and their relationships.',
             diagSelectedCount: 'diagrams selected',
             diagToImport: 'diagrams to import',
+            
+            // Notes translations
+            tasksTab: 'Tasks',
+            notesTab: 'Notes',
+            notesTitle: 'Notes',
+            notesNew: '+ New Note',
+            noteName: 'Name',
+            noteAuthor: 'Author',
+            noteContent: 'Content',
+            noteUpdated: 'Last updated',
+            noteNoRecords: 'No notes created yet.',
+            
+            // Tasks
+            tasksTitle: 'Tasks',
+            tasksNew: '+ New Task',
+            tasksExportAll: '📦 Export All Tasks',
+            taskNumber: '#',
+            taskTitleLabel: 'Title',
+            taskStatus: 'Status',
+            taskPriority: 'Priority',
+            taskAssignee: 'Assignee',
+            taskReporter: 'Reporter',
+            taskDueDate: 'Due Date',
+            taskDescription: 'Task Description',
+            taskDescriptionPlaceholder: 'Detailed task description (supports Markdown)...',
+            taskCurrentState: 'Current State / Resolution Notes',
+            taskCurrentStatePlaceholder: 'Description of current resolution state...',
+            taskStatusHistory: 'Status History',
+            taskPreview: 'Task Preview',
+            taskSaveMarkdown: '📄 Save as Markdown',
+            taskCopyMarkdown: '📋 Copy Markdown',
+            taskNoRecords: 'No tasks created yet.',
+            taskFilterAllStatuses: 'All statuses',
+            taskFilterAllPriorities: 'All priorities',
+            taskFilterAllAssignees: 'All assignees',
+            taskStatusNew: 'New',
+            taskStatusInProgress: 'In Progress',
+            taskStatusBlocked: 'Blocked',
+            taskStatusReview: 'In Review',
+            taskStatusDone: 'Done',
+            taskStatusCancelled: 'Cancelled',
+            taskPriorityLow: 'Low',
+            taskPriorityMedium: 'Medium',
+            taskPriorityHigh: 'High',
+            taskPriorityCritical: 'Critical',
+            taskCreated: 'Created',
+            taskUpdated: 'Updated',
+            taskConfirmDelete: 'Are you sure you want to delete this task?',
+            taskOverdue: 'Overdue',
+            noteConfirmDelete: 'Are you sure you want to delete this note including all its versions?',
+            notePreview: 'Note Preview',
+            noteVersions: 'Version History',
+            noteVersion: 'Version',
+            noteCurrentVersion: 'Current version',
+            noteRestoreVersion: 'Restore this version',
+            noteVersionRestored: 'Version restored',
+            noteContentPlaceholder: 'Note content (supports Markdown)...',
+            noteShowVersions: '📜 Version History',
+            linkedItems: 'Linked items',
+            linkedElements: 'Linked elements',
+            linkedRelationships: 'Linked relationships',
+            linkedItemsHelp: 'Hold Ctrl/Cmd to select multiple items',
+            copyContent: '📋 Copy',
+            contentCopied: 'Content copied to clipboard',
+            
+            // ADR translations
+            adrTab: 'ADR',
+            adrTitle: 'Architecture Decision Records (ADR)',
+            adrNew: '+ New ADR',
+            adrNumber: '#',
+            adrTitleLabel: 'Title',
+            adrStatus: 'Status',
+            adrAuthor: 'Author',
+            adrCreated: 'Created',
+            adrUpdated: 'Updated',
+            adrApprover: 'Approver',
+            adrDeciders: 'Deciders',
+            adrContext: 'Context',
+            adrDecision: 'Decision',
+            adrConsequences: 'Consequences',
+            adrConsequencesPlaceholder: 'Describe the consequences of this decision...',
+            adrPositive: 'Positive',
+            adrNegative: 'Negative',
+            adrNeutral: 'Neutral',
+            adrSelectedAlternative: 'Selected alternative',
+            adrSelectionReason: 'Selection rationale',
+            adrSelectionReasonPlaceholder: 'Why was this alternative selected...',
+            adrMarkAsSelected: 'Mark as selected',
+            adrSelected: 'SELECTED',
+            adrPreview: 'ADR Preview',
+            adrAlternatives: 'Considered Alternatives',
+            adrAlternative: 'Alternative',
+            adrAlternativeTitle: 'Alternative title',
+            adrAlternativeDesc: 'Description',
+            adrRejectedReason: 'Reason for rejection',
+            adrImplementation: 'Implementation',
+            adrImplStatus: 'Implementation status',
+            adrImplStartDate: 'Start date',
+            adrImplTargetDate: 'Target date',
+            adrImplNotes: 'Implementation notes',
+            adrRelatedAdr: 'Related ADR',
+            adrSupersedes: 'Supersedes',
+            adrSupersededBy: 'Superseded by',
+            adrRelatedTo: 'Related to',
+            adrTags: 'Tags',
+            adrLinks: 'Links',
+            adrLinkTitle: 'Link title',
+            adrLinkUrl: 'URL',
+            adrStatusHistory: 'Status History',
+            adrAddAlternative: '+ Add alternative',
+            adrAddLink: '+ Add link',
+            adrAddConsequence: '+ Add',
+            adrSaveMarkdown: '📄 Save as Markdown',
+            adrCopyMarkdown: '📋 Copy Markdown',
+            adrExportAll: '📦 Export all ADR',
+            adrNoRecords: 'No ADR records created yet.',
+            adrConfirmDelete: 'Are you sure you want to delete this ADR?',
+            adrMarkdownCopied: 'Markdown copied to clipboard',
+            adrBasicInfo: 'Basic Information',
+            adrFilterAll: 'All statuses',
+            
+            // ADR statuses
+            adrStatusDraft: 'Draft',
+            adrStatusProposed: 'Proposed',
+            adrStatusAccepted: 'Accepted',
+            adrStatusRejected: 'Rejected',
+            adrStatusImplemented: 'Implemented',
+            adrStatusDeprecated: 'Deprecated',
+            adrStatusSuperseded: 'Superseded',
+            adrStatusUnderDiscussion: 'Under Discussion',
+            adrStatusReturned: 'Returned',
+            adrStatusUpdated: 'Updated',
+            adrStatusMonitored: 'Monitored',
+            adrStatusClosed: 'Closed',
+            
+            // ADR implementation statuses
+            adrImplNotStarted: 'Not started',
+            adrImplInProgress: 'In progress',
+            adrImplCompleted: 'Completed',
+            generatedFrom: 'Generated from',
+            statistics: 'Statistics',
+            total: 'Total',
+            date: 'Date',
+            separateByComma: 'Separate by comma...',
+            adrContextPlaceholder: 'Describe the context and reasons for this decision...',
+            adrDecisionPlaceholder: 'Describe the decision that was made...',
             existsWarning: 'exists',
             newItem: 'new',
             selectedToImport: 'Selected to import',
@@ -3125,6 +4203,9 @@
     let elements = [];
     let relationships = [];
     let diagrams = [];
+    let adrRecords = [];
+    let notes = [];
+    let tasks = [];
     let editingElementId = null;
     let editingRelationshipId = null;
     let currentDiagramId = null;
@@ -3636,7 +4717,7 @@
     }
     
     function updatePříznakyFilters() {
-        // Gather all unique tags from both elements and relationships
+        // Gather all unique tags from elements, relationships, notes and ADR
         const allTags = new Set();
         
         elements.forEach(e => {
@@ -3651,6 +4732,36 @@
         relationships.forEach(r => {
             if (r.příznaky) {
                 r.příznaky.split(',').forEach(tag => {
+                    const trimmed = tag.trim();
+                    if (trimmed) allTags.add(trimmed);
+                });
+            }
+        });
+        
+        // Also gather tags from notes
+        notes.forEach(n => {
+            if (n.tags && Array.isArray(n.tags)) {
+                n.tags.forEach(tag => {
+                    const trimmed = tag.trim();
+                    if (trimmed) allTags.add(trimmed);
+                });
+            }
+        });
+        
+        // Also gather tags from ADR
+        adrRecords.forEach(a => {
+            if (a.tags && Array.isArray(a.tags)) {
+                a.tags.forEach(tag => {
+                    const trimmed = tag.trim();
+                    if (trimmed) allTags.add(trimmed);
+                });
+            }
+        });
+        
+        // Also gather tags from tasks
+        tasks.forEach(task => {
+            if (task.tags && Array.isArray(task.tags)) {
+                task.tags.forEach(tag => {
                     const trimmed = tag.trim();
                     if (trimmed) allTags.add(trimmed);
                 });
@@ -3703,6 +4814,27 @@
             if (toolCurrentValue && allTags.has(toolCurrentValue)) {
                 toolSelect.value = toolCurrentValue;
             }
+        }
+    }
+    
+    function updateDiagramFilters() {
+        const elementSelect = document.getElementById('filter-diagram');
+        const relSelect = document.getElementById('filter-rel-diagram');
+        
+        const elementCurrentValue = elementSelect.value;
+        const relCurrentValue = relSelect.value;
+        
+        const options = diagrams.map(d => `<option value="${escapeHtml(d.id)}">${escapeHtml(d.name || d.id)}</option>`).join('');
+        
+        elementSelect.innerHTML = `<option value="">${t('allDiagrams')}</option>` + options;
+        relSelect.innerHTML = `<option value="">${t('allDiagrams')}</option>` + options;
+        
+        // Restore values
+        if (elementCurrentValue && diagrams.some(d => d.id === elementCurrentValue)) {
+            elementSelect.value = elementCurrentValue;
+        }
+        if (relCurrentValue && diagrams.some(d => d.id === relCurrentValue)) {
+            relSelect.value = relCurrentValue;
         }
     }
     
@@ -4508,6 +5640,7 @@
         document.getElementById('filter-type').innerHTML = `<option value="">${t('allTypes')}</option>`;
         document.getElementById('filter-stereotype').value = '';
         document.getElementById('filter-příznaky').value = '';
+        document.getElementById('filter-diagram').value = '';
         document.getElementById('filter-search').value = '';
         document.getElementById('element-filter-info').classList.remove('visible');
         updateTypeFilter();
@@ -4560,6 +5693,7 @@
         document.getElementById('filter-rel-source').value = '';
         document.getElementById('filter-rel-target').value = '';
         document.getElementById('filter-rel-příznaky').value = '';
+        document.getElementById('filter-rel-diagram').value = '';
         document.getElementById('filter-rel-search').value = '';
         document.getElementById('rel-filter-info').classList.remove('visible');
         renderRelationshipsTable();
@@ -4708,6 +5842,7 @@
         const filterType = document.getElementById('filter-type').value;
         const filterStereotype = document.getElementById('filter-stereotype').value;
         const filterPříznaky = document.getElementById('filter-příznaky').value;
+        const filterDiagram = document.getElementById('filter-diagram').value;
         const searchText = document.getElementById('filter-search').value.toLowerCase().trim();
         
         let filteredElements = elements;
@@ -4741,6 +5876,16 @@
                     const tags = e.příznaky.split(',').map(t => t.trim());
                     return tags.includes(filterPříznaky);
                 });
+            }
+        }
+        
+        // Filter by diagram
+        if (filterDiagram) {
+            const diagram = diagrams.find(d => d.id === filterDiagram);
+            if (diagram && diagram.elementIds) {
+                filteredElements = filteredElements.filter(e => diagram.elementIds.includes(e.id));
+            } else {
+                filteredElements = [];
             }
         }
         
@@ -5294,6 +6439,7 @@
         const filterSource = document.getElementById('filter-rel-source').value;
         const filterTarget = document.getElementById('filter-rel-target').value;
         const filterPříznaky = document.getElementById('filter-rel-příznaky').value;
+        const filterDiagram = document.getElementById('filter-rel-diagram').value;
         const searchText = document.getElementById('filter-rel-search').value.toLowerCase().trim();
         
         let filteredRelationships = relationships;
@@ -5332,6 +6478,18 @@
                     const tags = r.příznaky.split(',').map(t => t.trim());
                     return tags.includes(filterPříznaky);
                 });
+            }
+        }
+        
+        // Filter by diagram (show relationships where both source and target are in diagram)
+        if (filterDiagram) {
+            const diagram = diagrams.find(d => d.id === filterDiagram);
+            if (diagram && diagram.elementIds) {
+                filteredRelationships = filteredRelationships.filter(r => 
+                    diagram.elementIds.includes(r.sourceId) && diagram.elementIds.includes(r.targetId)
+                );
+            } else {
+                filteredRelationships = [];
             }
         }
         
@@ -5462,7 +6620,10 @@
             model: modelMetadata,
             elements: elements,
             relationships: relationships,
-            diagrams: diagrams
+            diagrams: diagrams,
+            adr: adrRecords,
+            notes: notes,
+            tasks: tasks
         };
         
         const json = JSON.stringify(data, null, 2);
@@ -5478,7 +6639,10 @@
             model: modelMetadata,
             elements: elements,
             relationships: relationships,
-            diagrams: diagrams
+            diagrams: diagrams,
+            adr: adrRecords,
+            notes: notes,
+            tasks: tasks
         };
         
         const json = JSON.stringify(data, null, 2);
@@ -5893,16 +7057,40 @@
                 diagrams = data.diagrams;
             }
             
+            if (data.adr && Array.isArray(data.adr)) {
+                adrRecords = data.adr;
+            }
+            
+            if (data.notes && Array.isArray(data.notes)) {
+                notes = data.notes;
+            }
+            
+            if (data.tasks && Array.isArray(data.tasks)) {
+                tasks = data.tasks;
+            }
+            
             loadModelMetadataToForm();
             renderModelProperties();
             renderElementsTable();
             renderRelationshipsTable();
             renderDiagramsTable();
+            renderAdrTable();
+            renderNotesTable();
+            renderTasksTable();
             populateElementSelects();
+            updateTypeFilter();
+            updateStereotypeSuggestions();
+            updatePříznakySuggestions();
+            updateStereotypeFilter();
+            updatePříznakyFilters();
+            updateRelNameSuggestions();
+            updateRelSourceTargetFilters();
+            updateDiagramFilters();
+            updateTaskAssigneeFilter();
             updateModelStats();
             saveToLocalStorage();
             
-            alert(`${t('importSuccess')}\n\n${t('elementsLabel')}: ${elements.length}\n${t('relationshipsLabel')}: ${relationships.length}\n${t('diagramsLabel')}: ${diagrams.length}`);
+            alert(`${t('importSuccess')}\n\n${t('elementsLabel')}: ${elements.length}\n${t('relationshipsLabel')}: ${relationships.length}\n${t('diagramsLabel')}: ${diagrams.length}\nADR: ${adrRecords.length}\n${t('notesTab')}: ${notes.length}\n${t('tasksTab')}: ${tasks.length}`);
             
             document.getElementById('import-data').value = '';
             
@@ -6087,10 +7275,14 @@
             renderRelationshipsTable();
             renderDiagramsTable();
             populateElementSelects();
+            updateTypeFilter();
             updateStereotypeSuggestions();
             updatePříznakySuggestions();
             updateStereotypeFilter();
             updatePříznakyFilters();
+            updateRelNameSuggestions();
+            updateRelSourceTargetFilters();
+            updateDiagramFilters();
             updateModelStats();
             saveToLocalStorage();
             
@@ -6917,6 +8109,7 @@
         updatePříznakyFilters();
         updateRelNameSuggestions();
         updateRelSourceTargetFilters();
+        updateDiagramFilters();
         updateModelStats();
         saveToLocalStorage();
         
@@ -7124,14 +8317,21 @@
         elements = [];
         relationships = [];
         diagrams = [];
+        adrRecords = [];
+        notes = [];
+        tasks = [];
         
         loadModelMetadataToForm();
         renderModelProperties();
         renderElementsTable();
         renderRelationshipsTable();
         renderDiagramsTable();
+        renderAdrTable();
+        renderNotesTable();
+        renderTasksTable();
         populateElementSelects();
         updateModelStats();
+        updateTaskAssigneeFilter();
         saveToLocalStorage();
         
     }
@@ -7146,6 +8346,9 @@
             localStorage.setItem('archimate-elements', JSON.stringify(elements));
             localStorage.setItem('archimate-relationships', JSON.stringify(relationships));
             localStorage.setItem('archimate-diagrams', JSON.stringify(diagrams));
+            localStorage.setItem('archimate-adr', JSON.stringify(adrRecords));
+            localStorage.setItem('archimate-notes', JSON.stringify(notes));
+            localStorage.setItem('archimate-tasks', JSON.stringify(tasks));
         } catch (e) {
         }
     }
@@ -7156,6 +8359,9 @@
             const savedElements = localStorage.getItem('archimate-elements');
             const savedRelationships = localStorage.getItem('archimate-relationships');
             const savedDiagrams = localStorage.getItem('archimate-diagrams');
+            const savedAdr = localStorage.getItem('archimate-adr');
+            const savedNotes = localStorage.getItem('archimate-notes');
+            const savedTasks = localStorage.getItem('archimate-tasks');
             
             if (savedModel) {
                 modelMetadata = JSON.parse(savedModel);
@@ -7168,6 +8374,15 @@
             }
             if (savedDiagrams) {
                 diagrams = JSON.parse(savedDiagrams);
+            }
+            if (savedAdr) {
+                adrRecords = JSON.parse(savedAdr);
+            }
+            if (savedNotes) {
+                notes = JSON.parse(savedNotes);
+            }
+            if (savedTasks) {
+                tasks = JSON.parse(savedTasks);
             }
             
         } catch (e) {
@@ -7991,6 +9206,2271 @@
     // Initialization
     // ============================================
     
+    // ============================================
+    // Task Functions
+    // ============================================
+    
+    const TASK_STATUSES = {
+        new: { icon: '⚪', colorClass: 'task-status-new' },
+        in_progress: { icon: '🔵', colorClass: 'task-status-in_progress' },
+        blocked: { icon: '🔴', colorClass: 'task-status-blocked' },
+        review: { icon: '🟡', colorClass: 'task-status-review' },
+        done: { icon: '🟢', colorClass: 'task-status-done' },
+        cancelled: { icon: '⚫', colorClass: 'task-status-cancelled' }
+    };
+    
+    const TASK_PRIORITIES = {
+        low: { icon: '🟢', colorClass: 'task-priority-low' },
+        medium: { icon: '🟡', colorClass: 'task-priority-medium' },
+        high: { icon: '🟠', colorClass: 'task-priority-high' },
+        critical: { icon: '🔴', colorClass: 'task-priority-critical' }
+    };
+    
+    let currentPreviewTaskId = null;
+    
+    function getTaskStatusLabel(status) {
+        const labels = {
+            new: 'taskStatusNew',
+            in_progress: 'taskStatusInProgress',
+            blocked: 'taskStatusBlocked',
+            review: 'taskStatusReview',
+            done: 'taskStatusDone',
+            cancelled: 'taskStatusCancelled'
+        };
+        return t(labels[status] || status);
+    }
+    
+    function getTaskPriorityLabel(priority) {
+        const labels = {
+            low: 'taskPriorityLow',
+            medium: 'taskPriorityMedium',
+            high: 'taskPriorityHigh',
+            critical: 'taskPriorityCritical'
+        };
+        return t(labels[priority] || priority);
+    }
+    
+    function getNextTaskNumber() {
+        if (tasks.length === 0) return '1';
+        const numbers = tasks.map(t => {
+            const match = String(t.number || '').match(/(\d+)/);
+            return match ? parseInt(match[1]) : 0;
+        });
+        return String(Math.max(...numbers) + 1);
+    }
+    
+    function updateTaskAssigneeFilter() {
+        const select = document.getElementById('task-filter-assignee');
+        const currentValue = select.value;
+        
+        const assignees = new Set();
+        tasks.forEach(t => {
+            if (t.assignee && t.assignee.trim()) {
+                assignees.add(t.assignee.trim());
+            }
+        });
+        
+        select.innerHTML = `<option value="">${t('taskFilterAllAssignees')}</option>`;
+        [...assignees].sort().forEach(a => {
+            const option = document.createElement('option');
+            option.value = a;
+            option.textContent = a;
+            select.appendChild(option);
+        });
+        
+        if (currentValue && assignees.has(currentValue)) {
+            select.value = currentValue;
+        }
+    }
+    
+    function renderTasksTable() {
+        const tbody = document.getElementById('tasks-table-body');
+        const filterStatus = document.getElementById('task-filter-status').value;
+        const filterPriority = document.getElementById('task-filter-priority').value;
+        const filterAssignee = document.getElementById('task-filter-assignee').value;
+        const searchTerm = document.getElementById('task-search').value.toLowerCase().trim();
+        
+        let filtered = tasks.filter(task => {
+            if (filterStatus && task.status !== filterStatus) return false;
+            if (filterPriority && task.priority !== filterPriority) return false;
+            if (filterAssignee && task.assignee !== filterAssignee) return false;
+            if (searchTerm) {
+                const searchFields = [
+                    task.title || '',
+                    task.assignee || '',
+                    task.reporter || '',
+                    task.description || '',
+                    task.currentState || '',
+                    (task.tags || []).join(' ')
+                ].join(' ').toLowerCase();
+                if (!searchFields.includes(searchTerm)) return false;
+            }
+            return true;
+        });
+        
+        // Sort by priority (critical first), then by number
+        const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+        filtered.sort((a, b) => {
+            // Active tasks first (not done, not cancelled)
+            const aActive = !['done', 'cancelled'].includes(a.status);
+            const bActive = !['done', 'cancelled'].includes(b.status);
+            if (aActive !== bActive) return bActive - aActive;
+            
+            // Then by priority
+            const pA = priorityOrder[a.priority] ?? 2;
+            const pB = priorityOrder[b.priority] ?? 2;
+            if (pA !== pB) return pA - pB;
+            
+            // Then by number
+            const aNum = parseInt(String(a.number || '').replace(/\D/g, '')) || 0;
+            const bNum = parseInt(String(b.number || '').replace(/\D/g, '')) || 0;
+            return aNum - bNum;
+        });
+        
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #666;">${t('taskNoRecords')}</td></tr>`;
+            return;
+        }
+        
+        const today = new Date().toISOString().split('T')[0];
+        
+        tbody.innerHTML = filtered.map(task => {
+            const statusInfo = TASK_STATUSES[task.status] || TASK_STATUSES.new;
+            const priorityInfo = TASK_PRIORITIES[task.priority] || TASK_PRIORITIES.medium;
+            const isOverdue = task.dueDate && task.dueDate < today && !['done', 'cancelled'].includes(task.status);
+            const dueDateDisplay = task.dueDate ? 
+                `<span style="${isOverdue ? 'color: #f44336; font-weight: bold;' : ''}">${task.dueDate}${isOverdue ? ' ⚠️' : ''}</span>` : '-';
+            
+            return `
+                <tr style="${['done', 'cancelled'].includes(task.status) ? 'opacity: 0.6;' : ''}">
+                    <td><strong>${escapeHtml(String(task.number || ''))}</strong></td>
+                    <td>
+                        <a href="#" onclick="openTaskPreview('${task.id}'); return false;" style="color: #0066cc; text-decoration: none; font-weight: bold;">
+                            ${escapeHtml(task.title || '')}
+                        </a>
+                    </td>
+                    <td>
+                        <span class="task-status-badge ${statusInfo.colorClass}">
+                            ${statusInfo.icon} ${getTaskStatusLabel(task.status)}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="task-priority-badge ${priorityInfo.colorClass}">
+                            ${getTaskPriorityLabel(task.priority)}
+                        </span>
+                    </td>
+                    <td>${escapeHtml(task.assignee || '-')}</td>
+                    <td>${dueDateDisplay}</td>
+                    <td>
+                        <button type="button" class="btn-secondary btn-small" onclick="editTask('${task.id}')" title="${t('edit')}">✏️</button>
+                        <button type="button" class="btn-danger btn-small" onclick="deleteTask('${task.id}')" title="${t('delete')}">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+    
+    function openTaskEditor(taskId = null) {
+        const modal = document.getElementById('task-editor-modal');
+        const titleEl = document.getElementById('task-editor-title');
+        
+        // Populate linked selects
+        populateTaskLinkedSelects();
+        
+        // Clear form
+        document.getElementById('task-edit-id').value = '';
+        document.getElementById('task-number').value = getNextTaskNumber();
+        document.getElementById('task-status').value = 'new';
+        document.getElementById('task-priority').value = 'medium';
+        document.getElementById('task-title-input').value = '';
+        document.getElementById('task-assignee').value = '';
+        document.getElementById('task-reporter').value = modelMetadata.dublinCore?.creator || '';
+        document.getElementById('task-due-date').value = '';
+        document.getElementById('task-tags').value = '';
+        document.getElementById('task-description').value = '';
+        document.getElementById('task-current-state').value = '';
+        document.getElementById('task-linked-elements').selectedIndex = -1;
+        document.getElementById('task-linked-relationships').selectedIndex = -1;
+        document.getElementById('task-status-history').innerHTML = '';
+        document.getElementById('task-status-history-fieldset').style.display = 'none';
+        
+        if (taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                titleEl.textContent = `#${task.number}: ${task.title || t('edit')}`;
+                loadTaskToForm(task);
+            }
+        } else {
+            titleEl.textContent = t('tasksNew');
+        }
+        
+        modal.style.display = 'flex';
+        document.getElementById('task-title-input').focus();
+    }
+    
+    function populateTaskLinkedSelects() {
+        const elementsSelect = document.getElementById('task-linked-elements');
+        const relsSelect = document.getElementById('task-linked-relationships');
+        
+        elementsSelect.innerHTML = elements.map(e => 
+            `<option value="${escapeHtml(e.id)}">${escapeHtml(e.name || e.id)} (${e.type})</option>`
+        ).join('');
+        
+        relsSelect.innerHTML = relationships.map(r => {
+            const source = elements.find(e => e.id === r.sourceId);
+            const target = elements.find(e => e.id === r.targetId);
+            const sourceName = source ? source.name : r.sourceId;
+            const targetName = target ? target.name : r.targetId;
+            return `<option value="${escapeHtml(r.id)}">${escapeHtml(sourceName)} → ${escapeHtml(targetName)} (${r.type})</option>`;
+        }).join('');
+    }
+    
+    function loadTaskToForm(task) {
+        document.getElementById('task-edit-id').value = task.id;
+        document.getElementById('task-number').value = task.number || '';
+        document.getElementById('task-status').value = task.status || 'new';
+        document.getElementById('task-priority').value = task.priority || 'medium';
+        document.getElementById('task-title-input').value = task.title || '';
+        document.getElementById('task-assignee').value = task.assignee || '';
+        document.getElementById('task-reporter').value = task.reporter || '';
+        document.getElementById('task-due-date').value = task.dueDate || '';
+        document.getElementById('task-tags').value = (task.tags || []).join(', ');
+        document.getElementById('task-description').value = task.description || '';
+        document.getElementById('task-current-state').value = task.currentState || '';
+        
+        if (task.linkedElements) {
+            setMultiSelectValues('task-linked-elements', task.linkedElements);
+        }
+        if (task.linkedRelationships) {
+            setMultiSelectValues('task-linked-relationships', task.linkedRelationships);
+        }
+        
+        if (task.statusHistory && task.statusHistory.length > 0) {
+            document.getElementById('task-status-history-fieldset').style.display = 'block';
+            document.getElementById('task-status-history').innerHTML = task.statusHistory.map(h => `
+                <div style="padding: 8px; border-bottom: 1px solid #eee; display: flex; gap: 15px; flex-wrap: wrap;">
+                    <span><strong>${getTaskStatusLabel(h.status)}</strong></span>
+                    <span style="color: #666;">${new Date(h.date).toLocaleString()}</span>
+                    <span>${escapeHtml(h.author || '-')}</span>
+                    ${h.stateDescription ? `<div style="width: 100%; color: #555; font-size: 13px; margin-top: 4px;"><em>${escapeHtml(h.stateDescription)}</em></div>` : ''}
+                </div>
+            `).join('');
+        }
+    }
+    
+    function closeTaskEditor() {
+        document.getElementById('task-editor-modal').style.display = 'none';
+    }
+    
+    function closeTaskEditorOnOverlay(event) {
+        if (event.target === event.currentTarget) {
+            closeTaskEditor();
+        }
+    }
+    
+    function handleTaskStatusChange() {
+        // Can be used to show/hide fields based on status
+    }
+    
+    function saveTask() {
+        const editId = document.getElementById('task-edit-id').value;
+        const number = document.getElementById('task-number').value.trim() || getNextTaskNumber();
+        const status = document.getElementById('task-status').value;
+        const priority = document.getElementById('task-priority').value;
+        const title = document.getElementById('task-title-input').value.trim();
+        
+        if (!title) {
+            alert(t('alertEnterName'));
+            document.getElementById('task-title-input').focus();
+            return;
+        }
+        
+        const now = new Date().toISOString();
+        const currentState = document.getElementById('task-current-state').value.trim();
+        
+        const taskData = {
+            id: editId || `task-${Date.now()}`,
+            number: number,
+            title: title,
+            status: status,
+            priority: priority,
+            created: editId ? undefined : now,
+            updated: now,
+            assignee: document.getElementById('task-assignee').value.trim(),
+            reporter: document.getElementById('task-reporter').value.trim(),
+            dueDate: document.getElementById('task-due-date').value,
+            tags: document.getElementById('task-tags').value.split(',').map(s => s.trim()).filter(s => s),
+            description: document.getElementById('task-description').value.trim(),
+            currentState: currentState,
+            linkedElements: getMultiSelectValues('task-linked-elements'),
+            linkedRelationships: getMultiSelectValues('task-linked-relationships')
+        };
+        
+        if (editId) {
+            const index = tasks.findIndex(t => t.id === editId);
+            if (index !== -1) {
+                const existing = tasks[index];
+                taskData.created = existing.created;
+                taskData.statusHistory = existing.statusHistory || [];
+                
+                // Add status change to history if changed, or if currentState changed
+                if (existing.status !== status || existing.currentState !== currentState) {
+                    taskData.statusHistory.push({
+                        status: status,
+                        date: now,
+                        author: taskData.assignee || taskData.reporter,
+                        stateDescription: currentState
+                    });
+                }
+                
+                tasks[index] = taskData;
+            }
+        } else {
+            taskData.created = now;
+            taskData.statusHistory = [{
+                status: status,
+                date: now,
+                author: taskData.reporter,
+                stateDescription: currentState
+            }];
+            tasks.push(taskData);
+        }
+        
+        renderTasksTable();
+        updateTaskAssigneeFilter();
+        updatePříznakyFilters();
+        saveToLocalStorage();
+        closeTaskEditor();
+    }
+    
+    function editTask(taskId) {
+        openTaskEditor(taskId);
+    }
+    
+    function deleteTask(taskId) {
+        if (!confirm(t('taskConfirmDelete'))) return;
+        
+        tasks = tasks.filter(t => t.id !== taskId);
+        renderTasksTable();
+        updateTaskAssigneeFilter();
+        saveToLocalStorage();
+    }
+    
+    // Task Preview
+    function openTaskPreview(taskId) {
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) return;
+        
+        currentPreviewTaskId = taskId;
+        
+        const modal = document.getElementById('task-preview-modal');
+        const titleEl = document.getElementById('task-preview-title');
+        const contentEl = document.getElementById('task-preview-content');
+        
+        titleEl.textContent = `#${task.number}: ${task.title || ''}`;
+        contentEl.innerHTML = generateTaskPreviewHtml(task);
+        
+        modal.style.display = 'flex';
+    }
+    
+    function generateTaskPreviewHtml(task) {
+        const statusInfo = TASK_STATUSES[task.status] || TASK_STATUSES.new;
+        const priorityInfo = TASK_PRIORITIES[task.priority] || TASK_PRIORITIES.medium;
+        const today = new Date().toISOString().split('T')[0];
+        const isOverdue = task.dueDate && task.dueDate < today && !['done', 'cancelled'].includes(task.status);
+        
+        let html = '';
+        
+        // Status and priority badges
+        html += `<div style="margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap;">
+            <span class="task-status-badge ${statusInfo.colorClass}" style="font-size: 14px; padding: 6px 12px;">
+                ${statusInfo.icon} ${getTaskStatusLabel(task.status)}
+            </span>
+            <span class="task-priority-badge ${priorityInfo.colorClass}" style="font-size: 14px; padding: 6px 12px;">
+                ${getTaskPriorityLabel(task.priority)}
+            </span>
+            ${isOverdue ? `<span style="background: #ffebee; color: #c62828; padding: 6px 12px; border-radius: 12px; font-size: 14px; font-weight: bold;">⚠️ ${t('taskOverdue')}</span>` : ''}
+        </div>`;
+        
+        // Metadata table
+        html += `<table style="width: 100%; margin-bottom: 20px; font-size: 14px;">
+            <tr><td style="width: 150px; font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('taskAssignee')}</td><td style="padding: 5px 10px;">${escapeHtml(task.assignee || '-')}</td></tr>
+            <tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('taskReporter')}</td><td style="padding: 5px 10px;">${escapeHtml(task.reporter || '-')}</td></tr>
+            <tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('taskDueDate')}</td><td style="padding: 5px 10px; ${isOverdue ? 'color: #f44336; font-weight: bold;' : ''}">${task.dueDate || '-'}${isOverdue ? ' ⚠️' : ''}</td></tr>
+            <tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('taskCreated')}</td><td style="padding: 5px 10px;">${task.created ? new Date(task.created).toLocaleDateString() : '-'}</td></tr>
+            <tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('taskUpdated')}</td><td style="padding: 5px 10px;">${task.updated ? new Date(task.updated).toLocaleDateString() : '-'}</td></tr>
+            ${task.tags?.length > 0 ? `<tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('tags')}</td><td style="padding: 5px 10px;">${task.tags.map(tag => `<span style="display: inline-block; background: #e0e0e0; padding: 2px 8px; border-radius: 10px; margin-right: 5px; font-size: 12px;">${escapeHtml(tag)}</span>`).join('')}</td></tr>` : ''}
+        </table>`;
+        
+        // Description
+        if (task.description) {
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('taskDescription')}</h3>
+                <div class="markdown-content">${renderMarkdown(task.description)}</div>
+            </div>`;
+        }
+        
+        // Current state
+        if (task.currentState) {
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('taskCurrentState')}</h3>
+                <div class="markdown-content" style="background: #f5f5f5; padding: 12px; border-radius: 4px;">${renderMarkdown(task.currentState)}</div>
+            </div>`;
+        }
+        
+        // Linked elements and relationships
+        const hasLinked = (task.linkedElements && task.linkedElements.length > 0) || 
+                         (task.linkedRelationships && task.linkedRelationships.length > 0);
+        
+        if (hasLinked) {
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('linkedItems')}</h3>
+                <div style="padding: 10px; background: #f0f7ff; border-radius: 4px; border: 1px solid #d0e0f0;">`;
+            
+            if (task.linkedElements && task.linkedElements.length > 0) {
+                html += `<div style="margin-bottom: 8px;"><strong>${t('elements')}:</strong> `;
+                html += task.linkedElements.map(id => {
+                    const el = elements.find(e => e.id === id);
+                    return el ? `<a href="#" onclick="switchTab('elements'); document.getElementById('filter-search').value='${escapeHtml(el.id)}'; filterElements(); closeTaskPreview(); return false;" style="margin-right: 8px;">${escapeHtml(el.name || el.id)}</a>` : id;
+                }).join('');
+                html += '</div>';
+            }
+            
+            if (task.linkedRelationships && task.linkedRelationships.length > 0) {
+                html += `<div><strong>${t('relationships')}:</strong> `;
+                html += task.linkedRelationships.map(id => {
+                    const rel = relationships.find(r => r.id === id);
+                    if (rel) {
+                        const source = elements.find(e => e.id === rel.sourceId);
+                        const target = elements.find(e => e.id === rel.targetId);
+                        return `<span style="margin-right: 8px;">${escapeHtml(source?.name || rel.sourceId)} → ${escapeHtml(target?.name || rel.targetId)}</span>`;
+                    }
+                    return id;
+                }).join('');
+                html += '</div>';
+            }
+            
+            html += `</div></div>`;
+        }
+        
+        // Status history
+        if (task.statusHistory && task.statusHistory.length > 0) {
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('taskStatusHistory')}</h3>
+                <table style="width: 100%; font-size: 14px; border-collapse: collapse;">
+                    <tr style="background: #f5f5f5;">
+                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">${t('taskStatus')}</th>
+                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">${t('date')}</th>
+                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">${t('taskAssignee')}</th>
+                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">${t('taskCurrentState')}</th>
+                    </tr>`;
+            task.statusHistory.forEach(h => {
+                html += `<tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #eee;">${getTaskStatusLabel(h.status)}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #eee;">${new Date(h.date).toLocaleString()}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #eee;">${escapeHtml(h.author || '-')}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #eee; font-size: 12px; color: #555;">${escapeHtml(h.stateDescription || '-')}</td>
+                </tr>`;
+            });
+            html += `</table></div>`;
+        }
+        
+        return html;
+    }
+    
+    function closeTaskPreview() {
+        document.getElementById('task-preview-modal').style.display = 'none';
+        currentPreviewTaskId = null;
+    }
+    
+    function closeTaskPreviewOnOverlay(event) {
+        if (event.target === event.currentTarget) {
+            closeTaskPreview();
+        }
+    }
+    
+    function previewTaskEdit() {
+        if (!currentPreviewTaskId) return;
+        const taskId = currentPreviewTaskId;
+        closeTaskPreview();
+        editTask(taskId);
+    }
+    
+    // Task Markdown Export
+    function generateTaskMarkdown(task) {
+        let md = `# Úkol #${task.number}: ${task.title}\n\n`;
+        
+        md += `**Stav:** ${getTaskStatusLabel(task.status)}  \n`;
+        md += `**Priorita:** ${getTaskPriorityLabel(task.priority)}  \n`;
+        md += `**Řešitel:** ${task.assignee || '-'}  \n`;
+        md += `**Zadavatel:** ${task.reporter || '-'}  \n`;
+        md += `**Termín:** ${task.dueDate || '-'}  \n`;
+        md += `**Vytvořeno:** ${task.created ? new Date(task.created).toLocaleDateString() : '-'}  \n`;
+        md += `**Aktualizováno:** ${task.updated ? new Date(task.updated).toLocaleDateString() : '-'}  \n`;
+        
+        if (task.tags && task.tags.length > 0) {
+            md += `**Příznaky:** ${task.tags.join(', ')}  \n`;
+        }
+        md += '\n';
+        
+        if (task.description) {
+            md += `## Popis\n\n${task.description}\n\n`;
+        }
+        
+        if (task.currentState) {
+            md += `## Aktuální stav\n\n${task.currentState}\n\n`;
+        }
+        
+        // Linked items
+        const hasLinked = (task.linkedElements && task.linkedElements.length > 0) || 
+                         (task.linkedRelationships && task.linkedRelationships.length > 0);
+        if (hasLinked) {
+            md += `## Propojené položky\n\n`;
+            if (task.linkedElements && task.linkedElements.length > 0) {
+                md += `**Prvky:**\n`;
+                task.linkedElements.forEach(id => {
+                    const el = elements.find(e => e.id === id);
+                    md += `- ${el ? el.name || el.id : id}\n`;
+                });
+                md += '\n';
+            }
+            if (task.linkedRelationships && task.linkedRelationships.length > 0) {
+                md += `**Vazby:**\n`;
+                task.linkedRelationships.forEach(id => {
+                    const rel = relationships.find(r => r.id === id);
+                    if (rel) {
+                        const source = elements.find(e => e.id === rel.sourceId);
+                        const target = elements.find(e => e.id === rel.targetId);
+                        md += `- ${source?.name || rel.sourceId} → ${target?.name || rel.targetId}\n`;
+                    }
+                });
+                md += '\n';
+            }
+        }
+        
+        // Status history
+        if (task.statusHistory && task.statusHistory.length > 0) {
+            md += `## Historie stavů\n\n`;
+            md += `| Stav | Datum | Řešitel | Poznámka |\n`;
+            md += `|------|-------|---------|----------|\n`;
+            task.statusHistory.forEach(h => {
+                md += `| ${getTaskStatusLabel(h.status)} | ${new Date(h.date).toLocaleString()} | ${h.author || '-'} | ${h.stateDescription || '-'} |\n`;
+            });
+            md += '\n';
+        }
+        
+        return md;
+    }
+    
+    function saveTaskAsMarkdown() {
+        const editId = document.getElementById('task-edit-id').value;
+        if (!editId) {
+            alert('Nejprve uložte úkol.');
+            return;
+        }
+        const task = tasks.find(t => t.id === editId);
+        if (!task) return;
+        
+        const md = generateTaskMarkdown(task);
+        const filename = `task-${task.number}-${(task.title || 'task').replace(/[^a-z0-9]/gi, '-').toLowerCase()}.md`;
+        
+        const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    
+    function copyTaskAsMarkdown() {
+        const editId = document.getElementById('task-edit-id').value;
+        if (!editId) {
+            alert('Nejprve uložte úkol.');
+            return;
+        }
+        const task = tasks.find(t => t.id === editId);
+        if (!task) return;
+        
+        const md = generateTaskMarkdown(task);
+        navigator.clipboard.writeText(md).then(() => {
+            alert(t('contentCopied'));
+        }).catch(() => {
+            const textarea = document.createElement('textarea');
+            textarea.value = md;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert(t('contentCopied'));
+        });
+    }
+    
+    function previewTaskSaveMarkdown() {
+        if (!currentPreviewTaskId) return;
+        const task = tasks.find(t => t.id === currentPreviewTaskId);
+        if (!task) return;
+        
+        const md = generateTaskMarkdown(task);
+        const filename = `task-${task.number}-${(task.title || 'task').replace(/[^a-z0-9]/gi, '-').toLowerCase()}.md`;
+        
+        const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    
+    function previewTaskCopyMarkdown() {
+        if (!currentPreviewTaskId) return;
+        const task = tasks.find(t => t.id === currentPreviewTaskId);
+        if (!task) return;
+        
+        const md = generateTaskMarkdown(task);
+        navigator.clipboard.writeText(md).then(() => {
+            alert(t('contentCopied'));
+        }).catch(() => {
+            const textarea = document.createElement('textarea');
+            textarea.value = md;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert(t('contentCopied'));
+        });
+    }
+    
+    function exportAllTasksMarkdown() {
+        if (tasks.length === 0) {
+            alert(t('taskNoRecords'));
+            return;
+        }
+        
+        let md = `# Seznam úkolů\n\n`;
+        md += `Exportováno: ${new Date().toLocaleString()}\n\n`;
+        md += `---\n\n`;
+        
+        tasks.forEach(task => {
+            md += generateTaskMarkdown(task);
+            md += `\n---\n\n`;
+        });
+        
+        const filename = `tasks-export-${new Date().toISOString().split('T')[0]}.md`;
+        const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    
+    // ============================================
+    // ADR (Architecture Decision Records) Functions
+    // ============================================
+    
+    const ADR_STATUSES = {
+        draft: { icon: '⚪', colorClass: 'adr-status-draft' },
+        proposed: { icon: '🔵', colorClass: 'adr-status-proposed' },
+        under_discussion: { icon: '💬', colorClass: 'adr-status-discussion' },
+        returned: { icon: '🔙', colorClass: 'adr-status-returned' },
+        accepted: { icon: '🟢', colorClass: 'adr-status-accepted' },
+        rejected: { icon: '🔴', colorClass: 'adr-status-rejected' },
+        updated: { icon: '🔄', colorClass: 'adr-status-updated' },
+        implemented: { icon: '🟣', colorClass: 'adr-status-implemented' },
+        monitored: { icon: '👁️', colorClass: 'adr-status-monitored' },
+        deprecated: { icon: '🟠', colorClass: 'adr-status-deprecated' },
+        superseded: { icon: '⚫', colorClass: 'adr-status-superseded' },
+        closed: { icon: '🔒', colorClass: 'adr-status-closed' }
+    };
+    
+    const ADR_IMPL_STATUSES = {
+        not_started: 'adrImplNotStarted',
+        in_progress: 'adrImplInProgress',
+        completed: 'adrImplCompleted'
+    };
+    
+    function getAdrStatusLabel(status) {
+        const labels = {
+            draft: 'adrStatusDraft',
+            proposed: 'adrStatusProposed',
+            under_discussion: 'adrStatusUnderDiscussion',
+            returned: 'adrStatusReturned',
+            accepted: 'adrStatusAccepted',
+            rejected: 'adrStatusRejected',
+            updated: 'adrStatusUpdated',
+            implemented: 'adrStatusImplemented',
+            monitored: 'adrStatusMonitored',
+            deprecated: 'adrStatusDeprecated',
+            superseded: 'adrStatusSuperseded',
+            closed: 'adrStatusClosed'
+        };
+        return t(labels[status] || status);
+    }
+    
+    function getAdrImplStatusLabel(status) {
+        return t(ADR_IMPL_STATUSES[status] || status);
+    }
+    
+    function renderAdrTable() {
+        const tbody = document.getElementById('adr-table-body');
+        const filterStatus = document.getElementById('adr-filter-status').value;
+        const searchTerm = document.getElementById('adr-search').value.toLowerCase().trim();
+        
+        let filtered = adrRecords.filter(adr => {
+            if (filterStatus && adr.status !== filterStatus) return false;
+            if (searchTerm) {
+                const searchFields = [
+                    adr.title || '',
+                    adr.author || '',
+                    adr.context || '',
+                    adr.decision || '',
+                    (adr.tags || []).join(' ')
+                ].join(' ').toLowerCase();
+                if (!searchFields.includes(searchTerm)) return false;
+            }
+            return true;
+        });
+        
+        // Sort by number - compare numerically if both are numeric, otherwise alphabetically
+        filtered.sort((a, b) => {
+            const aStr = String(a.number || '');
+            const bStr = String(b.number || '');
+            const aNum = parseInt(aStr.replace(/\D/g, '')) || 0;
+            const bNum = parseInt(bStr.replace(/\D/g, '')) || 0;
+            if (aNum !== bNum) return aNum - bNum;
+            return aStr.localeCompare(bStr);
+        });
+        
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #666;">${t('adrNoRecords')}</td></tr>`;
+            return;
+        }
+        
+        tbody.innerHTML = filtered.map(adr => {
+            const statusInfo = ADR_STATUSES[adr.status] || ADR_STATUSES.draft;
+            const updatedDate = adr.updated ? new Date(adr.updated).toLocaleDateString() : '-';
+            
+            return `
+                <tr>
+                    <td>${adr.number || '-'}</td>
+                    <td><a href="#" onclick="openAdrPreview('${adr.id}'); return false;" style="color: #0066cc; text-decoration: none; font-weight: bold;">${escapeHtml(adr.title || '')}</a></td>
+                    <td><span class="adr-status-badge ${statusInfo.colorClass}">${statusInfo.icon} ${getAdrStatusLabel(adr.status)}</span></td>
+                    <td>${escapeHtml(adr.author || '-')}</td>
+                    <td>${updatedDate}</td>
+                    <td>
+                        <button type="button" class="btn-secondary btn-small" onclick="editAdr('${adr.id}')" title="${t('edit')}">✏️</button>
+                        <button type="button" class="btn-secondary btn-small" onclick="copyAdrMarkdownById('${adr.id}')" title="${t('adrCopyMarkdown')}">📋</button>
+                        <button type="button" class="btn-danger btn-small" onclick="deleteAdr('${adr.id}')" title="${t('delete')}">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+    
+    function openAdrEditor(adrId = null) {
+        const modal = document.getElementById('adr-editor-modal');
+        const titleEl = document.getElementById('adr-editor-title');
+        
+        // Populate linked selects
+        populateAdrLinkedSelects();
+        
+        // Clear form
+        document.getElementById('adr-edit-id').value = '';
+        document.getElementById('adr-number').value = getNextAdrNumber();
+        document.getElementById('adr-status').value = 'draft';
+        document.getElementById('adr-title-input').value = '';
+        document.getElementById('adr-author').value = modelMetadata.dublinCore?.creator || '';
+        document.getElementById('adr-approver').value = '';
+        document.getElementById('adr-deciders').value = '';
+        document.getElementById('adr-tags').value = '';
+        document.getElementById('adr-context').value = '';
+        document.getElementById('adr-decision').value = '';
+        document.getElementById('adr-consequences').value = '';
+        document.getElementById('adr-impl-status').value = 'not_started';
+        document.getElementById('adr-impl-start').value = '';
+        document.getElementById('adr-impl-target').value = '';
+        document.getElementById('adr-impl-notes').value = '';
+        document.getElementById('adr-selected-alternative').innerHTML = '<option value="">-- Vyberte --</option>';
+        document.getElementById('adr-selection-reason').value = '';
+        document.getElementById('adr-linked-elements').selectedIndex = -1;
+        document.getElementById('adr-linked-relationships').selectedIndex = -1;
+        
+        // Clear dynamic containers
+        document.getElementById('adr-alternatives-container').innerHTML = '';
+        document.getElementById('adr-links-container').innerHTML = '';
+        document.getElementById('adr-status-history').innerHTML = '';
+        document.getElementById('adr-status-history-fieldset').style.display = 'none';
+        
+        // Populate related ADR selects
+        populateAdrSelects(adrId);
+        
+        if (adrId) {
+            // Edit existing ADR
+            const adr = adrRecords.find(a => a.id === adrId);
+            if (adr) {
+                titleEl.textContent = `ADR-${formatAdrNumber(adr.number)}: ${adr.title || t('edit')}`;
+                loadAdrToForm(adr);
+            }
+        } else {
+            titleEl.textContent = t('adrNew');
+        }
+        
+        modal.style.display = 'flex';
+        document.getElementById('adr-title-input').focus();
+    }
+    
+    function populateAdrLinkedSelects() {
+        const elementsSelect = document.getElementById('adr-linked-elements');
+        const relsSelect = document.getElementById('adr-linked-relationships');
+        
+        // Populate elements
+        elementsSelect.innerHTML = elements.map(e => 
+            `<option value="${escapeHtml(e.id)}">${escapeHtml(e.name || e.id)} (${e.type})</option>`
+        ).join('');
+        
+        // Populate relationships
+        relsSelect.innerHTML = relationships.map(r => {
+            const source = elements.find(e => e.id === r.sourceId);
+            const target = elements.find(e => e.id === r.targetId);
+            const sourceName = source ? source.name : r.sourceId;
+            const targetName = target ? target.name : r.targetId;
+            return `<option value="${escapeHtml(r.id)}">${escapeHtml(sourceName)} → ${escapeHtml(targetName)} (${r.type})</option>`;
+        }).join('');
+    }
+    
+    function closeAdrEditor() {
+        document.getElementById('adr-editor-modal').style.display = 'none';
+    }
+    
+    function closeAdrEditorOnOverlay(event) {
+        if (event.target === event.currentTarget) {
+            closeAdrEditor();
+        }
+    }
+    
+    function getNextAdrNumber() {
+        if (adrRecords.length === 0) return '1';
+        // Find max numeric value from existing numbers
+        let maxNum = 0;
+        adrRecords.forEach(a => {
+            const num = parseInt(String(a.number).replace(/\D/g, '')) || 0;
+            if (num > maxNum) maxNum = num;
+        });
+        return String(maxNum + 1);
+    }
+    
+    function formatAdrNumber(number) {
+        // Format ADR number - if purely numeric, pad with zeros, otherwise use as-is
+        const numStr = String(number || '');
+        if (/^\d+$/.test(numStr)) {
+            return numStr.padStart(3, '0');
+        }
+        return numStr;
+    }
+    
+    function populateAdrSelects(excludeId = null) {
+        const supersedesSelect = document.getElementById('adr-supersedes');
+        const supersededBySelect = document.getElementById('adr-superseded-by');
+        const relatedToSelect = document.getElementById('adr-related-to');
+        
+        const options = adrRecords
+            .filter(a => a.id !== excludeId)
+            .map(a => `<option value="${a.id}">ADR-${formatAdrNumber(a.number)}: ${escapeHtml(a.title || '')}</option>`)
+            .join('');
+        
+        supersedesSelect.innerHTML = options;
+        supersededBySelect.innerHTML = options;
+        relatedToSelect.innerHTML = options;
+    }
+    
+    function loadAdrToForm(adr) {
+        document.getElementById('adr-edit-id').value = adr.id;
+        document.getElementById('adr-number').value = adr.number || '';
+        document.getElementById('adr-status').value = adr.status || 'draft';
+        document.getElementById('adr-title-input').value = adr.title || '';
+        document.getElementById('adr-author').value = adr.author || '';
+        document.getElementById('adr-approver').value = adr.approver || '';
+        document.getElementById('adr-deciders').value = (adr.deciders || []).join(', ');
+        document.getElementById('adr-tags').value = (adr.tags || []).join(', ');
+        document.getElementById('adr-context').value = adr.context || '';
+        document.getElementById('adr-decision').value = adr.decision || '';
+        
+        // Consequences (simple string)
+        document.getElementById('adr-consequences').value = adr.consequences || '';
+        
+        // Implementation
+        if (adr.implementation) {
+            document.getElementById('adr-impl-status').value = adr.implementation.status || 'not_started';
+            document.getElementById('adr-impl-start').value = adr.implementation.startDate || '';
+            document.getElementById('adr-impl-target').value = adr.implementation.targetDate || '';
+            document.getElementById('adr-impl-notes').value = adr.implementation.notes || '';
+        }
+        
+        // Alternatives
+        if (adr.alternatives) {
+            adr.alternatives.forEach(alt => addAdrAlternative(alt));
+        }
+        
+        // Update selected alternative dropdown after alternatives are loaded
+        setTimeout(() => {
+            updateSelectedAlternativeDropdown();
+            if (adr.selectedAlternative) {
+                document.getElementById('adr-selected-alternative').value = adr.selectedAlternative;
+            }
+            document.getElementById('adr-selection-reason').value = adr.selectionReason || '';
+        }, 100);
+        
+        // Links
+        if (adr.links) {
+            adr.links.forEach(link => addAdrLink(link));
+        }
+        
+        // Related ADR
+        if (adr.relatedAdr) {
+            setMultiSelectValues('adr-supersedes', adr.relatedAdr.supersedes || []);
+            setMultiSelectValues('adr-superseded-by', adr.relatedAdr.supersededBy || []);
+            setMultiSelectValues('adr-related-to', adr.relatedAdr.relatedTo || []);
+        }
+        
+        // Linked elements and relationships
+        if (adr.linkedElements) {
+            setMultiSelectValues('adr-linked-elements', adr.linkedElements);
+        }
+        if (adr.linkedRelationships) {
+            setMultiSelectValues('adr-linked-relationships', adr.linkedRelationships);
+        }
+        
+        // Status history
+        if (adr.statusHistory && adr.statusHistory.length > 0) {
+            document.getElementById('adr-status-history-fieldset').style.display = 'block';
+            document.getElementById('adr-status-history').innerHTML = adr.statusHistory.map(h => `
+                <div class="adr-history-item">
+                    <span><strong>${getAdrStatusLabel(h.status)}</strong></span>
+                    <span>${new Date(h.date).toLocaleString()}</span>
+                    <span>${escapeHtml(h.author || h.approver || '-')}</span>
+                </div>
+            `).join('');
+        }
+    }
+    
+    function updateSelectedAlternativeDropdown() {
+        const select = document.getElementById('adr-selected-alternative');
+        const alternatives = Array.from(document.querySelectorAll('.adr-alternative-card'));
+        
+        const currentValue = select.value;
+        select.innerHTML = '<option value="">-- Vyberte --</option>';
+        
+        alternatives.forEach((card, index) => {
+            const title = card.querySelector('.alt-title').value.trim();
+            if (title) {
+                const option = document.createElement('option');
+                option.value = index.toString();
+                option.textContent = title;
+                select.appendChild(option);
+            }
+        });
+        
+        // Restore selection if still valid
+        if (currentValue && select.querySelector(`option[value="${currentValue}"]`)) {
+            select.value = currentValue;
+        }
+    }
+    
+    function setMultiSelectValues(selectId, values) {
+        const select = document.getElementById(selectId);
+        Array.from(select.options).forEach(opt => {
+            opt.selected = values.includes(opt.value);
+        });
+    }
+    
+    function getMultiSelectValues(selectId) {
+        const select = document.getElementById(selectId);
+        return Array.from(select.selectedOptions).map(opt => opt.value);
+    }
+    
+    function addAdrAlternative(data = null) {
+        const container = document.getElementById('adr-alternatives-container');
+        const index = container.querySelectorAll('.adr-alternative-card').length + 1;
+        const div = document.createElement('div');
+        div.className = 'adr-alternative-card';
+        div.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid #e0e0e0;">
+                <h4 style="margin: 0; color: #333; font-size: 14px;">${t('adrAlternative')} ${index}</h4>
+                <button type="button" class="btn-danger btn-small" onclick="this.closest('.adr-alternative-card').remove(); updateAlternativeNumbers(); updateSelectedAlternativeDropdown();">×</button>
+            </div>
+            <div class="form-group">
+                <label>${t('adrAlternativeTitle')}</label>
+                <input type="text" class="alt-title" value="${escapeHtml(data?.title || '')}" style="width: 100%;" onchange="updateSelectedAlternativeDropdown()">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+                <label>${t('adrAlternativeDesc')}</label>
+                <textarea class="alt-desc" rows="3" style="width: 100%;" placeholder="${t('adrAlternativeDescPlaceholder') || ''}">${escapeHtml(data?.description || '')}</textarea>
+            </div>
+        `;
+        container.appendChild(div);
+        
+        // Update dropdown after adding
+        setTimeout(updateSelectedAlternativeDropdown, 50);
+    }
+    
+    function updateAlternativeNumbers() {
+        const cards = document.querySelectorAll('.adr-alternative-card');
+        cards.forEach((card, index) => {
+            const header = card.querySelector('h4');
+            if (header) {
+                header.textContent = `${t('adrAlternative')} ${index + 1}`;
+            }
+        });
+    }
+    
+    function addAdrLink(data = null) {
+        const container = document.getElementById('adr-links-container');
+        const div = document.createElement('div');
+        div.className = 'adr-link-row';
+        div.innerHTML = `
+            <input type="text" class="link-title" value="${escapeHtml(data?.title || '')}" placeholder="${t('adrLinkTitle')}">
+            <input type="url" class="link-url" value="${escapeHtml(data?.url || '')}" placeholder="${t('adrLinkUrl')}">
+            <button type="button" class="btn-danger btn-small" onclick="this.parentElement.remove()">×</button>
+        `;
+        container.appendChild(div);
+    }
+    
+    function handleAdrStatusChange() {
+        // Could be used to enforce workflow rules in the future
+    }
+    
+    function saveAdr() {
+        const editId = document.getElementById('adr-edit-id').value;
+        const number = document.getElementById('adr-number').value.trim() || getNextAdrNumber();
+        const status = document.getElementById('adr-status').value;
+        const title = document.getElementById('adr-title-input').value.trim();
+        
+        if (!title) {
+            alert(t('alertEnterName'));
+            document.getElementById('adr-title-input').focus();
+            return;
+        }
+        
+        // Consequences - simple string now
+        const consequences = document.getElementById('adr-consequences').value.trim();
+        
+        // Collect alternatives
+        const alternatives = Array.from(document.querySelectorAll('.adr-alternative-card')).map(card => ({
+            title: card.querySelector('.alt-title').value.trim(),
+            description: card.querySelector('.alt-desc').value.trim()
+        })).filter(a => a.title);
+        
+        // Selected alternative
+        const selectedAlternative = document.getElementById('adr-selected-alternative').value;
+        const selectionReason = document.getElementById('adr-selection-reason').value.trim();
+        
+        // Collect links
+        const links = Array.from(document.querySelectorAll('.adr-link-row')).map(row => ({
+            title: row.querySelector('.link-title').value.trim(),
+            url: row.querySelector('.link-url').value.trim()
+        })).filter(l => l.title || l.url);
+        
+        const now = new Date().toISOString();
+        
+        const adrData = {
+            id: editId || `adr-${Date.now()}`,
+            number: number,
+            title: title,
+            status: status,
+            created: editId ? undefined : now, // Will be set below for existing
+            updated: now,
+            author: document.getElementById('adr-author').value.trim(),
+            approver: document.getElementById('adr-approver').value.trim(),
+            deciders: document.getElementById('adr-deciders').value.split(',').map(s => s.trim()).filter(s => s),
+            context: document.getElementById('adr-context').value.trim(),
+            decision: document.getElementById('adr-decision').value.trim(),
+            consequences: consequences,
+            alternatives: alternatives,
+            selectedAlternative: selectedAlternative,
+            selectionReason: selectionReason,
+            implementation: {
+                status: document.getElementById('adr-impl-status').value,
+                startDate: document.getElementById('adr-impl-start').value,
+                targetDate: document.getElementById('adr-impl-target').value,
+                notes: document.getElementById('adr-impl-notes').value.trim()
+            },
+            relatedAdr: {
+                supersedes: getMultiSelectValues('adr-supersedes'),
+                supersededBy: getMultiSelectValues('adr-superseded-by'),
+                relatedTo: getMultiSelectValues('adr-related-to')
+            },
+            linkedElements: getMultiSelectValues('adr-linked-elements'),
+            linkedRelationships: getMultiSelectValues('adr-linked-relationships'),
+            tags: document.getElementById('adr-tags').value.split(',').map(s => s.trim()).filter(s => s),
+            links: links
+        };
+        
+        if (editId) {
+            // Update existing
+            const index = adrRecords.findIndex(a => a.id === editId);
+            if (index !== -1) {
+                const existing = adrRecords[index];
+                adrData.created = existing.created;
+                adrData.statusHistory = existing.statusHistory || [];
+                
+                // Add status change to history if changed
+                if (existing.status !== status) {
+                    adrData.statusHistory.push({
+                        status: status,
+                        date: now,
+                        author: adrData.author || adrData.approver
+                    });
+                }
+                
+                adrRecords[index] = adrData;
+            }
+        } else {
+            // New ADR
+            adrData.created = now;
+            adrData.statusHistory = [{
+                status: status,
+                date: now,
+                author: adrData.author
+            }];
+            adrRecords.push(adrData);
+        }
+        
+        renderAdrTable();
+        saveToLocalStorage();
+        closeAdrEditor();
+    }
+    
+    function editAdr(adrId) {
+        openAdrEditor(adrId);
+    }
+    
+    function deleteAdr(adrId) {
+        if (!confirm(t('adrConfirmDelete'))) return;
+        
+        adrRecords = adrRecords.filter(a => a.id !== adrId);
+        renderAdrTable();
+        saveToLocalStorage();
+    }
+    
+    function generateAdrMarkdown(adr) {
+        const statusInfo = ADR_STATUSES[adr.status] || ADR_STATUSES.draft;
+        const statusLabel = getAdrStatusLabel(adr.status);
+        
+        let md = `# ADR-${formatAdrNumber(adr.number)}: ${adr.title || 'Bez názvu'}\n\n`;
+        
+        // Metadata table
+        md += `| Atribut | Hodnota |\n`;
+        md += `|---------|--------|\n`;
+        md += `| **${t('adrStatus')}** | ${statusInfo.icon} ${statusLabel} |\n`;
+        md += `| **${t('adrCreated')}** | ${adr.created ? new Date(adr.created).toLocaleDateString() : '-'} |\n`;
+        md += `| **${t('adrUpdated')}** | ${adr.updated ? new Date(adr.updated).toLocaleDateString() : '-'} |\n`;
+        md += `| **${t('adrAuthor')}** | ${adr.author || '-'} |\n`;
+        if (adr.approver) {
+            md += `| **${t('adrApprover')}** | ${adr.approver} |\n`;
+        }
+        if (adr.deciders && adr.deciders.length > 0) {
+            md += `| **${t('adrDeciders')}** | ${adr.deciders.join(', ')} |\n`;
+        }
+        if (adr.tags && adr.tags.length > 0) {
+            md += `| **${t('adrTags')}** | ${adr.tags.join(', ')} |\n`;
+        }
+        md += '\n';
+        
+        // Context
+        if (adr.context) {
+            md += `## ${t('adrContext')}\n\n`;
+            md += `${adr.context}\n\n`;
+        }
+        
+        // Decision
+        if (adr.decision) {
+            md += `## ${t('adrDecision')}\n\n`;
+            md += `${adr.decision}\n\n`;
+        }
+        
+        // Consequences (simple string now)
+        if (adr.consequences) {
+            md += `## ${t('adrConsequences')}\n\n`;
+            md += `${adr.consequences}\n\n`;
+        }
+        
+        // Alternatives with selected one
+        if (adr.alternatives && adr.alternatives.length > 0) {
+            md += `## ${t('adrAlternatives')}\n\n`;
+            
+            const selectedIdx = adr.selectedAlternative ? parseInt(adr.selectedAlternative) : -1;
+            
+            adr.alternatives.forEach((alt, idx) => {
+                const isSelected = idx === selectedIdx;
+                const selectedMark = isSelected ? ` ✅ **${t('adrSelected')}**` : '';
+                md += `### ${alt.title}${selectedMark}\n\n`;
+                if (alt.description) {
+                    md += `${alt.description}\n\n`;
+                }
+            });
+            
+            // Selection reason
+            if (adr.selectionReason && selectedIdx >= 0) {
+                md += `### ${t('adrSelectionReason')}\n\n`;
+                md += `${adr.selectionReason}\n\n`;
+            }
+        }
+        
+        // Implementation
+        if (adr.implementation && (adr.implementation.status !== 'not_started' || adr.implementation.notes)) {
+            md += `## ${t('adrImplementation')}\n\n`;
+            
+            md += `| ${t('adrImplStatus')} | ${t('adrImplStartDate')} | ${t('adrImplTargetDate')} |\n`;
+            md += `|--------|---------|----------|\n`;
+            md += `| ${getAdrImplStatusLabel(adr.implementation.status)} | ${adr.implementation.startDate || '-'} | ${adr.implementation.targetDate || '-'} |\n\n`;
+            
+            if (adr.implementation.notes) {
+                md += `${adr.implementation.notes}\n\n`;
+            }
+        }
+        
+        // Links
+        if (adr.links && adr.links.length > 0) {
+            md += `## ${t('adrLinks')}\n\n`;
+            adr.links.forEach(link => {
+                md += `- [${link.title || link.url}](${link.url})\n`;
+            });
+            md += '\n';
+        }
+        
+        // Related ADR
+        if (adr.relatedAdr) {
+            const hasRelated = (adr.relatedAdr.supersedes?.length || 0) + 
+                              (adr.relatedAdr.supersededBy?.length || 0) + 
+                              (adr.relatedAdr.relatedTo?.length || 0) > 0;
+            if (hasRelated) {
+                md += `## ${t('adrRelatedAdr')}\n\n`;
+                
+                const getAdrRef = (id) => {
+                    const related = adrRecords.find(a => a.id === id);
+                    if (related) {
+                        return `ADR-${formatAdrNumber(related.number)}: ${related.title}`;
+                    }
+                    return id;
+                };
+                
+                if (adr.relatedAdr.supersedes?.length > 0) {
+                    md += `**${t('adrSupersedes')}:** ${adr.relatedAdr.supersedes.map(getAdrRef).join(', ')}\n\n`;
+                }
+                if (adr.relatedAdr.supersededBy?.length > 0) {
+                    md += `**${t('adrSupersededBy')}:** ${adr.relatedAdr.supersededBy.map(getAdrRef).join(', ')}\n\n`;
+                }
+                if (adr.relatedAdr.relatedTo?.length > 0) {
+                    md += `**${t('adrRelatedTo')}:** ${adr.relatedAdr.relatedTo.map(getAdrRef).join(', ')}\n\n`;
+                }
+            }
+        }
+        
+        // Status history
+        if (adr.statusHistory && adr.statusHistory.length > 0) {
+            md += `## ${t('adrStatusHistory')}\n\n`;
+            md += `| ${t('adrStatus')} | ${t('date')} | ${t('adrAuthor')} |\n`;
+            md += `|------|------|-------|\n`;
+            adr.statusHistory.forEach(h => {
+                md += `| ${getAdrStatusLabel(h.status)} | ${new Date(h.date).toLocaleString()} | ${h.author || h.approver || '-'} |\n`;
+            });
+            md += '\n';
+        }
+        
+        md += `---\n\n`;
+        md += `*${t('generatedFrom')} ArchiMate Editor - ${new Date().toLocaleDateString()}*\n`;
+        
+        return md;
+    }
+    
+    function getAdrFromForm() {
+        // Build ADR object from current form state
+        const consequences = document.getElementById('adr-consequences').value.trim();
+        
+        const alternatives = Array.from(document.querySelectorAll('.adr-alternative-card')).map(card => ({
+            title: card.querySelector('.alt-title').value.trim(),
+            description: card.querySelector('.alt-desc').value.trim()
+        })).filter(a => a.title);
+        
+        const links = Array.from(document.querySelectorAll('.adr-link-row')).map(row => ({
+            title: row.querySelector('.link-title').value.trim(),
+            url: row.querySelector('.link-url').value.trim()
+        })).filter(l => l.title || l.url);
+        
+        const editId = document.getElementById('adr-edit-id').value;
+        const existing = editId ? adrRecords.find(a => a.id === editId) : null;
+        
+        return {
+            id: editId || `adr-${Date.now()}`,
+            number: document.getElementById('adr-number').value.trim() || '1',
+            title: document.getElementById('adr-title-input').value.trim(),
+            status: document.getElementById('adr-status').value,
+            created: existing?.created || new Date().toISOString(),
+            updated: new Date().toISOString(),
+            author: document.getElementById('adr-author').value.trim(),
+            approver: document.getElementById('adr-approver').value.trim(),
+            deciders: document.getElementById('adr-deciders').value.split(',').map(s => s.trim()).filter(s => s),
+            context: document.getElementById('adr-context').value.trim(),
+            decision: document.getElementById('adr-decision').value.trim(),
+            consequences: consequences,
+            alternatives: alternatives,
+            selectedAlternative: document.getElementById('adr-selected-alternative').value,
+            selectionReason: document.getElementById('adr-selection-reason').value.trim(),
+            implementation: {
+                status: document.getElementById('adr-impl-status').value,
+                startDate: document.getElementById('adr-impl-start').value,
+                targetDate: document.getElementById('adr-impl-target').value,
+                notes: document.getElementById('adr-impl-notes').value.trim()
+            },
+            relatedAdr: {
+                supersedes: getMultiSelectValues('adr-supersedes'),
+                supersededBy: getMultiSelectValues('adr-superseded-by'),
+                relatedTo: getMultiSelectValues('adr-related-to')
+            },
+            tags: document.getElementById('adr-tags').value.split(',').map(s => s.trim()).filter(s => s),
+            links: links,
+            statusHistory: existing?.statusHistory || []
+        };
+    }
+    
+    function saveAdrAsMarkdown() {
+        const adr = getAdrFromForm();
+        const markdown = generateAdrMarkdown(adr);
+        const filename = `ADR-${formatAdrNumber(adr.number)}-${(adr.title || 'untitled').replace(/[^a-zA-Z0-9áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]/g, '').replace(/\s+/g, '-').toLowerCase()}.md`;
+        
+        const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    
+    function copyAdrAsMarkdown() {
+        const adr = getAdrFromForm();
+        const markdown = generateAdrMarkdown(adr);
+        
+        navigator.clipboard.writeText(markdown).then(() => {
+            alert(t('adrMarkdownCopied'));
+        }).catch(err => {
+            // Fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = markdown;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert(t('adrMarkdownCopied'));
+        });
+    }
+    
+    function copyAdrMarkdownById(adrId) {
+        const adr = adrRecords.find(a => a.id === adrId);
+        if (!adr) return;
+        
+        const markdown = generateAdrMarkdown(adr);
+        
+        navigator.clipboard.writeText(markdown).then(() => {
+            alert(t('adrMarkdownCopied'));
+        }).catch(err => {
+            const textarea = document.createElement('textarea');
+            textarea.value = markdown;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert(t('adrMarkdownCopied'));
+        });
+    }
+    
+    // ADR Preview Modal
+    let currentPreviewAdrId = null;
+    
+    function openAdrPreview(adrId) {
+        const adr = adrRecords.find(a => a.id === adrId);
+        if (!adr) return;
+        
+        currentPreviewAdrId = adrId;
+        
+        const modal = document.getElementById('adr-preview-modal');
+        const titleEl = document.getElementById('adr-preview-title');
+        const contentEl = document.getElementById('adr-preview-content');
+        
+        titleEl.textContent = `ADR-${formatAdrNumber(adr.number)}: ${adr.title || ''}`;
+        contentEl.innerHTML = generateAdrPreviewHtml(adr);
+        
+        modal.style.display = 'flex';
+    }
+    
+    function closeAdrPreview() {
+        document.getElementById('adr-preview-modal').style.display = 'none';
+        currentPreviewAdrId = null;
+    }
+    
+    function closeAdrPreviewOnOverlay(event) {
+        if (event.target === event.currentTarget) {
+            closeAdrPreview();
+        }
+    }
+    
+    function generateAdrPreviewHtml(adr) {
+        const statusInfo = ADR_STATUSES[adr.status] || ADR_STATUSES.draft;
+        const statusLabel = getAdrStatusLabel(adr.status);
+        
+        let html = '';
+        
+        // Status badge
+        html += `<div style="margin-bottom: 20px;">
+            <span class="adr-status-badge ${statusInfo.colorClass}" style="font-size: 14px; padding: 6px 12px;">
+                ${statusInfo.icon} ${statusLabel}
+            </span>
+        </div>`;
+        
+        // Metadata table
+        html += `<table style="width: 100%; margin-bottom: 20px; font-size: 14px;">
+            <tr><td style="width: 150px; font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('adrAuthor')}</td><td style="padding: 5px 10px;">${escapeHtml(adr.author || '-')}</td></tr>
+            ${adr.approver ? `<tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('adrApprover')}</td><td style="padding: 5px 10px;">${escapeHtml(adr.approver)}</td></tr>` : ''}
+            ${adr.deciders?.length > 0 ? `<tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('adrDeciders')}</td><td style="padding: 5px 10px;">${escapeHtml(adr.deciders.join(', '))}</td></tr>` : ''}
+            <tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('adrCreated')}</td><td style="padding: 5px 10px;">${adr.created ? new Date(adr.created).toLocaleDateString() : '-'}</td></tr>
+            <tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('adrUpdated')}</td><td style="padding: 5px 10px;">${adr.updated ? new Date(adr.updated).toLocaleDateString() : '-'}</td></tr>
+            ${adr.tags?.length > 0 ? `<tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('adrTags')}</td><td style="padding: 5px 10px;">${adr.tags.map(tag => `<span style="display: inline-block; background: #e0e0e0; padding: 2px 8px; border-radius: 10px; margin-right: 5px; font-size: 12px;">${escapeHtml(tag)}</span>`).join('')}</td></tr>` : ''}
+        </table>`;
+        
+        // Context
+        if (adr.context) {
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('adrContext')}</h3>
+                <div class="markdown-content">${renderMarkdown(adr.context)}</div>
+            </div>`;
+        }
+        
+        // Decision
+        if (adr.decision) {
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('adrDecision')}</h3>
+                <div class="markdown-content">${renderMarkdown(adr.decision)}</div>
+            </div>`;
+        }
+        
+        // Consequences
+        if (adr.consequences) {
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('adrConsequences')}</h3>
+                <div class="markdown-content">${renderMarkdown(adr.consequences)}</div>
+            </div>`;
+        }
+        
+        // Alternatives
+        if (adr.alternatives && adr.alternatives.length > 0) {
+            const selectedIdx = adr.selectedAlternative ? parseInt(adr.selectedAlternative) : -1;
+            
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('adrAlternatives')}</h3>`;
+            
+            adr.alternatives.forEach((alt, idx) => {
+                const isSelected = idx === selectedIdx;
+                const bgColor = isSelected ? '#e8f5e9' : '#fafafa';
+                const borderColor = isSelected ? '#4CAF50' : '#ddd';
+                
+                html += `<div style="border: 2px solid ${borderColor}; border-radius: 4px; padding: 12px; margin-bottom: 10px; background: ${bgColor};">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <strong style="font-size: 15px;">${t('adrAlternative')} ${idx + 1}: ${escapeHtml(alt.title)}</strong>
+                        ${isSelected ? `<span style="background: #4CAF50; color: white; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold;">✅ ${t('adrSelected')}</span>` : ''}
+                    </div>
+                    ${alt.description ? `<div class="markdown-content" style="margin: 0; color: #555;">${renderMarkdown(alt.description)}</div>` : ''}
+                </div>`;
+            });
+            
+            // Selection reason
+            if (adr.selectionReason && selectedIdx >= 0) {
+                html += `<div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 4px; padding: 12px; margin-top: 10px;">
+                    <strong style="color: #2e7d32;">${t('adrSelectionReason')}:</strong>
+                    <div class="markdown-content" style="margin-top: 8px;">${renderMarkdown(adr.selectionReason)}</div>
+                </div>`;
+            }
+            
+            html += `</div>`;
+        }
+        
+        // Implementation
+        if (adr.implementation && (adr.implementation.status !== 'not_started' || adr.implementation.notes)) {
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('adrImplementation')}</h3>
+                <table style="width: 100%; margin-bottom: 10px; font-size: 14px;">
+                    <tr>
+                        <td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5; width: 150px;">${t('adrImplStatus')}</td>
+                        <td style="padding: 5px 10px;">${getAdrImplStatusLabel(adr.implementation.status)}</td>
+                    </tr>
+                    ${adr.implementation.startDate ? `<tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('adrImplStartDate')}</td><td style="padding: 5px 10px;">${adr.implementation.startDate}</td></tr>` : ''}
+                    ${adr.implementation.targetDate ? `<tr><td style="font-weight: bold; padding: 5px 10px; background: #f5f5f5;">${t('adrImplTargetDate')}</td><td style="padding: 5px 10px;">${adr.implementation.targetDate}</td></tr>` : ''}
+                </table>
+                ${adr.implementation.notes ? `<div class="markdown-content" style="background: #fafafa; padding: 10px; border-radius: 4px;">${renderMarkdown(adr.implementation.notes)}</div>` : ''}
+            </div>`;
+        }
+        
+        // Links
+        if (adr.links && adr.links.length > 0) {
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('adrLinks')}</h3>
+                <ul style="margin: 0; padding-left: 20px;">`;
+            adr.links.forEach(link => {
+                html += `<li><a href="${escapeHtml(link.url)}" target="_blank" rel="noopener">${escapeHtml(link.title || link.url)}</a></li>`;
+            });
+            html += `</ul></div>`;
+        }
+        
+        // Linked elements and relationships
+        const hasLinked = (adr.linkedElements && adr.linkedElements.length > 0) || 
+                         (adr.linkedRelationships && adr.linkedRelationships.length > 0);
+        
+        if (hasLinked) {
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('linkedItems')}</h3>
+                <div style="padding: 10px; background: #f0f7ff; border-radius: 4px; border: 1px solid #d0e0f0;">`;
+            
+            if (adr.linkedElements && adr.linkedElements.length > 0) {
+                html += `<div style="margin-bottom: 8px;"><strong>${t('elements')}:</strong> `;
+                html += adr.linkedElements.map(id => {
+                    const el = elements.find(e => e.id === id);
+                    return el ? `<a href="#" onclick="switchTab('elements'); document.getElementById('filter-search').value='${escapeHtml(el.id)}'; filterElements(); closeAdrPreview(); return false;" style="margin-right: 8px;">${escapeHtml(el.name || el.id)}</a>` : id;
+                }).join('');
+                html += '</div>';
+            }
+            
+            if (adr.linkedRelationships && adr.linkedRelationships.length > 0) {
+                html += `<div><strong>${t('relationships')}:</strong> `;
+                html += adr.linkedRelationships.map(id => {
+                    const rel = relationships.find(r => r.id === id);
+                    if (rel) {
+                        const source = elements.find(e => e.id === rel.sourceId);
+                        const target = elements.find(e => e.id === rel.targetId);
+                        return `<span style="margin-right: 8px;">${escapeHtml(source?.name || rel.sourceId)} → ${escapeHtml(target?.name || rel.targetId)}</span>`;
+                    }
+                    return id;
+                }).join('');
+                html += '</div>';
+            }
+            
+            html += `</div></div>`;
+        }
+        
+        // Related ADR
+        if (adr.relatedAdr) {
+            const hasRelated = (adr.relatedAdr.supersedes?.length || 0) + 
+                              (adr.relatedAdr.supersededBy?.length || 0) + 
+                              (adr.relatedAdr.relatedTo?.length || 0) > 0;
+            if (hasRelated) {
+                const getAdrLink = (id) => {
+                    const related = adrRecords.find(a => a.id === id);
+                    if (related) {
+                        return `<a href="#" onclick="openAdrPreview('${id}'); return false;">ADR-${formatAdrNumber(related.number)}: ${escapeHtml(related.title)}</a>`;
+                    }
+                    return id;
+                };
+                
+                html += `<div style="margin-bottom: 20px;">
+                    <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('adrRelatedAdr')}</h3>`;
+                
+                if (adr.relatedAdr.supersedes?.length > 0) {
+                    html += `<p><strong>${t('adrSupersedes')}:</strong> ${adr.relatedAdr.supersedes.map(getAdrLink).join(', ')}</p>`;
+                }
+                if (adr.relatedAdr.supersededBy?.length > 0) {
+                    html += `<p><strong>${t('adrSupersededBy')}:</strong> ${adr.relatedAdr.supersededBy.map(getAdrLink).join(', ')}</p>`;
+                }
+                if (adr.relatedAdr.relatedTo?.length > 0) {
+                    html += `<p><strong>${t('adrRelatedTo')}:</strong> ${adr.relatedAdr.relatedTo.map(getAdrLink).join(', ')}</p>`;
+                }
+                
+                html += `</div>`;
+            }
+        }
+        
+        // Status history
+        if (adr.statusHistory && adr.statusHistory.length > 0) {
+            html += `<div style="margin-bottom: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">${t('adrStatusHistory')}</h3>
+                <table style="width: 100%; font-size: 14px; border-collapse: collapse;">
+                    <tr style="background: #f5f5f5;">
+                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">${t('adrStatus')}</th>
+                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">${t('date')}</th>
+                        <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">${t('adrAuthor')}</th>
+                    </tr>`;
+            adr.statusHistory.forEach(h => {
+                html += `<tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #eee;">${getAdrStatusLabel(h.status)}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #eee;">${new Date(h.date).toLocaleString()}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #eee;">${escapeHtml(h.author || h.approver || '-')}</td>
+                </tr>`;
+            });
+            html += `</table></div>`;
+        }
+        
+        return html;
+    }
+    
+    function previewAdrSaveMarkdown() {
+        if (!currentPreviewAdrId) return;
+        const adr = adrRecords.find(a => a.id === currentPreviewAdrId);
+        if (!adr) return;
+        
+        const markdown = generateAdrMarkdown(adr);
+        const filename = `ADR-${formatAdrNumber(adr.number)}-${(adr.title || 'untitled').replace(/[^a-zA-Z0-9áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]/g, '').replace(/\s+/g, '-').toLowerCase()}.md`;
+        
+        const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    
+    function previewAdrCopyMarkdown() {
+        if (!currentPreviewAdrId) return;
+        copyAdrMarkdownById(currentPreviewAdrId);
+    }
+    
+    function previewAdrEdit() {
+        if (!currentPreviewAdrId) return;
+        const adrId = currentPreviewAdrId; // Save ID before closing
+        closeAdrPreview();
+        editAdr(adrId);
+    }
+    
+    function exportAllAdrMarkdown() {
+        if (adrRecords.length === 0) {
+            alert(t('adrNoRecords'));
+            return;
+        }
+        
+        // Generate index
+        let indexMd = `# Architecture Decision Records\n\n`;
+        indexMd += `| # | ${t('adrTitleLabel')} | ${t('adrStatus')} | ${t('adrAuthor')} | ${t('adrUpdated')} |\n`;
+        indexMd += `|---|-------|------|-------|------|\n`;
+        
+        // Sort by number - compare numerically if both are numeric, otherwise alphabetically
+        const sorted = [...adrRecords].sort((a, b) => {
+            const aStr = String(a.number || '');
+            const bStr = String(b.number || '');
+            const aNum = parseInt(aStr.replace(/\D/g, '')) || 0;
+            const bNum = parseInt(bStr.replace(/\D/g, '')) || 0;
+            if (aNum !== bNum) return aNum - bNum;
+            return aStr.localeCompare(bStr);
+        });
+        
+        sorted.forEach(adr => {
+            const statusInfo = ADR_STATUSES[adr.status] || ADR_STATUSES.draft;
+            const filename = `adr-${formatAdrNumber(adr.number)}.md`;
+            indexMd += `| [ADR-${formatAdrNumber(adr.number)}](${filename}) | ${adr.title || '-'} | ${statusInfo.icon} ${getAdrStatusLabel(adr.status)} | ${adr.author || '-'} | ${adr.updated ? new Date(adr.updated).toLocaleDateString() : '-'} |\n`;
+        });
+        
+        indexMd += `\n## ${t('statistics')}\n\n`;
+        
+        const statusCounts = {};
+        adrRecords.forEach(adr => {
+            statusCounts[adr.status] = (statusCounts[adr.status] || 0) + 1;
+        });
+        
+        indexMd += `- **${t('total')}:** ${adrRecords.length}\n`;
+        Object.entries(statusCounts).forEach(([status, count]) => {
+            indexMd += `- **${getAdrStatusLabel(status)}:** ${count}\n`;
+        });
+        
+        // Generate combined document
+        let combinedMd = indexMd + '\n\n---\n\n';
+        sorted.forEach(adr => {
+            combinedMd += generateAdrMarkdown(adr) + '\n\n---\n\n';
+        });
+        
+        const modelName = modelMetadata.name || 'archimate-model';
+        const filename = `${modelName.replace(/[^a-zA-Z0-9]/g, '-')}-adr.md`;
+        
+        const blob = new Blob([combinedMd], { type: 'text/markdown;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // ============================================
+    // Notes Functions
+    // ============================================
+    
+    let currentPreviewNoteId = null;
+    let currentVersionIndex = null;
+    
+    function renderNotesTable() {
+        const tbody = document.getElementById('notes-table-body');
+        const searchTerm = document.getElementById('notes-search').value.toLowerCase().trim();
+        
+        let filtered = notes.filter(note => {
+            if (searchTerm) {
+                const searchFields = [
+                    note.name || '',
+                    note.author || '',
+                    note.content || '',
+                    (note.tags || []).join(' ')
+                ].join(' ').toLowerCase();
+                if (!searchFields.includes(searchTerm)) return false;
+            }
+            return true;
+        });
+        
+        // Sort by updated date descending
+        filtered.sort((a, b) => new Date(b.updated) - new Date(a.updated));
+        
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #666;">${t('noteNoRecords')}</td></tr>`;
+            return;
+        }
+        
+        tbody.innerHTML = filtered.map(note => {
+            const updatedDate = note.updated ? new Date(note.updated).toLocaleString() : '-';
+            const versionCount = note.versions ? note.versions.length : 0;
+            const tagsHtml = (note.tags || []).map(tag => 
+                `<span style="display: inline-block; background: #e0e0e0; padding: 1px 6px; border-radius: 8px; margin-right: 3px; font-size: 11px;">${escapeHtml(tag)}</span>`
+            ).join('');
+            
+            return `
+                <tr>
+                    <td><a href="#" onclick="openNotePreview('${note.id}'); return false;" style="color: #0066cc; text-decoration: none; font-weight: bold;">${escapeHtml(note.name || '')}</a></td>
+                    <td>${escapeHtml(note.author || '-')}</td>
+                    <td>${tagsHtml || '-'}</td>
+                    <td>${updatedDate}</td>
+                    <td style="text-align: center;">${versionCount}</td>
+                    <td>
+                        <button type="button" class="btn-secondary btn-small" onclick="copyNoteContentById('${note.id}')" title="${t('copyContent')}">📋</button>
+                        <button type="button" class="btn-secondary btn-small" onclick="editNote('${note.id}')" title="${t('edit')}">✏️</button>
+                        <button type="button" class="btn-danger btn-small" onclick="deleteNote('${note.id}')" title="${t('delete')}">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+    
+    function copyNoteContentById(noteId) {
+        const note = notes.find(n => n.id === noteId);
+        if (!note) return;
+        
+        navigator.clipboard.writeText(note.content || '').then(() => {
+            // Visual feedback - could show a toast
+        }).catch(err => {
+            const textarea = document.createElement('textarea');
+            textarea.value = note.content || '';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        });
+    }
+    
+    function openNoteEditor(noteId = null) {
+        const modal = document.getElementById('note-editor-modal');
+        const titleEl = document.getElementById('note-editor-title');
+        
+        // Populate linked selects
+        populateNoteLinkedSelects();
+        
+        // Clear form
+        document.getElementById('note-edit-id').value = '';
+        document.getElementById('note-name').value = '';
+        document.getElementById('note-author').value = modelMetadata.dublinCore?.creator || '';
+        document.getElementById('note-tags').value = '';
+        document.getElementById('note-content').value = '';
+        document.getElementById('note-linked-elements').selectedIndex = -1;
+        document.getElementById('note-linked-relationships').selectedIndex = -1;
+        
+        if (noteId) {
+            const note = notes.find(n => n.id === noteId);
+            if (note) {
+                titleEl.textContent = note.name || t('edit');
+                document.getElementById('note-edit-id').value = note.id;
+                document.getElementById('note-name').value = note.name || '';
+                document.getElementById('note-author').value = note.author || '';
+                document.getElementById('note-tags').value = (note.tags || []).join(', ');
+                document.getElementById('note-content').value = note.content || '';
+                
+                // Set linked elements
+                if (note.linkedElements) {
+                    setMultiSelectValues('note-linked-elements', note.linkedElements);
+                }
+                // Set linked relationships
+                if (note.linkedRelationships) {
+                    setMultiSelectValues('note-linked-relationships', note.linkedRelationships);
+                }
+            }
+        } else {
+            titleEl.textContent = t('notesNew');
+        }
+        
+        modal.style.display = 'flex';
+        document.getElementById('note-name').focus();
+    }
+    
+    function populateNoteLinkedSelects() {
+        const elementsSelect = document.getElementById('note-linked-elements');
+        const relsSelect = document.getElementById('note-linked-relationships');
+        
+        // Populate elements
+        elementsSelect.innerHTML = elements.map(e => 
+            `<option value="${escapeHtml(e.id)}">${escapeHtml(e.name || e.id)} (${e.type})</option>`
+        ).join('');
+        
+        // Populate relationships
+        relsSelect.innerHTML = relationships.map(r => {
+            const source = elements.find(e => e.id === r.sourceId);
+            const target = elements.find(e => e.id === r.targetId);
+            const sourceName = source ? source.name : r.sourceId;
+            const targetName = target ? target.name : r.targetId;
+            return `<option value="${escapeHtml(r.id)}">${escapeHtml(sourceName)} → ${escapeHtml(targetName)} (${r.type})</option>`;
+        }).join('');
+    }
+    
+    function closeNoteEditor() {
+        document.getElementById('note-editor-modal').style.display = 'none';
+    }
+    
+    function closeNoteEditorOnOverlay(event) {
+        if (event.target === event.currentTarget) {
+            closeNoteEditor();
+        }
+    }
+    
+    function saveNote() {
+        const editId = document.getElementById('note-edit-id').value;
+        const name = document.getElementById('note-name').value.trim();
+        const author = document.getElementById('note-author').value.trim();
+        const tags = document.getElementById('note-tags').value.split(',').map(s => s.trim()).filter(s => s);
+        const content = document.getElementById('note-content').value;
+        const linkedElements = getMultiSelectValues('note-linked-elements');
+        const linkedRelationships = getMultiSelectValues('note-linked-relationships');
+        
+        if (!name) {
+            alert(t('alertEnterName'));
+            document.getElementById('note-name').focus();
+            return;
+        }
+        
+        const now = new Date().toISOString();
+        
+        if (editId) {
+            // Update existing note
+            const index = notes.findIndex(n => n.id === editId);
+            if (index !== -1) {
+                const existing = notes[index];
+                
+                // Save current version to history before updating
+                if (!existing.versions) {
+                    existing.versions = [];
+                }
+                existing.versions.push({
+                    date: existing.updated || existing.created,
+                    name: existing.name,
+                    author: existing.author,
+                    content: existing.content
+                });
+                
+                // Update note
+                existing.name = name;
+                existing.author = author;
+                existing.tags = tags;
+                existing.content = content;
+                existing.linkedElements = linkedElements;
+                existing.linkedRelationships = linkedRelationships;
+                existing.updated = now;
+            }
+        } else {
+            // Create new note
+            const newNote = {
+                id: `note-${Date.now()}`,
+                name: name,
+                author: author,
+                tags: tags,
+                content: content,
+                linkedElements: linkedElements,
+                linkedRelationships: linkedRelationships,
+                created: now,
+                updated: now,
+                versions: []
+            };
+            notes.push(newNote);
+        }
+        
+        renderNotesTable();
+        updatePříznakyFilters(); // Update tag filters since notes can have tags now
+        saveToLocalStorage();
+        closeNoteEditor();
+    }
+    
+    function editNote(noteId) {
+        openNoteEditor(noteId);
+    }
+    
+    function deleteNote(noteId) {
+        if (!confirm(t('noteConfirmDelete'))) return;
+        
+        notes = notes.filter(n => n.id !== noteId);
+        renderNotesTable();
+        saveToLocalStorage();
+    }
+    
+    // Note Preview
+    function openNotePreview(noteId) {
+        const note = notes.find(n => n.id === noteId);
+        if (!note) return;
+        
+        currentPreviewNoteId = noteId;
+        
+        const modal = document.getElementById('note-preview-modal');
+        const titleEl = document.getElementById('note-preview-title');
+        const metaEl = document.getElementById('note-preview-meta');
+        const linkedEl = document.getElementById('note-preview-linked');
+        const contentEl = document.getElementById('note-preview-content');
+        
+        titleEl.textContent = note.name || '';
+        
+        let metaHtml = `
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div><strong>${t('noteAuthor')}:</strong> ${escapeHtml(note.author || '-')}</div>
+                <div><strong>${t('noteUpdated')}:</strong> ${note.updated ? new Date(note.updated).toLocaleString() : '-'}</div>
+                <div><strong>${t('noteVersions')}:</strong> ${note.versions ? note.versions.length : 0}</div>
+            </div>
+        `;
+        
+        if (note.tags && note.tags.length > 0) {
+            metaHtml += `<div style="margin-top: 8px;"><strong>${t('tags')}:</strong> ${note.tags.map(tag => 
+                `<span style="display: inline-block; background: #e0e0e0; padding: 2px 8px; border-radius: 10px; margin-right: 5px; font-size: 12px;">${escapeHtml(tag)}</span>`
+            ).join('')}</div>`;
+        }
+        
+        metaEl.innerHTML = metaHtml;
+        
+        // Linked items
+        const hasLinked = (note.linkedElements && note.linkedElements.length > 0) || 
+                         (note.linkedRelationships && note.linkedRelationships.length > 0);
+        
+        if (hasLinked) {
+            let linkedHtml = `<div style="padding: 10px; background: #f0f7ff; border-radius: 4px; border: 1px solid #d0e0f0;">
+                <strong style="color: #336;">${t('linkedItems')}:</strong><br>`;
+            
+            if (note.linkedElements && note.linkedElements.length > 0) {
+                linkedHtml += `<div style="margin-top: 5px;"><strong>${t('elements')}:</strong> `;
+                linkedHtml += note.linkedElements.map(id => {
+                    const el = elements.find(e => e.id === id);
+                    return el ? `<a href="#" onclick="switchTab('elements'); document.getElementById('filter-search').value='${escapeHtml(el.id)}'; filterElements(); return false;" style="margin-right: 8px;">${escapeHtml(el.name || el.id)}</a>` : id;
+                }).join('');
+                linkedHtml += '</div>';
+            }
+            
+            if (note.linkedRelationships && note.linkedRelationships.length > 0) {
+                linkedHtml += `<div style="margin-top: 5px;"><strong>${t('relationships')}:</strong> `;
+                linkedHtml += note.linkedRelationships.map(id => {
+                    const rel = relationships.find(r => r.id === id);
+                    if (rel) {
+                        const source = elements.find(e => e.id === rel.sourceId);
+                        const target = elements.find(e => e.id === rel.targetId);
+                        return `<span style="margin-right: 8px;">${escapeHtml(source?.name || rel.sourceId)} → ${escapeHtml(target?.name || rel.targetId)}</span>`;
+                    }
+                    return id;
+                }).join('');
+                linkedHtml += '</div>';
+            }
+            
+            linkedHtml += '</div>';
+            linkedEl.innerHTML = linkedHtml;
+            linkedEl.style.display = 'block';
+        } else {
+            linkedEl.style.display = 'none';
+        }
+        
+        contentEl.innerHTML = renderMarkdown(note.content || '');
+        
+        modal.style.display = 'flex';
+    }
+    
+    function copyNoteContent() {
+        if (!currentPreviewNoteId) return;
+        const note = notes.find(n => n.id === currentPreviewNoteId);
+        if (!note) return;
+        
+        navigator.clipboard.writeText(note.content || '').then(() => {
+            alert(t('contentCopied'));
+        }).catch(err => {
+            // Fallback
+            const textarea = document.createElement('textarea');
+            textarea.value = note.content || '';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert(t('contentCopied'));
+        });
+    }
+    
+    function closeNotePreview() {
+        document.getElementById('note-preview-modal').style.display = 'none';
+        currentPreviewNoteId = null;
+    }
+    
+    function closeNotePreviewOnOverlay(event) {
+        if (event.target === event.currentTarget) {
+            closeNotePreview();
+        }
+    }
+    
+    function previewNoteEdit() {
+        if (!currentPreviewNoteId) return;
+        const noteId = currentPreviewNoteId; // Save ID before closing
+        closeNotePreview();
+        editNote(noteId);
+    }
+    
+    // Note Versions
+    function openNoteVersions() {
+        if (!currentPreviewNoteId) return;
+        
+        const note = notes.find(n => n.id === currentPreviewNoteId);
+        if (!note) return;
+        
+        closeNotePreview();
+        
+        const modal = document.getElementById('note-versions-modal');
+        const titleEl = document.getElementById('note-versions-title');
+        const listEl = document.getElementById('note-versions-list');
+        
+        titleEl.textContent = `${t('noteVersions')}: ${note.name}`;
+        
+        // Build version list - current version first, then history in reverse order
+        let listHtml = `
+            <div class="note-version-item current active" onclick="showNoteVersion(-1)">
+                <div class="note-version-date">${t('noteCurrentVersion')}</div>
+                <div class="note-version-time">${note.updated ? new Date(note.updated).toLocaleString() : '-'}</div>
+            </div>
+        `;
+        
+        if (note.versions && note.versions.length > 0) {
+            // Reverse to show newest first
+            const reversedVersions = [...note.versions].reverse();
+            reversedVersions.forEach((version, idx) => {
+                const realIndex = note.versions.length - 1 - idx;
+                const versionDate = new Date(version.date);
+                listHtml += `
+                    <div class="note-version-item" onclick="showNoteVersion(${realIndex})">
+                        <div class="note-version-date">${versionDate.toLocaleDateString()}</div>
+                        <div class="note-version-time">${versionDate.toLocaleTimeString()}</div>
+                    </div>
+                `;
+            });
+        }
+        
+        listEl.innerHTML = listHtml;
+        
+        // Show current version
+        currentVersionIndex = -1;
+        showNoteVersion(-1);
+        
+        modal.style.display = 'flex';
+    }
+    
+    function showNoteVersion(versionIndex) {
+        if (!currentPreviewNoteId) return;
+        
+        const note = notes.find(n => n.id === currentPreviewNoteId);
+        if (!note) return;
+        
+        currentVersionIndex = versionIndex;
+        
+        const metaEl = document.getElementById('note-version-meta');
+        const contentEl = document.getElementById('note-version-content');
+        const restoreBtn = document.getElementById('note-restore-btn');
+        
+        // Update active state in list
+        document.querySelectorAll('.note-version-item').forEach((el, idx) => {
+            el.classList.remove('active');
+            if ((versionIndex === -1 && idx === 0) || (versionIndex >= 0 && idx === note.versions.length - versionIndex)) {
+                el.classList.add('active');
+            }
+        });
+        
+        let versionData;
+        if (versionIndex === -1) {
+            // Current version
+            versionData = {
+                date: note.updated,
+                name: note.name,
+                author: note.author,
+                content: note.content
+            };
+            restoreBtn.style.display = 'none';
+        } else {
+            // Historical version
+            versionData = note.versions[versionIndex];
+            restoreBtn.style.display = 'inline-block';
+        }
+        
+        metaEl.innerHTML = `
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div><strong>${t('noteName')}:</strong> ${escapeHtml(versionData.name || '-')}</div>
+                <div><strong>${t('noteAuthor')}:</strong> ${escapeHtml(versionData.author || '-')}</div>
+                <div><strong>${t('date')}:</strong> ${versionData.date ? new Date(versionData.date).toLocaleString() : '-'}</div>
+            </div>
+        `;
+        
+        contentEl.innerHTML = renderMarkdown(versionData.content || '');
+    }
+    
+    function restoreNoteVersion() {
+        if (!currentPreviewNoteId || currentVersionIndex === null || currentVersionIndex === -1) return;
+        
+        const note = notes.find(n => n.id === currentPreviewNoteId);
+        if (!note || !note.versions || !note.versions[currentVersionIndex]) return;
+        
+        const version = note.versions[currentVersionIndex];
+        
+        // Save current as a new version before restoring
+        note.versions.push({
+            date: note.updated,
+            name: note.name,
+            author: note.author,
+            content: note.content
+        });
+        
+        // Restore selected version
+        note.name = version.name;
+        note.author = version.author;
+        note.content = version.content;
+        note.updated = new Date().toISOString();
+        
+        renderNotesTable();
+        saveToLocalStorage();
+        
+        alert(t('noteVersionRestored'));
+        closeNoteVersions();
+    }
+    
+    function closeNoteVersions() {
+        document.getElementById('note-versions-modal').style.display = 'none';
+        currentVersionIndex = null;
+    }
+    
+    function closeNoteVersionsOnOverlay(event) {
+        if (event.target === event.currentTarget) {
+            closeNoteVersions();
+        }
+    }
+    
+    // Simple Markdown renderer
+    function renderMarkdown(text) {
+        if (!text) return '';
+        
+        let html = escapeHtml(text);
+        
+        // Headers
+        html = html.replace(/^######\s+(.*)$/gm, '<h6>$1</h6>');
+        html = html.replace(/^#####\s+(.*)$/gm, '<h5>$1</h5>');
+        html = html.replace(/^####\s+(.*)$/gm, '<h4>$1</h4>');
+        html = html.replace(/^###\s+(.*)$/gm, '<h3>$1</h3>');
+        html = html.replace(/^##\s+(.*)$/gm, '<h2>$1</h2>');
+        html = html.replace(/^#\s+(.*)$/gm, '<h1>$1</h1>');
+        
+        // Bold and italic
+        html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+        html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        html = html.replace(/___(.+?)___/g, '<strong><em>$1</em></strong>');
+        html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+        html = html.replace(/_(.+?)_/g, '<em>$1</em>');
+        
+        // Code blocks
+        html = html.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+        html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+        
+        // Blockquotes
+        html = html.replace(/^&gt;\s+(.*)$/gm, '<blockquote>$1</blockquote>');
+        
+        // Links
+        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+        
+        // Images
+        html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+        
+        // Horizontal rule
+        html = html.replace(/^---+$/gm, '<hr>');
+        html = html.replace(/^\*\*\*+$/gm, '<hr>');
+        
+        // Process lists properly
+        const lines = html.split('\n');
+        const result = [];
+        let inUnorderedList = false;
+        let inOrderedList = false;
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            const trimmedLine = line.trim();
+            
+            // Check for unordered list item
+            const ulMatch = trimmedLine.match(/^[\*\-]\s+(.*)$/);
+            // Check for ordered list item
+            const olMatch = trimmedLine.match(/^(\d+)\.\s+(.*)$/);
+            
+            if (ulMatch) {
+                if (inOrderedList) {
+                    result.push('</ol>');
+                    inOrderedList = false;
+                }
+                if (!inUnorderedList) {
+                    result.push('<ul>');
+                    inUnorderedList = true;
+                }
+                result.push(`<li>${ulMatch[1]}</li>`);
+            } else if (olMatch) {
+                if (inUnorderedList) {
+                    result.push('</ul>');
+                    inUnorderedList = false;
+                }
+                if (!inOrderedList) {
+                    result.push('<ol>');
+                    inOrderedList = true;
+                }
+                result.push(`<li>${olMatch[2]}</li>`);
+            } else {
+                // Close any open lists
+                if (inUnorderedList) {
+                    result.push('</ul>');
+                    inUnorderedList = false;
+                }
+                if (inOrderedList) {
+                    result.push('</ol>');
+                    inOrderedList = false;
+                }
+                
+                // Handle other elements
+                if (!trimmedLine) {
+                    result.push('');
+                } else if (trimmedLine.startsWith('<h') || trimmedLine.startsWith('<blockquote') || 
+                    trimmedLine.startsWith('<pre') || trimmedLine.startsWith('<hr')) {
+                    result.push(trimmedLine);
+                } else if (trimmedLine.startsWith('</')) {
+                    result.push(trimmedLine);
+                } else {
+                    result.push(`<p>${trimmedLine}</p>`);
+                }
+            }
+        }
+        
+        // Close any remaining open lists
+        if (inUnorderedList) result.push('</ul>');
+        if (inOrderedList) result.push('</ol>');
+        
+        return result.join('\n');
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize language
         currentLanguage = detectLanguage();
@@ -8013,6 +11493,7 @@
         updatePříznakyFilters();
         updateRelNameSuggestions();
         updateRelSourceTargetFilters();
+        updateDiagramFilters();
         updateModelStats();
         updateGeneratorPlaceholders();
         
@@ -8020,6 +11501,16 @@
         loadColumnVisibility('elements-table');
         loadColumnVisibility('relationships-table');
         loadColumnVisibility('diagrams-table');
+        
+        // Render ADR table
+        renderAdrTable();
+        
+        // Render Notes table
+        renderNotesTable();
+        
+        // Render Tasks table
+        renderTasksTable();
+        updateTaskAssigneeFilter();
     });
     </script>
     <!-- Clipboard Paste Modal -->

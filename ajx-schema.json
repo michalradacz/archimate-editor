@@ -39,6 +39,27 @@
         "$ref": "#/$defs/diagram"
       },
       "description": "Array of ArchiMate views/diagrams"
+    },
+    "adr": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/adrRecord"
+      },
+      "description": "Array of Architecture Decision Records"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/note"
+      },
+      "description": "Array of notes"
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/task"
+      },
+      "description": "Array of tasks"
     }
   },
   "$defs": {
@@ -318,6 +339,300 @@
             "type": "string"
           },
           "description": "Array of element IDs included in this diagram"
+        }
+      }
+    },
+    "adrRecord": {
+      "type": "object",
+      "required": ["id", "number", "title", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ADR"
+        },
+        "number": {
+          "type": "string",
+          "description": "ADR identifier (supports alphanumeric values like 1, E1, A-01)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Short descriptive title of the decision"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "proposed", "under_discussion", "returned", "accepted", "rejected", "updated", "implemented", "monitored", "deprecated", "superseded", "closed"],
+          "description": "Current status of the ADR"
+        },
+        "statusHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "status": { "type": "string" },
+              "date": { "type": "string", "format": "date-time" },
+              "author": { "type": "string" },
+              "approver": { "type": "string" }
+            }
+          },
+          "description": "History of status changes"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        },
+        "author": {
+          "type": "string",
+          "description": "Author of the ADR"
+        },
+        "approver": {
+          "type": "string",
+          "description": "Person who approved the decision"
+        },
+        "deciders": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of people involved in the decision"
+        },
+        "context": {
+          "type": "string",
+          "description": "Context and problem statement"
+        },
+        "decision": {
+          "type": "string",
+          "description": "The decision that was made"
+        },
+        "consequences": {
+          "type": "string",
+          "description": "Consequences of the decision"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          },
+          "description": "Alternatives that were considered"
+        },
+        "selectedAlternative": {
+          "type": "string",
+          "description": "Index of the selected alternative"
+        },
+        "selectionReason": {
+          "type": "string",
+          "description": "Rationale for selecting the chosen alternative"
+        },
+        "implementation": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["not_started", "in_progress", "completed"]
+            },
+            "startDate": { "type": "string", "format": "date" },
+            "targetDate": { "type": "string", "format": "date" },
+            "notes": { "type": "string" }
+          },
+          "description": "Implementation tracking"
+        },
+        "relatedAdr": {
+          "type": "object",
+          "properties": {
+            "supersedes": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "supersededBy": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "relatedTo": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          "description": "Relationships to other ADRs"
+        },
+        "linkedElements": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Array of element IDs linked to this ADR"
+        },
+        "linkedRelationships": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Array of relationship IDs linked to this ADR"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Tags for categorization"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "url": { "type": "string", "format": "uri" }
+            }
+          },
+          "description": "External links and references"
+        }
+      }
+    },
+    "note": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the note"
+        },
+        "name": {
+          "type": "string",
+          "description": "Note title"
+        },
+        "author": {
+          "type": "string",
+          "description": "Author of the note"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Tags/labels for the note (shared with ADR tags)"
+        },
+        "content": {
+          "type": "string",
+          "description": "Note content (supports Markdown)"
+        },
+        "linkedElements": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Array of element IDs linked to this note"
+        },
+        "linkedRelationships": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Array of relationship IDs linked to this note"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": { "type": "string", "format": "date-time" },
+              "name": { "type": "string" },
+              "author": { "type": "string" },
+              "content": { "type": "string" }
+            }
+          },
+          "description": "Version history of the note"
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "required": ["id", "title", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the task"
+        },
+        "number": {
+          "type": "string",
+          "description": "Task number for display"
+        },
+        "title": {
+          "type": "string",
+          "description": "Task title"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["new", "in_progress", "blocked", "review", "done", "cancelled"],
+          "description": "Current status of the task"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "description": "Task priority"
+        },
+        "assignee": {
+          "type": "string",
+          "description": "Person assigned to complete the task"
+        },
+        "reporter": {
+          "type": "string",
+          "description": "Person who created the task"
+        },
+        "dueDate": {
+          "type": "string",
+          "format": "date",
+          "description": "Due date for the task"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Tags for categorization"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed task description (supports Markdown)"
+        },
+        "currentState": {
+          "type": "string",
+          "description": "Current state or resolution notes"
+        },
+        "linkedElements": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Array of element IDs linked to this task"
+        },
+        "linkedRelationships": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Array of relationship IDs linked to this task"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        },
+        "statusHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "status": { "type": "string" },
+              "date": { "type": "string", "format": "date-time" },
+              "author": { "type": "string" },
+              "stateDescription": { "type": "string" }
+            }
+          },
+          "description": "History of status changes"
         }
       }
     }
