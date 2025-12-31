@@ -444,31 +444,51 @@ Každá změna stavu se automaticky zaznamenává včetně data a autora.
 
 Generátor vytváří textové výstupy z modelu pomocí šablon s placeholdery.
 
+### Zdroje dat
+
+Generátor umí generovat text z:
+- **Prvky** - aktuální seznam prvků (respektuje filtry)
+- **Vazby** - aktuální seznam vazeb (respektuje filtry)
+- **Úkoly** - všechny úkoly
+- **Poznámky** - všechny poznámky
+- **ADR** - všechna architektonická rozhodnutí
+
 ### Šablony
 
-Zadejte šablonu s placeholdery v hranatých závorkách:
+Zadejte šablonu s placeholdery ve složených závorkách:
 ```
-[název] je [typ] ve vrstvě [vrstva].
+{Název} je {Typ} ve vrstvě {Vrstva}.
 ```
 
 ### Dostupné placeholdery
 
 #### Pro prvky
-- `[id]`, `[název]`, `[typ]`, `[vrstva]`
-- `[stereotyp]`, `[určuje]`, `[příznaky]`, `[popis]`
+- `{ID}`, `{Název}`, `{Typ}`, `{Vrstva}`
+- `{Stereotyp}`, `{Určuje}`, `{Příznaky}`, `{Popis}`
 
 #### Pro vazby
-- `[id]`, `[typ]`, `[zdroj]`, `[cíl]`
-- `[název]`, `[popis]`, `[příznaky]`, `[sloveso]`
+- `{ID}`, `{Typ}`, `{Název}`, `{Popis}`, `{Příznaky}`, `{Statement}`
+- Zdroj: `{Zdroj}`, `{ZdrojID}`, `{ZdrojVrstva}`, `{ZdrojTyp}`, `{ZdrojStereotyp}`, `{ZdrojUrčuje}`, `{ZdrojPříznaky}`, `{ZdrojPopis}`
+- Cíl: `{Cíl}`, `{CílID}`, `{CílVrstva}`, `{CílTyp}`, `{CílStereotyp}`, `{CílUrčuje}`, `{CílPříznaky}`, `{CílPopis}`
 
-### Filtry
+#### Pro úkoly
+- `{ID}`, `{Číslo}`, `{Název}`, `{Stav}`, `{Priorita}`
+- `{Řešitel}`, `{Zadavatel}`, `{Termín}`, `{Příznaky}`
+- `{Popis}`, `{AktuálníStav}`, `{Vytvořeno}`, `{Aktualizováno}`
 
-Můžete omezit generování na vybranou vrstvu, typ, stereotyp nebo příznaky.
+#### Pro poznámky
+- `{ID}`, `{Název}`, `{Autor}`, `{Příznaky}`
+- `{Obsah}`, `{Vytvořeno}`, `{Aktualizováno}`, `{PočetVerzí}`
+
+#### Pro ADR
+- `{ID}`, `{Číslo}`, `{Název}`, `{Stav}`
+- `{Autor}`, `{Schvalovatel}`, `{Datum}`, `{Příznaky}`
+- `{Kontext}`, `{Rozhodnutí}`, `{Důsledky}`
+- `{PočetAlternativ}`, `{VybranáAlternativa}`
 
 ### Možnosti
 
 - **Přeskočit prázdné** - vynechá položky kde by placeholder byl prázdný
-- **Generovat pro prvky/vazby** - přepínač zdroje dat
 
 ---
 

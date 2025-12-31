@@ -444,31 +444,51 @@ Every status change is automatically recorded including date and author.
 
 The generator creates text outputs from the model using templates with placeholders.
 
+### Data Sources
+
+The generator can create text from:
+- **Elements** - current elements list (respects filters)
+- **Relationships** - current relationships list (respects filters)
+- **Tasks** - all tasks
+- **Notes** - all notes
+- **ADR** - all architecture decision records
+
 ### Templates
 
-Enter a template with placeholders in square brackets:
+Enter a template with placeholders in curly brackets:
 ```
-[name] is a [type] in the [layer] layer.
+{Name} is a {Type} in the {Layer} layer.
 ```
 
 ### Available Placeholders
 
 #### For Elements
-- `[id]`, `[name]`, `[type]`, `[layer]`
-- `[stereotype]`, `[defines]`, `[tags]`, `[description]`
+- `{ID}`, `{Název}`, `{Typ}`, `{Vrstva}`
+- `{Stereotyp}`, `{Určuje}`, `{Příznaky}`, `{Popis}`
 
 #### For Relationships
-- `[id]`, `[type]`, `[source]`, `[target]`
-- `[name]`, `[description]`, `[tags]`, `[verb]`
+- `{ID}`, `{Typ}`, `{Název}`, `{Popis}`, `{Příznaky}`, `{Statement}`
+- Source: `{Zdroj}`, `{ZdrojID}`, `{ZdrojVrstva}`, `{ZdrojTyp}`, `{ZdrojStereotyp}`, `{ZdrojUrčuje}`, `{ZdrojPříznaky}`, `{ZdrojPopis}`
+- Target: `{Cíl}`, `{CílID}`, `{CílVrstva}`, `{CílTyp}`, `{CílStereotyp}`, `{CílUrčuje}`, `{CílPříznaky}`, `{CílPopis}`
 
-### Filters
+#### For Tasks
+- `{ID}`, `{Číslo}`, `{Název}`, `{Stav}`, `{Priorita}`
+- `{Řešitel}`, `{Zadavatel}`, `{Termín}`, `{Příznaky}`
+- `{Popis}`, `{AktuálníStav}`, `{Vytvořeno}`, `{Aktualizováno}`
 
-You can limit generation to selected layer, type, stereotype, or tags.
+#### For Notes
+- `{ID}`, `{Název}`, `{Autor}`, `{Příznaky}`
+- `{Obsah}`, `{Vytvořeno}`, `{Aktualizováno}`, `{PočetVerzí}`
+
+#### For ADR
+- `{ID}`, `{Číslo}`, `{Název}`, `{Stav}`
+- `{Autor}`, `{Schvalovatel}`, `{Datum}`, `{Příznaky}`
+- `{Kontext}`, `{Rozhodnutí}`, `{Důsledky}`
+- `{PočetAlternativ}`, `{VybranáAlternativa}`
 
 ### Options
 
 - **Skip empty** - omits items where placeholder would be empty
-- **Generate for elements/relationships** - data source switch
 
 ---
 

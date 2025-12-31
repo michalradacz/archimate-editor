@@ -1747,6 +1747,9 @@
                             <select id="generator-source" onchange="updateGeneratorPlaceholders()">
                                 <option value="elements" data-i18n="currentElements">Aktuální seznam prvků</option>
                                 <option value="relationships" data-i18n="currentRelationships">Aktuální seznam vazeb</option>
+                                <option value="tasks" data-i18n="currentTasks">Aktuální seznam úkolů</option>
+                                <option value="notes" data-i18n="currentNotes">Aktuální seznam poznámek</option>
+                                <option value="adr" data-i18n="currentAdr">Aktuální seznam ADR</option>
                             </select>
                             
                             <div style="margin-top: 15px;">
@@ -2798,6 +2801,9 @@
             textGeneratorDesc: 'Generuje text z aktuálně zobrazených (filtrovaných) prvků nebo vazeb podle zadané šablony.',
             currentElements: 'Aktuální seznam prvků',
             currentRelationships: 'Aktuální seznam vazeb',
+            currentTasks: 'Aktuální seznam úkolů',
+            currentNotes: 'Aktuální seznam poznámek',
+            currentAdr: 'Aktuální seznam ADR',
             availablePlaceholders: 'Dostupné placeholdery',
             templateLabel: 'Šablona (pro každý řádek)',
             templatePlaceholder: 'Např.: {Stereotyp} {Název} je typu {Typ}\n\nKliknutím na placeholder ho vložíte na pozici kurzoru.',
@@ -3354,6 +3360,9 @@
             textGeneratorDesc: 'Generates text from currently displayed (filtered) elements or relationships using a template.',
             currentElements: 'Current elements list',
             currentRelationships: 'Current relationships list',
+            currentTasks: 'Current tasks list',
+            currentNotes: 'Current notes list',
+            currentAdr: 'Current ADR list',
             availablePlaceholders: 'Available placeholders',
             templateLabel: 'Template (for each row)',
             templatePlaceholder: 'E.g.: {Stereotype} {Name} is of type {Type}\n\nClick a placeholder to insert it at cursor position.',
@@ -5293,16 +5302,63 @@
         { key: '{CílPopis}', desc: 'Popis cíle', group: 'Cíl' }
     ];
     
+    const TASK_PLACEHOLDERS = [
+        { key: '{ID}', desc: 'ID úkolu' },
+        { key: '{Číslo}', desc: 'Číslo úkolu' },
+        { key: '{Název}', desc: 'Název úkolu' },
+        { key: '{Stav}', desc: 'Stav úkolu' },
+        { key: '{Priorita}', desc: 'Priorita úkolu' },
+        { key: '{Řešitel}', desc: 'Řešitel' },
+        { key: '{Zadavatel}', desc: 'Zadavatel' },
+        { key: '{Termín}', desc: 'Termín' },
+        { key: '{Příznaky}', desc: 'Příznaky' },
+        { key: '{Popis}', desc: 'Popis úkolu' },
+        { key: '{AktuálníStav}', desc: 'Aktuální stav/poznámky' },
+        { key: '{Vytvořeno}', desc: 'Datum vytvoření' },
+        { key: '{Aktualizováno}', desc: 'Datum aktualizace' }
+    ];
+    
+    const NOTE_PLACEHOLDERS = [
+        { key: '{ID}', desc: 'ID poznámky' },
+        { key: '{Název}', desc: 'Název poznámky' },
+        { key: '{Autor}', desc: 'Autor' },
+        { key: '{Příznaky}', desc: 'Příznaky' },
+        { key: '{Obsah}', desc: 'Obsah poznámky' },
+        { key: '{Vytvořeno}', desc: 'Datum vytvoření' },
+        { key: '{Aktualizováno}', desc: 'Datum aktualizace' },
+        { key: '{PočetVerzí}', desc: 'Počet verzí' }
+    ];
+    
+    const ADR_PLACEHOLDERS = [
+        { key: '{ID}', desc: 'ID ADR' },
+        { key: '{Číslo}', desc: 'Číslo ADR' },
+        { key: '{Název}', desc: 'Název ADR' },
+        { key: '{Stav}', desc: 'Stav ADR' },
+        { key: '{Autor}', desc: 'Autor' },
+        { key: '{Schvalovatel}', desc: 'Schvalovatel' },
+        { key: '{Datum}', desc: 'Datum rozhodnutí' },
+        { key: '{Příznaky}', desc: 'Příznaky' },
+        { key: '{Kontext}', desc: 'Kontext' },
+        { key: '{Rozhodnutí}', desc: 'Rozhodnutí' },
+        { key: '{Důsledky}', desc: 'Důsledky' },
+        { key: '{PočetAlternativ}', desc: 'Počet alternativ' },
+        { key: '{VybranáAlternativa}', desc: 'Vybraná alternativa' }
+    ];
+    
     function updateGeneratorPlaceholders() {
         const source = document.getElementById('generator-source').value;
         const container = document.getElementById('generator-placeholders');
         
+        let placeholders;
         if (source === 'elements') {
-            container.innerHTML = ELEMENT_PLACEHOLDERS.map(p => 
-                `<button type="button" class="btn-secondary" style="font-size: 12px; padding: 3px 8px;" 
-                         onclick="insertPlaceholder('${p.key}')" title="${escapeHtml(p.desc)}">${escapeHtml(p.key)}</button>`
-            ).join('');
-        } else {
+            placeholders = ELEMENT_PLACEHOLDERS;
+        } else if (source === 'tasks') {
+            placeholders = TASK_PLACEHOLDERS;
+        } else if (source === 'notes') {
+            placeholders = NOTE_PLACEHOLDERS;
+        } else if (source === 'adr') {
+            placeholders = ADR_PLACEHOLDERS;
+        } else if (source === 'relationships') {
             // Group relationship placeholders
             let html = '';
             let currentGroup = '';
@@ -5317,7 +5373,14 @@
             });
             html += '</div>';
             container.innerHTML = html;
+            return;
         }
+        
+        // Simple placeholders (elements, tasks, notes, adr)
+        container.innerHTML = placeholders.map(p => 
+            `<button type="button" class="btn-secondary" style="font-size: 12px; padding: 3px 8px;" 
+                     onclick="insertPlaceholder('${p.key}')" title="${escapeHtml(p.desc)}">${escapeHtml(p.key)}</button>`
+        ).join('');
     }
     
     function insertPlaceholder(placeholder) {
@@ -5382,7 +5445,7 @@
                 
                 lines.push(line);
             });
-        } else {
+        } else if (source === 'relationships') {
             // Get currently filtered relationships
             items = getFilteredRelationships();
             
@@ -5430,6 +5493,83 @@
                 
                 lines.push(line);
             });
+        } else if (source === 'tasks') {
+            // Use all tasks (no filtering for now)
+            items = tasks;
+            
+            items.forEach(t => {
+                let line = template
+                    .replace(/\{ID\}/g, t.id || '')
+                    .replace(/\{Číslo\}/g, t.number || '')
+                    .replace(/\{Název\}/g, t.title || '')
+                    .replace(/\{Stav\}/g, getTaskStatusLabel(t.status) || '')
+                    .replace(/\{Priorita\}/g, getTaskPriorityLabel(t.priority) || '')
+                    .replace(/\{Řešitel\}/g, t.assignee || '')
+                    .replace(/\{Zadavatel\}/g, t.reporter || '')
+                    .replace(/\{Termín\}/g, t.dueDate || '')
+                    .replace(/\{Příznaky\}/g, (t.tags || []).join(', ') || '')
+                    .replace(/\{Popis\}/g, t.description || '')
+                    .replace(/\{AktuálníStav\}/g, t.currentState || '')
+                    .replace(/\{Vytvořeno\}/g, t.created ? new Date(t.created).toLocaleDateString() : '')
+                    .replace(/\{Aktualizováno\}/g, t.updated ? new Date(t.updated).toLocaleDateString() : '');
+                
+                if (skipEmpty && hasEmptyPlaceholder(template, t, 'task')) {
+                    return;
+                }
+                
+                lines.push(line);
+            });
+        } else if (source === 'notes') {
+            // Use all notes
+            items = notes;
+            
+            items.forEach(n => {
+                let line = template
+                    .replace(/\{ID\}/g, n.id || '')
+                    .replace(/\{Název\}/g, n.name || '')
+                    .replace(/\{Autor\}/g, n.author || '')
+                    .replace(/\{Příznaky\}/g, (n.tags || []).join(', ') || '')
+                    .replace(/\{Obsah\}/g, n.content || '')
+                    .replace(/\{Vytvořeno\}/g, n.created ? new Date(n.created).toLocaleDateString() : '')
+                    .replace(/\{Aktualizováno\}/g, n.updated ? new Date(n.updated).toLocaleDateString() : '')
+                    .replace(/\{PočetVerzí\}/g, (n.versions || []).length.toString());
+                
+                if (skipEmpty && hasEmptyPlaceholder(template, n, 'note')) {
+                    return;
+                }
+                
+                lines.push(line);
+            });
+        } else if (source === 'adr') {
+            // Use all ADR records
+            items = adrRecords;
+            
+            items.forEach(a => {
+                const selectedAlt = a.alternatives && a.selectedAlternative !== undefined && a.selectedAlternative !== '' 
+                    ? (a.alternatives[parseInt(a.selectedAlternative)] || {}).title || '' 
+                    : '';
+                
+                let line = template
+                    .replace(/\{ID\}/g, a.id || '')
+                    .replace(/\{Číslo\}/g, a.number || '')
+                    .replace(/\{Název\}/g, a.title || '')
+                    .replace(/\{Stav\}/g, getAdrStatusLabel(a.status) || '')
+                    .replace(/\{Autor\}/g, a.author || '')
+                    .replace(/\{Schvalovatel\}/g, a.approver || '')
+                    .replace(/\{Datum\}/g, a.decisionDate || '')
+                    .replace(/\{Příznaky\}/g, (a.tags || []).join(', ') || '')
+                    .replace(/\{Kontext\}/g, a.context || '')
+                    .replace(/\{Rozhodnutí\}/g, a.decision || '')
+                    .replace(/\{Důsledky\}/g, a.consequences || '')
+                    .replace(/\{PočetAlternativ\}/g, (a.alternatives || []).length.toString())
+                    .replace(/\{VybranáAlternativa\}/g, selectedAlt);
+                
+                if (skipEmpty && hasEmptyPlaceholder(template, a, 'adr')) {
+                    return;
+                }
+                
+                lines.push(line);
+            });
         }
         
         outputArea.value = lines.join('\n');
@@ -5464,7 +5604,7 @@
                 case '{Popis}': return item.description;
                 default: return '';
             }
-        } else {
+        } else if (type === 'relationship') {
             const sourceEl = elements.find(e => e.id === item.sourceId);
             const targetEl = elements.find(e => e.id === item.targetId);
             const sourceLayerInfo = sourceEl ? ARCHIMATE_LAYERS[sourceEl.layer] : null;
@@ -5500,7 +5640,58 @@
                 case '{CílPopis}': return targetEl ? targetEl.description : '';
                 default: return '';
             }
+        } else if (type === 'task') {
+            switch (placeholder) {
+                case '{ID}': return item.id;
+                case '{Číslo}': return item.number;
+                case '{Název}': return item.title;
+                case '{Stav}': return getTaskStatusLabel(item.status);
+                case '{Priorita}': return getTaskPriorityLabel(item.priority);
+                case '{Řešitel}': return item.assignee;
+                case '{Zadavatel}': return item.reporter;
+                case '{Termín}': return item.dueDate;
+                case '{Příznaky}': return (item.tags || []).join(', ');
+                case '{Popis}': return item.description;
+                case '{AktuálníStav}': return item.currentState;
+                case '{Vytvořeno}': return item.created ? new Date(item.created).toLocaleDateString() : '';
+                case '{Aktualizováno}': return item.updated ? new Date(item.updated).toLocaleDateString() : '';
+                default: return '';
+            }
+        } else if (type === 'note') {
+            switch (placeholder) {
+                case '{ID}': return item.id;
+                case '{Název}': return item.name;
+                case '{Autor}': return item.author;
+                case '{Příznaky}': return (item.tags || []).join(', ');
+                case '{Obsah}': return item.content;
+                case '{Vytvořeno}': return item.created ? new Date(item.created).toLocaleDateString() : '';
+                case '{Aktualizováno}': return item.updated ? new Date(item.updated).toLocaleDateString() : '';
+                case '{PočetVerzí}': return (item.versions || []).length.toString();
+                default: return '';
+            }
+        } else if (type === 'adr') {
+            const selectedAlt = item.alternatives && item.selectedAlternative !== undefined && item.selectedAlternative !== '' 
+                ? (item.alternatives[parseInt(item.selectedAlternative)] || {}).title || '' 
+                : '';
+            
+            switch (placeholder) {
+                case '{ID}': return item.id;
+                case '{Číslo}': return item.number;
+                case '{Název}': return item.title;
+                case '{Stav}': return getAdrStatusLabel(item.status);
+                case '{Autor}': return item.author;
+                case '{Schvalovatel}': return item.approver;
+                case '{Datum}': return item.decisionDate;
+                case '{Příznaky}': return (item.tags || []).join(', ');
+                case '{Kontext}': return item.context;
+                case '{Rozhodnutí}': return item.decision;
+                case '{Důsledky}': return item.consequences;
+                case '{PočetAlternativ}': return (item.alternatives || []).length.toString();
+                case '{VybranáAlternativa}': return selectedAlt;
+                default: return '';
+            }
         }
+        return '';
     }
     
     function getFilteredElements() {
