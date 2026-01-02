@@ -7155,7 +7155,26 @@
         return xml;
     }
     
-    function downloadFile(content, filename, mimeType) {
+    async function saveFileWithDialog(content, filename, mimeType, extensions) {
+        if ('showSaveFilePicker' in window) {
+            try {
+                const handle = await window.showSaveFilePicker({
+                    suggestedName: filename,
+                    types: [{
+                        description: filename.split('.').pop().toUpperCase() + ' file',
+                        accept: { [mimeType]: extensions }
+                    }]
+                });
+                const writable = await handle.createWritable();
+                await writable.write(content);
+                await writable.close();
+                return true;
+            } catch (e) {
+                if (e.name === 'AbortError') return false;
+                // Fall through to legacy download
+            }
+        }
+        // Fallback for browsers without File System Access API
         const blob = new Blob([content], { type: mimeType });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -7165,6 +7184,23 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+        return true;
+    }
+    
+    async function downloadFile(content, filename, mimeType) {
+        // Determine extensions from mimeType
+        const extMap = {
+            'application/json': ['.json', '.ajx'],
+            'application/xml': ['.xml'],
+            'text/xml': ['.xml'],
+            'text/csv': ['.csv'],
+            'text/markdown': ['.md'],
+            'text/markdown;charset=utf-8': ['.md'],
+            'image/svg+xml': ['.svg'],
+            'text/html': ['.html']
+        };
+        const extensions = extMap[mimeType] || ['.' + filename.split('.').pop()];
+        await saveFileWithDialog(content, filename, mimeType, extensions);
     }
 
     // ============================================
@@ -9370,7 +9406,7 @@
         return marker;
     }
     
-    function downloadDiagramSVG() {
+    async function downloadDiagramSVG() {
         const container = document.getElementById('diagram-svg-container');
         const svg = container.querySelector('svg');
         if (!svg) {
@@ -9382,15 +9418,7 @@
         const filename = diagram ? diagram.name.replace(/[^a-zA-Z0-9]/g, '_') + '.svg' : 'diagram.svg';
         
         const svgData = new XMLSerializer().serializeToString(svg);
-        const blob = new Blob([svgData], { type: 'image/svg+xml' });
-        const url = URL.createObjectURL(blob);
-        
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        
-        URL.revokeObjectURL(url);
+        await saveFileWithDialog(svgData, filename, 'image/svg+xml', ['.svg']);
     }
 
     // ============================================
@@ -9953,7 +9981,7 @@
         return md;
     }
     
-    function saveTaskAsMarkdown() {
+    async function saveTaskAsMarkdown() {
         const editId = document.getElementById('task-edit-id').value;
         if (!editId) {
             alert('Nejprve uložte úkol.');
@@ -9965,13 +9993,7 @@
         const md = generateTaskMarkdown(task);
         const filename = `task-${task.number}-${(task.title || 'task').replace(/[^a-z0-9]/gi, '-').toLowerCase()}.md`;
         
-        const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(url);
+        await saveFileWithDialog(md, filename, 'text/markdown', ['.md']);
     }
     
     function copyTaskAsMarkdown() {
@@ -9997,7 +10019,7 @@
         });
     }
     
-    function previewTaskSaveMarkdown() {
+    async function previewTaskSaveMarkdown() {
         if (!currentPreviewTaskId) return;
         const task = tasks.find(t => t.id === currentPreviewTaskId);
         if (!task) return;
@@ -10005,13 +10027,7 @@
         const md = generateTaskMarkdown(task);
         const filename = `task-${task.number}-${(task.title || 'task').replace(/[^a-z0-9]/gi, '-').toLowerCase()}.md`;
         
-        const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(url);
+        await saveFileWithDialog(md, filename, 'text/markdown', ['.md']);
     }
     
     function previewTaskCopyMarkdown() {
@@ -10033,7 +10049,7 @@
         });
     }
     
-    function exportAllTasksMarkdown() {
+    async function exportAllTasksMarkdown() {
         if (tasks.length === 0) {
             alert(t('taskNoRecords'));
             return;
@@ -10049,13 +10065,7 @@
         });
         
         const filename = `tasks-export-${new Date().toISOString().split('T')[0]}.md`;
-        const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(url);
+        await saveFileWithDialog(md, filename, 'text/markdown', ['.md']);
     }
     
     // ============================================
@@ -10727,18 +10737,12 @@
         };
     }
     
-    function saveAdrAsMarkdown() {
+    async function saveAdrAsMarkdown() {
         const adr = getAdrFromForm();
         const markdown = generateAdrMarkdown(adr);
         const filename = `ADR-${formatAdrNumber(adr.number)}-${(adr.title || 'untitled').replace(/[^a-zA-Z0-9áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]/g, '').replace(/\s+/g, '-').toLowerCase()}.md`;
         
-        const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(url);
+        await saveFileWithDialog(markdown, filename, 'text/markdown', ['.md']);
     }
     
     function copyAdrAsMarkdown() {
@@ -11003,7 +11007,7 @@
         return html;
     }
     
-    function previewAdrSaveMarkdown() {
+    async function previewAdrSaveMarkdown() {
         if (!currentPreviewAdrId) return;
         const adr = adrRecords.find(a => a.id === currentPreviewAdrId);
         if (!adr) return;
@@ -11011,13 +11015,7 @@
         const markdown = generateAdrMarkdown(adr);
         const filename = `ADR-${formatAdrNumber(adr.number)}-${(adr.title || 'untitled').replace(/[^a-zA-Z0-9áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]/g, '').replace(/\s+/g, '-').toLowerCase()}.md`;
         
-        const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(url);
+        await saveFileWithDialog(markdown, filename, 'text/markdown', ['.md']);
     }
     
     function previewAdrCopyMarkdown() {
@@ -11032,7 +11030,7 @@
         editAdr(adrId);
     }
     
-    function exportAllAdrMarkdown() {
+    async function exportAllAdrMarkdown() {
         if (adrRecords.length === 0) {
             alert(t('adrNoRecords'));
             return;
@@ -11080,13 +11078,7 @@
         const modelName = modelMetadata.name || 'archimate-model';
         const filename = `${modelName.replace(/[^a-zA-Z0-9]/g, '-')}-adr.md`;
         
-        const blob = new Blob([combinedMd], { type: 'text/markdown;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(url);
+        await saveFileWithDialog(combinedMd, filename, 'text/markdown', ['.md']);
     }
 
     // ============================================
