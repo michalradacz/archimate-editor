@@ -793,6 +793,7 @@
             gap: 10px;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/docx@9.0.0/build/index.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -1239,6 +1240,7 @@
                             </div>
                             <div>
                                 <label for="rel-source" data-i18n="element">Prvek:</label>
+                                <input type="text" id="rel-source-filter" placeholder="Filtrovat..." oninput="filterSelectOptions('rel-source', this.value)" style="margin-bottom: 4px; padding: 4px 8px; font-size: 12px;">
                                 <select id="rel-source" onchange="updateAllowedRelationships(); updateRelationshipId(); updateTargetElements()">
                                     <option value="">-- Prvek --</option>
                                 </select>
@@ -1271,6 +1273,7 @@
                             </div>
                             <div>
                                 <label for="rel-target" data-i18n="element">Prvek:</label>
+                                <input type="text" id="rel-target-filter" placeholder="Filtrovat..." oninput="filterSelectOptions('rel-target', this.value)" style="margin-bottom: 4px; padding: 4px 8px; font-size: 12px;">
                                 <select id="rel-target" onchange="updateAllowedRelationships(); updateRelationshipId()">
                                     <option value="">-- Prvek --</option>
                                 </select>
@@ -1455,6 +1458,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="diagram-add-element" data-i18n="element">Prvek:</label>
+                                <input type="text" id="diagram-add-element-filter" placeholder="Filtrovat..." oninput="filterSelectOptions('diagram-add-element', this.value)" style="margin-bottom: 4px; padding: 4px 8px; font-size: 12px;">
                                 <select id="diagram-add-element" style="margin-bottom:0;">
                                     <option value="">-- Prvek --</option>
                                 </select>
@@ -2109,10 +2113,12 @@
                     <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
                         <div class="form-group">
                             <label for="adr-linked-elements" data-i18n="linkedElements">Propojené prvky</label>
+                            <input type="text" id="adr-linked-elements-filter" placeholder="Filtrovat..." oninput="filterSelectOptions('adr-linked-elements', this.value)" style="margin-bottom: 4px; padding: 4px 8px; font-size: 12px;">
                             <select id="adr-linked-elements" multiple size="4" style="width: 100%;"></select>
                         </div>
                         <div class="form-group">
                             <label for="adr-linked-relationships" data-i18n="linkedRelationships">Propojené vazby</label>
+                            <input type="text" id="adr-linked-relationships-filter" placeholder="Filtrovat..." oninput="filterSelectOptions('adr-linked-relationships', this.value)" style="margin-bottom: 4px; padding: 4px 8px; font-size: 12px;">
                             <select id="adr-linked-relationships" multiple size="4" style="width: 100%;"></select>
                         </div>
                     </div>
@@ -2128,6 +2134,7 @@
             <div class="modal-footer" style="display: flex; justify-content: space-between;">
                 <div>
                     <button type="button" class="btn-secondary" onclick="saveAdrAsMarkdown()" style="margin-right: 5px;" data-i18n="adrSaveMarkdown">📄 Uložit jako Markdown</button>
+                    <button type="button" class="btn-secondary" onclick="saveAdrAsDocx()" style="margin-right: 5px;" data-i18n="adrSaveDocx">📝 Uložit jako DOCX</button>
                     <button type="button" class="btn-secondary" onclick="copyAdrAsMarkdown()" data-i18n="adrCopyMarkdown">📋 Kopírovat Markdown</button>
                 </div>
                 <div>
@@ -2150,6 +2157,7 @@
             <div class="modal-footer" style="display: flex; justify-content: space-between;">
                 <div>
                     <button type="button" class="btn-secondary" onclick="previewAdrSaveMarkdown()" style="margin-right: 5px;" data-i18n="adrSaveMarkdown">📄 Uložit jako Markdown</button>
+                    <button type="button" class="btn-secondary" onclick="previewAdrSaveDocx()" style="margin-right: 5px;" data-i18n="adrSaveDocx">📝 Uložit jako DOCX</button>
                     <button type="button" class="btn-secondary" onclick="previewAdrCopyMarkdown()" data-i18n="adrCopyMarkdown">📋 Kopírovat Markdown</button>
                 </div>
                 <div>
@@ -2237,10 +2245,12 @@
                     <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
                         <div class="form-group">
                             <label for="task-linked-elements" data-i18n="linkedElements">Propojené prvky</label>
+                            <input type="text" id="task-linked-elements-filter" placeholder="Filtrovat..." oninput="filterSelectOptions('task-linked-elements', this.value)" style="margin-bottom: 4px; padding: 4px 8px; font-size: 12px;">
                             <select id="task-linked-elements" multiple size="4" style="width: 100%;"></select>
                         </div>
                         <div class="form-group">
                             <label for="task-linked-relationships" data-i18n="linkedRelationships">Propojené vazby</label>
+                            <input type="text" id="task-linked-relationships-filter" placeholder="Filtrovat..." oninput="filterSelectOptions('task-linked-relationships', this.value)" style="margin-bottom: 4px; padding: 4px 8px; font-size: 12px;">
                             <select id="task-linked-relationships" multiple size="4" style="width: 100%;"></select>
                         </div>
                     </div>
@@ -2256,6 +2266,7 @@
             <div class="modal-footer" style="display: flex; justify-content: space-between;">
                 <div>
                     <button type="button" class="btn-secondary" onclick="saveTaskAsMarkdown()" style="margin-right: 5px;" data-i18n="taskSaveMarkdown">📄 Uložit jako Markdown</button>
+                    <button type="button" class="btn-secondary" onclick="saveTaskAsDocx()" style="margin-right: 5px;" data-i18n="taskSaveDocx">📝 Uložit jako DOCX</button>
                     <button type="button" class="btn-secondary" onclick="copyTaskAsMarkdown()" data-i18n="taskCopyMarkdown">📋 Kopírovat Markdown</button>
                 </div>
                 <div>
@@ -2278,6 +2289,7 @@
             <div class="modal-footer" style="display: flex; justify-content: space-between;">
                 <div>
                     <button type="button" class="btn-secondary" onclick="previewTaskSaveMarkdown()" style="margin-right: 5px;" data-i18n="taskSaveMarkdown">📄 Uložit jako Markdown</button>
+                    <button type="button" class="btn-secondary" onclick="previewTaskSaveDocx()" style="margin-right: 5px;" data-i18n="taskSaveDocx">📝 Uložit jako DOCX</button>
                     <button type="button" class="btn-secondary" onclick="previewTaskCopyMarkdown()" data-i18n="taskCopyMarkdown">📋 Kopírovat Markdown</button>
                 </div>
                 <div>
@@ -2324,10 +2336,12 @@
                     <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
                         <div class="form-group">
                             <label for="note-linked-elements" data-i18n="linkedElements">Propojené prvky</label>
+                            <input type="text" id="note-linked-elements-filter" placeholder="Filtrovat..." oninput="filterSelectOptions('note-linked-elements', this.value)" style="margin-bottom: 4px; padding: 4px 8px; font-size: 12px;">
                             <select id="note-linked-elements" multiple size="5" style="width: 100%;"></select>
                         </div>
                         <div class="form-group">
                             <label for="note-linked-relationships" data-i18n="linkedRelationships">Propojené vazby</label>
+                            <input type="text" id="note-linked-relationships-filter" placeholder="Filtrovat..." oninput="filterSelectOptions('note-linked-relationships', this.value)" style="margin-bottom: 4px; padding: 4px 8px; font-size: 12px;">
                             <select id="note-linked-relationships" multiple size="5" style="width: 100%;"></select>
                         </div>
                     </div>
@@ -2637,6 +2651,7 @@
             taskPreview: 'Náhled úkolu',
             taskSaveMarkdown: '📄 Uložit jako Markdown',
             taskCopyMarkdown: '📋 Kopírovat Markdown',
+            taskSaveDocx: '📝 Uložit jako DOCX',
             taskNoRecords: 'Zatím nejsou vytvořeny žádné úkoly.',
             taskFilterAllStatuses: 'Všechny stavy',
             taskFilterAllPriorities: 'Všechny priority',
@@ -2720,6 +2735,7 @@
             adrAddConsequence: '+ Přidat',
             adrSaveMarkdown: '📄 Uložit jako Markdown',
             adrCopyMarkdown: '📋 Kopírovat Markdown',
+            adrSaveDocx: '📝 Uložit jako DOCX',
             adrExportAll: '📦 Exportovat všechny ADR',
             adrNoRecords: 'Zatím nejsou vytvořena žádná ADR.',
             adrConfirmDelete: 'Opravdu chcete smazat toto ADR?',
@@ -3196,6 +3212,7 @@
             taskPreview: 'Task Preview',
             taskSaveMarkdown: '📄 Save as Markdown',
             taskCopyMarkdown: '📋 Copy Markdown',
+            taskSaveDocx: '📝 Save as DOCX',
             taskNoRecords: 'No tasks created yet.',
             taskFilterAllStatuses: 'All statuses',
             taskFilterAllPriorities: 'All priorities',
@@ -3279,6 +3296,7 @@
             adrAddConsequence: '+ Add',
             adrSaveMarkdown: '📄 Save as Markdown',
             adrCopyMarkdown: '📋 Copy Markdown',
+            adrSaveDocx: '📝 Save as DOCX',
             adrExportAll: '📦 Export all ADR',
             adrNoRecords: 'No ADR records created yet.',
             adrConfirmDelete: 'Are you sure you want to delete this ADR?',
@@ -6242,6 +6260,7 @@
             elementSelect.appendChild(option);
         });
         
+        updateSelectOriginalOptions('rel-source');
         updateAllowedRelationships();
         updateRelationshipId();
     }
@@ -6306,6 +6325,7 @@
             elementSelect.appendChild(option);
         });
         
+        updateSelectOriginalOptions('rel-target');
         updateAllowedRelationships();
         updateRelationshipId();
     }
@@ -7156,6 +7176,9 @@
     }
     
     async function saveFileWithDialog(content, filename, mimeType, extensions) {
+        // Handle both string/ArrayBuffer content and existing Blob
+        const blob = content instanceof Blob ? content : new Blob([content], { type: mimeType });
+        
         if ('showSaveFilePicker' in window) {
             try {
                 const handle = await window.showSaveFilePicker({
@@ -7166,7 +7189,7 @@
                     }]
                 });
                 const writable = await handle.createWritable();
-                await writable.write(content);
+                await writable.write(blob);
                 await writable.close();
                 return true;
             } catch (e) {
@@ -7175,7 +7198,6 @@
             }
         }
         // Fallback for browsers without File System Access API
-        const blob = new Blob([content], { type: mimeType });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -7201,6 +7223,415 @@
         };
         const extensions = extMap[mimeType] || ['.' + filename.split('.').pop()];
         await saveFileWithDialog(content, filename, mimeType, extensions);
+    }
+    
+    // ============================================
+    // DOCX Export Functions
+    // ============================================
+    
+    async function generateDocxFromTask(task) {
+        if (typeof window.docx === 'undefined') {
+            throw new Error('DOCX library not loaded');
+        }
+        const { Document, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, AlignmentType, Packer } = window.docx;
+        
+        const children = [];
+        
+        // Title
+        children.push(new Paragraph({
+            heading: HeadingLevel.HEADING_1,
+            children: [new TextRun({ text: `Úkol #${task.number}: ${task.title}`, bold: true })]
+        }));
+        
+        // Metadata
+        const metaItems = [
+            ['Stav', getTaskStatusLabel(task.status)],
+            ['Priorita', getTaskPriorityLabel(task.priority)],
+            ['Řešitel', task.assignee || '-'],
+            ['Zadavatel', task.reporter || '-'],
+            ['Termín', task.dueDate || '-'],
+            ['Vytvořeno', task.created ? new Date(task.created).toLocaleDateString() : '-'],
+            ['Aktualizováno', task.updated ? new Date(task.updated).toLocaleDateString() : '-']
+        ];
+        if (task.tags && task.tags.length > 0) {
+            metaItems.push(['Příznaky', task.tags.join(', ')]);
+        }
+        
+        metaItems.forEach(([label, value]) => {
+            children.push(new Paragraph({
+                children: [
+                    new TextRun({ text: `${label}: `, bold: true }),
+                    new TextRun({ text: value })
+                ],
+                spacing: { after: 100 }
+            }));
+        });
+        
+        children.push(new Paragraph({ text: '' }));
+        
+        // Popis
+        if (task.description) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: 'Popis', bold: true })]
+            }));
+            task.description.split('\n').forEach(line => {
+                children.push(new Paragraph({ text: line }));
+            });
+            children.push(new Paragraph({ text: '' }));
+        }
+        
+        // Aktuální stav
+        if (task.currentState) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: 'Aktuální stav', bold: true })]
+            }));
+            task.currentState.split('\n').forEach(line => {
+                children.push(new Paragraph({ text: line }));
+            });
+            children.push(new Paragraph({ text: '' }));
+        }
+        
+        // Propojené položky
+        const hasLinked = (task.linkedElements && task.linkedElements.length > 0) || 
+                         (task.linkedRelationships && task.linkedRelationships.length > 0);
+        if (hasLinked) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: 'Propojené položky', bold: true })]
+            }));
+            
+            if (task.linkedElements && task.linkedElements.length > 0) {
+                children.push(new Paragraph({
+                    children: [new TextRun({ text: 'Prvky:', bold: true })]
+                }));
+                task.linkedElements.forEach(id => {
+                    const el = elements.find(e => e.id === id);
+                    children.push(new Paragraph({
+                        text: `• ${el ? el.name || el.id : id}`,
+                        indent: { left: 360 }
+                    }));
+                });
+            }
+            
+            if (task.linkedRelationships && task.linkedRelationships.length > 0) {
+                children.push(new Paragraph({
+                    children: [new TextRun({ text: 'Vazby:', bold: true })]
+                }));
+                task.linkedRelationships.forEach(id => {
+                    const rel = relationships.find(r => r.id === id);
+                    if (rel) {
+                        const source = elements.find(e => e.id === rel.sourceId);
+                        const target = elements.find(e => e.id === rel.targetId);
+                        children.push(new Paragraph({
+                            text: `• ${source?.name || rel.sourceId} → ${target?.name || rel.targetId}`,
+                            indent: { left: 360 }
+                        }));
+                    }
+                });
+            }
+            children.push(new Paragraph({ text: '' }));
+        }
+        
+        // Historie stavů
+        if (task.statusHistory && task.statusHistory.length > 0) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: 'Historie stavů', bold: true })]
+            }));
+            
+            const headerRow = new TableRow({
+                children: ['Stav', 'Datum', 'Řešitel', 'Poznámka'].map(text => 
+                    new TableCell({
+                        children: [new Paragraph({ children: [new TextRun({ text, bold: true })] })],
+                        shading: { fill: 'E0E0E0' }
+                    })
+                )
+            });
+            
+            const rows = task.statusHistory.map(h => new TableRow({
+                children: [
+                    getTaskStatusLabel(h.status),
+                    new Date(h.date).toLocaleString(),
+                    h.author || '-',
+                    h.stateDescription || '-'
+                ].map(text => new TableCell({
+                    children: [new Paragraph({ text: String(text) })]
+                }))
+            }));
+            
+            children.push(new Table({
+                rows: [headerRow, ...rows],
+                width: { size: 100, type: WidthType.PERCENTAGE }
+            }));
+        }
+        
+        const doc = new Document({
+            sections: [{ children }]
+        });
+        
+        return await window.docx.Packer.toBlob(doc);
+    }
+    
+    async function generateDocxFromAdr(adr) {
+        if (typeof window.docx === 'undefined') {
+            throw new Error('DOCX library not loaded');
+        }
+        const { Document, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle } = window.docx;
+        
+        const statusInfo = ADR_STATUSES[adr.status] || ADR_STATUSES.draft;
+        const children = [];
+        
+        // Title
+        children.push(new Paragraph({
+            heading: HeadingLevel.HEADING_1,
+            children: [new TextRun({ text: `ADR-${formatAdrNumber(adr.number)}: ${adr.title || 'Bez názvu'}`, bold: true })]
+        }));
+        
+        // Metadata table
+        const metaRows = [
+            [t('adrStatus'), `${statusInfo.icon} ${getAdrStatusLabel(adr.status)}`],
+            [t('adrCreated'), adr.created ? new Date(adr.created).toLocaleDateString() : '-'],
+            [t('adrUpdated'), adr.updated ? new Date(adr.updated).toLocaleDateString() : '-'],
+            [t('adrAuthor'), adr.author || '-']
+        ];
+        if (adr.approver) metaRows.push([t('adrApprover'), adr.approver]);
+        if (adr.deciders && adr.deciders.length > 0) metaRows.push([t('adrDeciders'), adr.deciders.join(', ')]);
+        if (adr.tags && adr.tags.length > 0) metaRows.push([t('adrTags'), adr.tags.join(', ')]);
+        
+        children.push(new Table({
+            rows: metaRows.map(([label, value]) => new TableRow({
+                children: [
+                    new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: label, bold: true })] })], width: { size: 25, type: WidthType.PERCENTAGE } }),
+                    new TableCell({ children: [new Paragraph({ text: value })] })
+                ]
+            })),
+            width: { size: 100, type: WidthType.PERCENTAGE }
+        }));
+        
+        children.push(new Paragraph({ text: '' }));
+        
+        // Context
+        if (adr.context) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: t('adrContext'), bold: true })]
+            }));
+            adr.context.split('\n').forEach(line => {
+                children.push(new Paragraph({ text: line }));
+            });
+            children.push(new Paragraph({ text: '' }));
+        }
+        
+        // Decision
+        if (adr.decision) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: t('adrDecision'), bold: true })]
+            }));
+            adr.decision.split('\n').forEach(line => {
+                children.push(new Paragraph({ text: line }));
+            });
+            children.push(new Paragraph({ text: '' }));
+        }
+        
+        // Consequences
+        if (adr.consequences) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: t('adrConsequences'), bold: true })]
+            }));
+            adr.consequences.split('\n').forEach(line => {
+                children.push(new Paragraph({ text: line }));
+            });
+            children.push(new Paragraph({ text: '' }));
+        }
+        
+        // Alternatives
+        if (adr.alternatives && adr.alternatives.length > 0) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: t('adrAlternatives'), bold: true })]
+            }));
+            
+            const selectedIdx = adr.selectedAlternative ? parseInt(adr.selectedAlternative) : -1;
+            
+            adr.alternatives.forEach((alt, idx) => {
+                const isSelected = idx === selectedIdx;
+                const title = isSelected ? `${alt.title} ✅ ${t('adrSelected')}` : alt.title;
+                children.push(new Paragraph({
+                    heading: HeadingLevel.HEADING_3,
+                    children: [new TextRun({ text: title, bold: isSelected })]
+                }));
+                if (alt.description) {
+                    alt.description.split('\n').forEach(line => {
+                        children.push(new Paragraph({ text: line }));
+                    });
+                }
+            });
+            
+            if (adr.selectionReason && selectedIdx >= 0) {
+                children.push(new Paragraph({
+                    heading: HeadingLevel.HEADING_3,
+                    children: [new TextRun({ text: t('adrSelectionReason'), bold: true })]
+                }));
+                adr.selectionReason.split('\n').forEach(line => {
+                    children.push(new Paragraph({ text: line }));
+                });
+            }
+            children.push(new Paragraph({ text: '' }));
+        }
+        
+        // Implementation
+        if (adr.implementation && (adr.implementation.status !== 'not_started' || adr.implementation.notes)) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: t('adrImplementation'), bold: true })]
+            }));
+            
+            const implTable = new Table({
+                rows: [
+                    new TableRow({
+                        children: [t('adrImplStatus'), t('adrImplStartDate'), t('adrImplTargetDate')].map(text =>
+                            new TableCell({ children: [new Paragraph({ children: [new TextRun({ text, bold: true })] })], shading: { fill: 'E0E0E0' } })
+                        )
+                    }),
+                    new TableRow({
+                        children: [
+                            getAdrImplStatusLabel(adr.implementation.status),
+                            adr.implementation.startDate || '-',
+                            adr.implementation.targetDate || '-'
+                        ].map(text => new TableCell({ children: [new Paragraph({ text })] }))
+                    })
+                ],
+                width: { size: 100, type: WidthType.PERCENTAGE }
+            });
+            children.push(implTable);
+            
+            if (adr.implementation.notes) {
+                children.push(new Paragraph({ text: '' }));
+                adr.implementation.notes.split('\n').forEach(line => {
+                    children.push(new Paragraph({ text: line }));
+                });
+            }
+            children.push(new Paragraph({ text: '' }));
+        }
+        
+        // Links
+        if (adr.links && adr.links.length > 0) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: t('adrLinks'), bold: true })]
+            }));
+            adr.links.forEach(link => {
+                children.push(new Paragraph({
+                    text: `• ${link.title || link.url}: ${link.url}`,
+                    indent: { left: 360 }
+                }));
+            });
+            children.push(new Paragraph({ text: '' }));
+        }
+        
+        // Related ADR
+        if (adr.relatedAdr) {
+            const hasRelated = (adr.relatedAdr.supersedes?.length || 0) + 
+                              (adr.relatedAdr.supersededBy?.length || 0) + 
+                              (adr.relatedAdr.relatedTo?.length || 0) > 0;
+            if (hasRelated) {
+                children.push(new Paragraph({
+                    heading: HeadingLevel.HEADING_2,
+                    children: [new TextRun({ text: t('adrRelatedAdr'), bold: true })]
+                }));
+                
+                const getAdrRef = (id) => {
+                    const related = adrRecords.find(a => a.id === id);
+                    return related ? `ADR-${formatAdrNumber(related.number)}: ${related.title}` : id;
+                };
+                
+                if (adr.relatedAdr.supersedes?.length > 0) {
+                    children.push(new Paragraph({ children: [new TextRun({ text: t('adrSupersedes') + ':', bold: true })] }));
+                    adr.relatedAdr.supersedes.forEach(id => {
+                        children.push(new Paragraph({ text: `• ${getAdrRef(id)}`, indent: { left: 360 } }));
+                    });
+                }
+                if (adr.relatedAdr.supersededBy?.length > 0) {
+                    children.push(new Paragraph({ children: [new TextRun({ text: t('adrSupersededBy') + ':', bold: true })] }));
+                    adr.relatedAdr.supersededBy.forEach(id => {
+                        children.push(new Paragraph({ text: `• ${getAdrRef(id)}`, indent: { left: 360 } }));
+                    });
+                }
+                if (adr.relatedAdr.relatedTo?.length > 0) {
+                    children.push(new Paragraph({ children: [new TextRun({ text: t('adrRelatedTo') + ':', bold: true })] }));
+                    adr.relatedAdr.relatedTo.forEach(id => {
+                        children.push(new Paragraph({ text: `• ${getAdrRef(id)}`, indent: { left: 360 } }));
+                    });
+                }
+            }
+        }
+        
+        // Linked elements/relationships
+        const hasLinkedItems = (adr.linkedElements && adr.linkedElements.length > 0) || 
+                              (adr.linkedRelationships && adr.linkedRelationships.length > 0);
+        if (hasLinkedItems) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: t('adrLinkedItems'), bold: true })]
+            }));
+            
+            if (adr.linkedElements && adr.linkedElements.length > 0) {
+                children.push(new Paragraph({ children: [new TextRun({ text: t('elementsTab') + ':', bold: true })] }));
+                adr.linkedElements.forEach(id => {
+                    const el = elements.find(e => e.id === id);
+                    children.push(new Paragraph({ text: `• ${el ? el.name || el.id : id}`, indent: { left: 360 } }));
+                });
+            }
+            if (adr.linkedRelationships && adr.linkedRelationships.length > 0) {
+                children.push(new Paragraph({ children: [new TextRun({ text: t('relationshipsTab') + ':', bold: true })] }));
+                adr.linkedRelationships.forEach(id => {
+                    const rel = relationships.find(r => r.id === id);
+                    if (rel) {
+                        const source = elements.find(e => e.id === rel.sourceId);
+                        const target = elements.find(e => e.id === rel.targetId);
+                        children.push(new Paragraph({ text: `• ${source?.name || rel.sourceId} → ${target?.name || rel.targetId}`, indent: { left: 360 } }));
+                    }
+                });
+            }
+        }
+        
+        // Status history
+        if (adr.statusHistory && adr.statusHistory.length > 0) {
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: t('adrStatusHistory'), bold: true })]
+            }));
+            
+            const historyTable = new Table({
+                rows: [
+                    new TableRow({
+                        children: [t('adrStatus'), t('adrDate'), t('adrAuthor'), t('adrComment')].map(text =>
+                            new TableCell({ children: [new Paragraph({ children: [new TextRun({ text, bold: true })] })], shading: { fill: 'E0E0E0' } })
+                        )
+                    }),
+                    ...adr.statusHistory.map(h => new TableRow({
+                        children: [
+                            getAdrStatusLabel(h.status),
+                            new Date(h.date).toLocaleString(),
+                            h.author || '-',
+                            h.comment || '-'
+                        ].map(text => new TableCell({ children: [new Paragraph({ text: String(text) })] }))
+                    }))
+                ],
+                width: { size: 100, type: WidthType.PERCENTAGE }
+            });
+            children.push(historyTable);
+        }
+        
+        const doc = new Document({
+            sections: [{ children }]
+        });
+        
+        return await window.docx.Packer.toBlob(doc);
     }
 
     // ============================================
@@ -8656,6 +9087,59 @@
     // Utility Functions
     // ============================================
     
+    // Store original options for each select that can be filtered
+    const selectOriginalOptions = {};
+    
+    function filterSelectOptions(selectId, filterText) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+        
+        // Store original options on first call
+        if (!selectOriginalOptions[selectId]) {
+            selectOriginalOptions[selectId] = Array.from(select.options).map(opt => ({
+                value: opt.value,
+                text: opt.text,
+                selected: opt.selected
+            }));
+        }
+        
+        const originalOptions = selectOriginalOptions[selectId];
+        const filterLower = filterText.toLowerCase().trim();
+        
+        // Remember currently selected values
+        const selectedValues = Array.from(select.selectedOptions).map(opt => opt.value);
+        
+        // Clear and repopulate
+        select.innerHTML = '';
+        
+        originalOptions.forEach(opt => {
+            // Always show empty/placeholder options, or options that match filter
+            if (!opt.value || !filterLower || opt.text.toLowerCase().includes(filterLower)) {
+                const option = document.createElement('option');
+                option.value = opt.value;
+                option.text = opt.text;
+                // Preserve selection
+                option.selected = selectedValues.includes(opt.value);
+                select.appendChild(option);
+            }
+        });
+    }
+    
+    function resetSelectFilter(selectId) {
+        const filterInput = document.getElementById(selectId + '-filter');
+        if (filterInput) filterInput.value = '';
+        delete selectOriginalOptions[selectId];
+    }
+    
+    function updateSelectOriginalOptions(selectId) {
+        // Call this when select options are programmatically updated
+        delete selectOriginalOptions[selectId];
+        const filterInput = document.getElementById(selectId + '-filter');
+        if (filterInput && filterInput.value) {
+            filterSelectOptions(selectId, filterInput.value);
+        }
+    }
+    
     function escapeHtml(str) {
         if (!str) return '';
         return String(str)
@@ -8943,6 +9427,8 @@
             option.textContent = `${e.name}${stereotypePart} [${e.id}]`;
             elementSelect.appendChild(option);
         });
+        
+        updateSelectOriginalOptions('diagram-add-element');
     }
     
     function addElementToDiagram() {
@@ -9642,6 +10128,9 @@
             const targetName = target ? target.name : r.targetId;
             return `<option value="${escapeHtml(r.id)}">${escapeHtml(sourceName)} → ${escapeHtml(targetName)} (${r.type})</option>`;
         }).join('');
+        
+        updateSelectOriginalOptions('task-linked-elements');
+        updateSelectOriginalOptions('task-linked-relationships');
     }
     
     function loadTaskToForm(task) {
@@ -9996,6 +10485,25 @@
         await saveFileWithDialog(md, filename, 'text/markdown', ['.md']);
     }
     
+    async function saveTaskAsDocx() {
+        const editId = document.getElementById('task-edit-id').value;
+        if (!editId) {
+            alert('Nejprve uložte úkol.');
+            return;
+        }
+        const task = tasks.find(t => t.id === editId);
+        if (!task) return;
+        
+        try {
+            const blob = await generateDocxFromTask(task);
+            const filename = `task-${task.number}-${(task.title || 'task').replace(/[^a-z0-9]/gi, '-').toLowerCase()}.docx`;
+            await saveFileWithDialog(blob, filename, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', ['.docx']);
+        } catch (e) {
+            console.error('DOCX export error:', e);
+            alert('Chyba při exportu do DOCX: ' + e.message);
+        }
+    }
+    
     function copyTaskAsMarkdown() {
         const editId = document.getElementById('task-edit-id').value;
         if (!editId) {
@@ -10028,6 +10536,21 @@
         const filename = `task-${task.number}-${(task.title || 'task').replace(/[^a-z0-9]/gi, '-').toLowerCase()}.md`;
         
         await saveFileWithDialog(md, filename, 'text/markdown', ['.md']);
+    }
+    
+    async function previewTaskSaveDocx() {
+        if (!currentPreviewTaskId) return;
+        const task = tasks.find(t => t.id === currentPreviewTaskId);
+        if (!task) return;
+        
+        try {
+            const blob = await generateDocxFromTask(task);
+            const filename = `task-${task.number}-${(task.title || 'task').replace(/[^a-z0-9]/gi, '-').toLowerCase()}.docx`;
+            await saveFileWithDialog(blob, filename, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', ['.docx']);
+        } catch (e) {
+            console.error('DOCX export error:', e);
+            alert('Chyba při exportu do DOCX: ' + e.message);
+        }
     }
     
     function previewTaskCopyMarkdown() {
@@ -10240,6 +10763,9 @@
             const targetName = target ? target.name : r.targetId;
             return `<option value="${escapeHtml(r.id)}">${escapeHtml(sourceName)} → ${escapeHtml(targetName)} (${r.type})</option>`;
         }).join('');
+        
+        updateSelectOriginalOptions('adr-linked-elements');
+        updateSelectOriginalOptions('adr-linked-relationships');
     }
     
     function closeAdrEditor() {
@@ -10745,6 +11271,18 @@
         await saveFileWithDialog(markdown, filename, 'text/markdown', ['.md']);
     }
     
+    async function saveAdrAsDocx() {
+        try {
+            const adr = getAdrFromForm();
+            const blob = await generateDocxFromAdr(adr);
+            const filename = `ADR-${formatAdrNumber(adr.number)}-${(adr.title || 'untitled').replace(/[^a-zA-Z0-9áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]/g, '').replace(/\s+/g, '-').toLowerCase()}.docx`;
+            await saveFileWithDialog(blob, filename, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', ['.docx']);
+        } catch (e) {
+            console.error('DOCX export error:', e);
+            alert('Chyba při exportu do DOCX: ' + e.message);
+        }
+    }
+    
     function copyAdrAsMarkdown() {
         const adr = getAdrFromForm();
         const markdown = generateAdrMarkdown(adr);
@@ -11018,6 +11556,21 @@
         await saveFileWithDialog(markdown, filename, 'text/markdown', ['.md']);
     }
     
+    async function previewAdrSaveDocx() {
+        if (!currentPreviewAdrId) return;
+        const adr = adrRecords.find(a => a.id === currentPreviewAdrId);
+        if (!adr) return;
+        
+        try {
+            const blob = await generateDocxFromAdr(adr);
+            const filename = `ADR-${formatAdrNumber(adr.number)}-${(adr.title || 'untitled').replace(/[^a-zA-Z0-9áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]/g, '').replace(/\s+/g, '-').toLowerCase()}.docx`;
+            await saveFileWithDialog(blob, filename, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', ['.docx']);
+        } catch (e) {
+            console.error('DOCX export error:', e);
+            alert('Chyba při exportu do DOCX: ' + e.message);
+        }
+    }
+    
     function previewAdrCopyMarkdown() {
         if (!currentPreviewAdrId) return;
         copyAdrMarkdownById(currentPreviewAdrId);
@@ -11213,6 +11766,9 @@
             const targetName = target ? target.name : r.targetId;
             return `<option value="${escapeHtml(r.id)}">${escapeHtml(sourceName)} → ${escapeHtml(targetName)} (${r.type})</option>`;
         }).join('');
+        
+        updateSelectOriginalOptions('note-linked-elements');
+        updateSelectOriginalOptions('note-linked-relationships');
     }
     
     function closeNoteEditor() {
