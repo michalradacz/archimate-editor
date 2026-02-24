@@ -306,14 +306,14 @@
             font-weight: 600;
             color: white;
         }
-        .layer-strategy { background: #8B4513; }
-        .layer-business { background: #DAA520; color: #333; }
-        .layer-application { background: #4169E1; }
-        .layer-technology { background: #228B22; }
-        .layer-physical { background: #2F4F4F; }
-        .layer-implementation { background: #9932CC; }
-        .layer-motivation { background: #DC143C; }
-        .layer-composite { background: #708090; }
+        .layer-strategy { background: #F5DEAA; color: #333; }
+        .layer-business { background: #FFFFB5; color: #333; }
+        .layer-application { background: #B5FFFF; color: #333; }
+        .layer-technology { background: #C9E7B7; color: #333; }
+        .layer-physical { background: #C9E7B7; color: #333; }
+        .layer-implementation { background: #FFE0E0; color: #333; }
+        .layer-motivation { background: #CCCCFF; color: #333; }
+        .layer-composite { background: #FFDAB5; color: #333; }
         .fieldset {
             border: 1px solid #ddd;
             padding: 15px;
@@ -683,6 +683,53 @@
             width: auto;
             margin: 0;
         }
+        /* Bulk operations panel */
+        .bulk-panel {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 4px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+        }
+        .bulk-panel .bulk-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bulk-panel .bulk-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+        .bulk-panel .bulk-fields {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        .bulk-panel select, .bulk-panel input, .bulk-panel textarea {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .bulk-panel .btn-link {
+            background: none;
+            border: none;
+            color: #1976d2;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 13px;
+        }
+        .bulk-panel .btn-link:hover {
+            color: #0d47a1;
+        }
         /* Column visibility toggles */
         .column-toggles {
             display: flex;
@@ -833,25 +880,25 @@
             <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-model" id="btn-model" onclick="switchTab('model')" data-i18n="tabModel">
                 Model
             </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-elements" id="btn-elements" onclick="switchTab('elements')" data-i18n="tabElements">
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-elements" id="btn-elements" onclick="switchTab('elements')" accesskey="e" data-i18n="tabElements">
                 Prvky
             </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-relationships" id="btn-relationships" onclick="switchTab('relationships')" data-i18n="tabRelationships">
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-relationships" id="btn-relationships" onclick="switchTab('relationships')" accesskey="r" data-i18n="tabRelationships">
                 Vazby
             </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-diagrams" id="btn-diagrams" onclick="switchTab('diagrams')" data-i18n="tabDiagrams">
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-diagrams" id="btn-diagrams" onclick="switchTab('diagrams')" accesskey="d" data-i18n="tabDiagrams">
                 Diagramy
             </button>
             <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tasks" id="btn-tasks" onclick="switchTab('tasks')" data-i18n="tasksTab">
                 Úkoly
             </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-notes" id="btn-notes" onclick="switchTab('notes')" data-i18n="notesTab">
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-notes" id="btn-notes" onclick="switchTab('notes')" accesskey="m" data-i18n="notesTab">
                 Poznámky
             </button>
             <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-adr" id="btn-adr" onclick="switchTab('adr')" data-i18n="adrTab">
                 ADR
             </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tools" id="btn-tools" onclick="switchTab('tools')" data-i18n="tabTools">
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tools" id="btn-tools" onclick="switchTab('tools')" accesskey="t" data-i18n="tabTools">
                 Nástroje
             </button>
             <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-export" id="btn-export" onclick="switchTab('export')" data-i18n="tabExport">
@@ -1009,9 +1056,30 @@
                 </div>
                 
                 <div id="elements-table-container">
+                    <!-- Bulk Operations Panel -->
+                    <div id="elements-bulk-panel" class="bulk-panel" style="display: none;">
+                        <div class="bulk-info">
+                            <span data-i18n="selected">Vybráno:</span> <strong id="elements-selected-count">0</strong>
+                            <button type="button" class="btn-link" onclick="clearElementSelection()" data-i18n="clearSelection">Zrušit výběr</button>
+                        </div>
+                        <div class="bulk-actions">
+                            <select id="elements-bulk-action" onchange="showElementsBulkFields()">
+                                <option value="" data-i18n="selectAction">-- Vyberte akci --</option>
+                                <option value="type" data-i18n="changeType">Změnit typ</option>
+                                <option value="stereotype" data-i18n="changeStereotype">Změnit stereotyp</option>
+                                <option value="determines" data-i18n="changeDetermines">Změnit určuje</option>
+                                <option value="description" data-i18n="changeDescription">Změnit popis</option>
+                                <option value="addTags" data-i18n="addTags">Přidat příznaky</option>
+                                <option value="delete" data-i18n="deleteSelected">Smazat vybrané</option>
+                            </select>
+                            <div id="elements-bulk-fields" class="bulk-fields"></div>
+                            <button type="button" class="btn-primary" onclick="executeElementsBulkAction()" data-i18n="execute">Provést</button>
+                        </div>
+                    </div>
                     <table id="elements-table" aria-label="Seznam prvků">
                         <thead>
                             <tr>
+                                <th scope="col" style="width: 30px;"><input type="checkbox" id="elements-select-all" onchange="toggleAllElements(this.checked)" title="Vybrat vše"></th>
                                 <th scope="col" class="sortable-header sort-asc" onclick="sortElements('id')" data-column="id" data-i18n="id">ID</th>
                                 <th scope="col" class="sortable-header" onclick="sortElements('layer')" data-column="layer" data-i18n="layer">Vrstva</th>
                                 <th scope="col" class="sortable-header" onclick="sortElements('type')" data-column="type" data-i18n="type">Typ</th>
@@ -1023,20 +1091,20 @@
                             </tr>
                         </thead>
                         <tbody id="elements-tbody">
-                            <tr><td colspan="8" class="no-data" data-i18n="noElements">Zatím nejsou žádné prvky</td></tr>
+                            <tr><td colspan="9" class="no-data" data-i18n="noElements">Zatím nejsou žádné prvky</td></tr>
                         </tbody>
                     </table>
                     <details class="column-toggles">
                         <summary data-i18n="columns">Zobrazené sloupce</summary>
                         <div class="toggle-list">
-                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 0, this.checked)"> ID</label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 1, this.checked)"> Vrstva</label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 2, this.checked)"> Typ</label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 3, this.checked)"> Název</label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 4, this.checked)"> Určuje</label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 5, this.checked)"> Příznaky</label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 6, this.checked)"> Diagramy</label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 7, this.checked)"> Akce</label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 1, this.checked)"> ID</label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 2, this.checked)"> Vrstva</label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 3, this.checked)"> Typ</label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 4, this.checked)"> Název</label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 5, this.checked)"> Určuje</label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 6, this.checked)"> Příznaky</label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 7, this.checked)"> Diagramy</label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('elements-table', 8, this.checked)"> Akce</label>
                         </div>
                     </details>
                 </div>
@@ -1178,9 +1246,31 @@
                 </div>
                 
                 <div id="relationships-table-container">
+                    <!-- Bulk Operations Panel -->
+                    <div id="relationships-bulk-panel" class="bulk-panel" style="display: none;">
+                        <div class="bulk-info">
+                            <span data-i18n="selected">Vybráno:</span> <strong id="relationships-selected-count">0</strong>
+                            <button type="button" class="btn-link" onclick="clearRelationshipSelection()" data-i18n="clearSelection">Zrušit výběr</button>
+                        </div>
+                        <div class="bulk-actions">
+                            <select id="relationships-bulk-action" onchange="showRelationshipsBulkFields()">
+                                <option value="" data-i18n="selectAction">-- Vyberte akci --</option>
+                                <option value="type" data-i18n="changeRelType">Změnit typ vazby</option>
+                                <option value="source" data-i18n="changeSource">Změnit zdroj</option>
+                                <option value="target" data-i18n="changeTarget">Změnit cíl</option>
+                                <option value="name" data-i18n="changeName">Změnit název</option>
+                                <option value="description" data-i18n="changeDescription">Změnit popis</option>
+                                <option value="addTags" data-i18n="addTags">Přidat příznaky</option>
+                                <option value="delete" data-i18n="deleteSelected">Smazat vybrané</option>
+                            </select>
+                            <div id="relationships-bulk-fields" class="bulk-fields"></div>
+                            <button type="button" class="btn-primary" onclick="executeRelationshipsBulkAction()" data-i18n="execute">Provést</button>
+                        </div>
+                    </div>
                     <table id="relationships-table" aria-label="Seznam vazeb">
                         <thead>
                             <tr>
+                                <th scope="col" style="width: 30px;"><input type="checkbox" id="relationships-select-all" onchange="toggleAllRelationships(this.checked)" title="Vybrat vše"></th>
                                 <th scope="col" class="sortable-header sort-asc" onclick="sortRelationships('source')" data-column="source" data-i18n="source">Zdroj</th>
                                 <th scope="col" class="sortable-header" onclick="sortRelationships('type')" data-column="type" data-i18n="relationshipType">Typ vazby</th>
                                 <th scope="col" class="sortable-header" onclick="sortRelationships('name')" data-column="name" data-i18n="name">Název</th>
@@ -1192,20 +1282,20 @@
                             </tr>
                         </thead>
                         <tbody id="relationships-tbody">
-                            <tr><td colspan="8" class="no-data" data-i18n="noRelationships">Zatím nejsou žádné vazby</td></tr>
+                            <tr><td colspan="9" class="no-data" data-i18n="noRelationships">Zatím nejsou žádné vazby</td></tr>
                         </tbody>
                     </table>
                     <details class="column-toggles">
                         <summary data-i18n="columns">Zobrazené sloupce</summary>
                         <div class="toggle-list">
-                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 0, this.checked)"> <span data-i18n="source">Zdroj</span></label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 1, this.checked)"> <span data-i18n="relationshipType">Typ vazby</span></label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 2, this.checked)"> <span data-i18n="name">Název</span></label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 3, this.checked)"> <span data-i18n="target">Cíl</span></label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 4, this.checked)"> <span data-i18n="statement">Statement</span></label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 5, this.checked)"> <span data-i18n="tags">Příznaky</span></label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 6, this.checked)"> <span data-i18n="diagrams">Diagramy</span></label>
-                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 7, this.checked)"> <span data-i18n="actions">Akce</span></label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 1, this.checked)"> <span data-i18n="source">Zdroj</span></label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 2, this.checked)"> <span data-i18n="relationshipType">Typ vazby</span></label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 3, this.checked)"> <span data-i18n="name">Název</span></label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 4, this.checked)"> <span data-i18n="target">Cíl</span></label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 5, this.checked)"> <span data-i18n="statement">Statement</span></label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 6, this.checked)"> <span data-i18n="tags">Příznaky</span></label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 7, this.checked)"> <span data-i18n="diagrams">Diagramy</span></label>
+                            <label><input type="checkbox" checked onchange="toggleColumn('relationships-table', 8, this.checked)"> <span data-i18n="actions">Akce</span></label>
                         </div>
                     </details>
                 </div>
@@ -1311,7 +1401,7 @@
                 <input type="text" id="rel-příznaky" data-i18n-placeholder="tagsPlaceholder" placeholder="např. ✅ schváleno, 🚧 rozpracováno" list="příznaky-suggestions">
                 
                 <div class="actions">
-                    <button type="button" class="btn-primary" onclick="saveRelationship()" data-i18n="saveRelationship">Uložit vazbu</button>
+                    <button type="button" class="btn-primary" onclick="saveRelationship()" accesskey="u" data-i18n="saveRelationship">Uložit vazbu</button>
                     <button type="button" class="btn-secondary" onclick="clearRelationshipForm()" data-i18n="clearForm">Zrušit</button>
                 </div>
             </div>
@@ -1597,10 +1687,23 @@
                     <h2 data-i18n="export">Export</h2>
                     
                     <div class="actions">
-                        <button type="button" class="btn-success" onclick="exportJSON()" data-i18n="exportJson">Export AJX</button>
+                        <button type="button" class="btn-success" onclick="exportJSON()" accesskey="s" data-i18n="exportJson">Export AJX</button>
                         <button type="button" class="btn-secondary" onclick="copyJSONToClipboard()" data-i18n="copyJsonClipboard">📋 Zkopírovat AJX</button>
                         <button type="button" class="btn-success" onclick="exportCSV()" data-i18n="exportCsv">Export CSV</button>
                         <button type="button" class="btn-success" onclick="exportArchiMateXML()" data-i18n="exportXml">Export ArchiMate XML</button>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
+                        <h3 data-i18n="exportByTag">Export podle příznaku</h3>
+                        <p style="color: #666; font-size: 13px; margin-bottom: 10px;" data-i18n="exportByTagDesc">Exportuje pouze prvky a vazby s vybraným příznakem.</p>
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <select id="export-tag-select" style="min-width: 200px; padding: 8px;">
+                                <option value="" data-i18n="selectTagPlaceholder">-- Vyberte příznak --</option>
+                            </select>
+                            <button type="button" class="btn-success" onclick="exportByTagAJX()" data-i18n="exportAjxByTag">Export AJX</button>
+                            <button type="button" class="btn-success" onclick="exportByTagXML()" data-i18n="exportXmlByTag">Export XML</button>
+                        </div>
+                        <div id="export-tag-stats" style="margin-top: 10px; font-size: 13px; color: #666;"></div>
                     </div>
                     
                     <h3 data-i18n="dataPreview">Náhled dat</h3>
@@ -2602,6 +2705,13 @@
             copyJsonClipboard: '📋 Zkopírovat AJX',
             exportXml: 'Export XML (ArchiMate Open Exchange)',
             downloadXml: 'Stáhnout XML',
+            exportByTag: 'Export podle příznaku',
+            exportByTagDesc: 'Exportuje pouze prvky a vazby s vybraným příznakem.',
+            exportAjxByTag: 'Export AJX',
+            exportXmlByTag: 'Export XML',
+            exportTagStats: 'Vybraný příznak: {0} prvků, {1} vazeb',
+            noTagSelected: 'Vyberte příznak pro export.',
+            noItemsWithTag: 'Žádné položky s tímto příznakem.',
             importJson: 'Import AJX',
             importXml: 'Import XML (ArchiMate Open Exchange)',
             selectFile: 'Vyberte soubor',
@@ -2736,6 +2846,32 @@
             adrSaveMarkdown: '📄 Uložit jako Markdown',
             adrCopyMarkdown: '📋 Kopírovat Markdown',
             adrSaveDocx: '📝 Uložit jako DOCX',
+            
+            // Bulk operations
+            selected: 'Vybráno',
+            clearSelection: 'Zrušit výběr',
+            selectAction: '-- Vyberte akci --',
+            changeType: 'Změnit typ',
+            changeStereotype: 'Změnit stereotyp',
+            changeDetermines: 'Změnit určuje',
+            changeDescription: 'Změnit popis',
+            addTags: 'Přidat příznaky',
+            deleteSelected: 'Smazat vybrané',
+            changeRelType: 'Změnit typ vazby',
+            changeSource: 'Změnit zdroj',
+            changeTarget: 'Změnit cíl',
+            changeName: 'Změnit název',
+            execute: 'Provést',
+            bulkSelectType: 'Vyberte nový typ:',
+            bulkEnterValue: 'Zadejte hodnotu:',
+            bulkEnterTags: 'Zadejte příznaky (oddělené čárkou):',
+            bulkSelectElement: 'Vyberte prvek:',
+            confirmBulkDelete: 'Opravdu chcete smazat {0} vybraných položek?',
+            bulkDeleteWarning: 'U prvků budou smazány i všechny související vazby.',
+            bulkUpdated: 'Aktualizováno {0} položek.',
+            bulkDeleted: 'Smazáno {0} položek.',
+            bulkDuplicateWarning: 'Některé vazby by vytvořily duplicity a budou přeskočeny.',
+            noDuplicatesAllowed: 'Změna by vytvořila duplicitní vazby. Operace zrušena.',
             adrExportAll: '📦 Exportovat všechny ADR',
             adrNoRecords: 'Zatím nejsou vytvořena žádná ADR.',
             adrConfirmDelete: 'Opravdu chcete smazat toto ADR?',
@@ -3163,6 +3299,13 @@
             copyJsonClipboard: '📋 Copy AJX',
             exportXml: 'Export XML (ArchiMate Open Exchange)',
             downloadXml: 'Download XML',
+            exportByTag: 'Export by tag',
+            exportByTagDesc: 'Exports only elements and relationships with the selected tag.',
+            exportAjxByTag: 'Export AJX',
+            exportXmlByTag: 'Export XML',
+            exportTagStats: 'Selected tag: {0} elements, {1} relationships',
+            noTagSelected: 'Select a tag for export.',
+            noItemsWithTag: 'No items with this tag.',
             importJson: 'Import AJX',
             importXml: 'Import XML (ArchiMate Open Exchange)',
             selectFile: 'Select file',
@@ -3297,6 +3440,32 @@
             adrSaveMarkdown: '📄 Save as Markdown',
             adrCopyMarkdown: '📋 Copy Markdown',
             adrSaveDocx: '📝 Save as DOCX',
+            
+            // Bulk operations
+            selected: 'Selected',
+            clearSelection: 'Clear selection',
+            selectAction: '-- Select action --',
+            changeType: 'Change type',
+            changeStereotype: 'Change stereotype',
+            changeDetermines: 'Change determines',
+            changeDescription: 'Change description',
+            addTags: 'Add tags',
+            deleteSelected: 'Delete selected',
+            changeRelType: 'Change relationship type',
+            changeSource: 'Change source',
+            changeTarget: 'Change target',
+            changeName: 'Change name',
+            execute: 'Execute',
+            bulkSelectType: 'Select new type:',
+            bulkEnterValue: 'Enter value:',
+            bulkEnterTags: 'Enter tags (comma separated):',
+            bulkSelectElement: 'Select element:',
+            confirmBulkDelete: 'Are you sure you want to delete {0} selected items?',
+            bulkDeleteWarning: 'For elements, all related relationships will also be deleted.',
+            bulkUpdated: 'Updated {0} items.',
+            bulkDeleted: 'Deleted {0} items.',
+            bulkDuplicateWarning: 'Some relationships would create duplicates and will be skipped.',
+            noDuplicatesAllowed: 'Change would create duplicate relationships. Operation cancelled.',
             adrExportAll: '📦 Export all ADR',
             adrNoRecords: 'No ADR records created yet.',
             adrConfirmDelete: 'Are you sure you want to delete this ADR?',
@@ -3780,7 +3949,7 @@
     const ARCHIMATE_LAYERS = {
         strategy: {
             name: "Strategy Layer",
-            color: "#8B4513",
+            color: "#F5DEAA",
             elements: {
                 "Resource": "Aktivum vlastněné nebo kontrolované organizací",
                 "Capability": "Schopnost, kterou má organizace, člověk nebo systém",
@@ -3790,7 +3959,7 @@
         },
         business: {
             name: "Business Layer",
-            color: "#DAA520",
+            color: "#FFFFB5",
             elements: {
                 "BusinessActor": "Organizační jednotka schopná provádět chování",
                 "BusinessRole": "Odpovědnost za specifické chování",
@@ -3809,7 +3978,7 @@
         },
         application: {
             name: "Application Layer",
-            color: "#4169E1",
+            color: "#B5FFFF",
             elements: {
                 "ApplicationComponent": "Zapouzdření aplikační funkcionality",
                 "ApplicationCollaboration": "Agregace komponent spolupracujících na chování",
@@ -3824,7 +3993,7 @@
         },
         technology: {
             name: "Technology Layer",
-            color: "#228B22",
+            color: "#C9E7B7",
             elements: {
                 "Node": "Výpočetní nebo fyzický zdroj hostující artefakty",
                 "Device": "Fyzický IT zdroj pro zpracování",
@@ -3843,7 +4012,7 @@
         },
         physical: {
             name: "Physical Layer",
-            color: "#2F4F4F",
+            color: "#C9E7B7",
             elements: {
                 "Equipment": "Fyzické stroje, nástroje nebo přístroje",
                 "Facility": "Fyzická struktura nebo prostředí",
@@ -3853,7 +4022,7 @@
         },
         implementation: {
             name: "Implementation & Migration Layer",
-            color: "#9932CC",
+            color: "#FFE0E0",
             elements: {
                 "WorkPackage": "Série akcí určených k dosažení cíle",
                 "Deliverable": "Výsledek pracovního balíčku",
@@ -3864,7 +4033,7 @@
         },
         motivation: {
             name: "Motivation Layer",
-            color: "#DC143C",
+            color: "#CCCCFF",
             elements: {
                 "Stakeholder": "Role jednotlivce, týmu nebo organizace se zájmem",
                 "Driver": "Externí nebo interní podmínka motivující změnu",
@@ -3880,7 +4049,7 @@
         },
         composite: {
             name: "Composite Elements",
-            color: "#708090",
+            color: "#FFDAB5",
             elements: {
                 "Location": "Místo v prostoru kde jsou koncepty situovány",
                 "Grouping": "Seskupení konceptů bez přiřazení konkrétního významu"
@@ -3916,6 +4085,9 @@
             "BusinessRole": ["Assignment", "Association"], 
             "BusinessCollaboration": ["Assignment", "Association"], 
             "BusinessInterface": ["Composition", "Aggregation", "Assignment", "Association"], 
+            "BusinessProcess": ["Assignment", "Association"],
+            "BusinessFunction": ["Assignment", "Association"],
+            "BusinessService": ["Assignment", "Realization", "Association"],
             "Location": ["Assignment", "Association"],
             // Cross-layer (derived) - business actor can use application services/components
             "ApplicationComponent": ["Serving", "Association"],
@@ -3929,16 +4101,24 @@
             "BusinessInteraction": ["Assignment", "Association"], 
             "BusinessInterface": ["Composition", "Assignment", "Association"], 
             "BusinessEvent": ["Assignment", "Association"], 
-            "BusinessService": ["Assignment", "Association"],
+            "BusinessService": ["Assignment", "Realization", "Association"],
             // Cross-layer - business role can use application interface
             "ApplicationInterface": ["Serving", "Association"],
             "ApplicationService": ["Serving", "Association"],
             "default": ["Association"] 
         },
-        "BusinessCollaboration": { "BusinessCollaboration": ["Composition", "Aggregation", "Specialization", "Association"], "BusinessRole": ["Aggregation", "Association"], "BusinessInteraction": ["Assignment", "Association"], "default": ["Association"] },
+        "BusinessCollaboration": { 
+            "BusinessCollaboration": ["Composition", "Aggregation", "Specialization", "Association"], 
+            "BusinessRole": ["Aggregation", "Association"], 
+            "BusinessInteraction": ["Assignment", "Association"], 
+            "BusinessService": ["Assignment", "Realization", "Association"],
+            "default": ["Association"] 
+        },
         "BusinessInterface": { 
             "BusinessInterface": ["Composition", "Aggregation", "Specialization", "Association"], 
             "BusinessService": ["Assignment", "Association"],
+            "BusinessActor": ["Serving", "Association"],
+            "BusinessRole": ["Serving", "Association"],
             // Cross-layer - business interface can serve application component (Figure 104)
             "ApplicationComponent": ["Serving", "Association"],
             "default": ["Association", "Serving"] 
@@ -4009,7 +4189,8 @@
             "ApplicationInterface": ["Composition", "Assignment", "Association"], 
             "ApplicationFunction": ["Assignment", "Association"], 
             "ApplicationProcess": ["Assignment", "Association"], 
-            "ApplicationService": ["Assignment", "Association"], 
+            "ApplicationInteraction": ["Assignment", "Association"],
+            "ApplicationService": ["Assignment", "Realization", "Association"], 
             "DataObject": ["Access", "Association"],
             // Cross-layer - application component can serve business (derived)
             "BusinessActor": ["Serving", "Association"],
@@ -4018,10 +4199,17 @@
             "BusinessFunction": ["Serving", "Association"],
             "default": ["Association"] 
         },
-        "ApplicationCollaboration": { "ApplicationCollaboration": ["Composition", "Aggregation", "Specialization", "Association"], "ApplicationComponent": ["Aggregation", "Association"], "ApplicationInteraction": ["Assignment", "Association"], "default": ["Association"] },
+        "ApplicationCollaboration": { 
+            "ApplicationCollaboration": ["Composition", "Aggregation", "Specialization", "Association"], 
+            "ApplicationComponent": ["Aggregation", "Association"], 
+            "ApplicationInteraction": ["Assignment", "Association"], 
+            "ApplicationService": ["Assignment", "Realization", "Association"],
+            "default": ["Association"] 
+        },
         "ApplicationInterface": { 
             "ApplicationInterface": ["Composition", "Aggregation", "Specialization", "Association"], 
             "ApplicationService": ["Assignment", "Association"], 
+            "ApplicationComponent": ["Serving", "Association"],
             "DataObject": ["Association"],
             // Cross-layer (Figure 104, 105)
             "BusinessRole": ["Serving", "Association"],
@@ -4093,10 +4281,10 @@
             "TechnologyInterface": ["Composition", "Assignment", "Association"], 
             "TechnologyFunction": ["Assignment", "Association"], 
             "TechnologyProcess": ["Assignment", "Association"], 
-            "TechnologyService": ["Assignment", "Association"], 
+            "TechnologyService": ["Assignment", "Realization", "Association"], 
             "Artifact": ["Assignment", "Association"],
             // Cross-layer
-            "ApplicationComponent": ["Assignment", "Association"],
+            "ApplicationComponent": ["Assignment", "Realization", "Association"],
             "default": ["Association"] 
         },
         "Device": { 
@@ -4104,26 +4292,40 @@
             "SystemSoftware": ["Assignment", "Association"], 
             "TechnologyFunction": ["Assignment", "Association"], 
             "TechnologyProcess": ["Assignment", "Association"],
-            "Artifact": ["Assignment", "Association"], 
+            "TechnologyService": ["Assignment", "Realization", "Association"],
+            "TechnologyInterface": ["Composition", "Assignment", "Association"],
+            "Artifact": ["Assignment", "Association"],
+            // Cross-layer
+            "ApplicationComponent": ["Assignment", "Realization", "Association"],
             "default": ["Association"] 
         },
         "SystemSoftware": { 
             "SystemSoftware": ["Composition", "Aggregation", "Specialization", "Association"], 
             "TechnologyFunction": ["Assignment", "Association"], 
             "TechnologyProcess": ["Assignment", "Association"],
-            "TechnologyService": ["Assignment", "Association"], 
+            "TechnologyService": ["Assignment", "Realization", "Association"], 
+            "TechnologyInterface": ["Composition", "Assignment", "Association"],
             "Artifact": ["Assignment", "Association"],
             // Cross-layer
             "ApplicationComponent": ["Realization", "Association"],
             "default": ["Association"] 
         },
-        "TechnologyCollaboration": { "TechnologyCollaboration": ["Composition", "Aggregation", "Specialization", "Association"], "Node": ["Aggregation", "Association"], "TechnologyInteraction": ["Assignment", "Association"], "default": ["Association"] },
+        "TechnologyCollaboration": { 
+            "TechnologyCollaboration": ["Composition", "Aggregation", "Specialization", "Association"], 
+            "Node": ["Aggregation", "Association"], 
+            "TechnologyInteraction": ["Assignment", "Association"], 
+            "TechnologyService": ["Assignment", "Realization", "Association"],
+            "default": ["Association"] 
+        },
         "TechnologyInterface": { 
             "TechnologyInterface": ["Composition", "Aggregation", "Specialization", "Association"], 
             "TechnologyService": ["Assignment", "Association"],
             // Cross-layer (Figure 105)
             "ApplicationComponent": ["Serving", "Association"],
+            "ApplicationInterface": ["Serving", "Association"],
             "Node": ["Serving", "Association"],
+            "Device": ["Serving", "Association"],
+            "SystemSoftware": ["Serving", "Association"],
             "default": ["Association", "Serving"] 
         },
         "Path": { "Path": ["Composition", "Aggregation", "Specialization", "Association"], "CommunicationNetwork": ["Realization", "Association"], "default": ["Association"] },
@@ -4647,17 +4849,14 @@
     }
     
     function deleteElement(id) {
-        if (!confirm(t('confirmDeleteElement', id))) {
+        const element = elements.find(e => e.id === id);
+        if (!element) return;
+        
+        if (!confirm(t('confirmDeleteElement', element.name || id))) {
             return;
         }
         
-        elements = elements.filter(e => e.id !== id);
-        relationships = relationships.filter(r => r.sourceId !== id && r.targetId !== id);
-        
-        // Remove element from all diagrams
-        diagrams.forEach(d => {
-            d.elementIds = d.elementIds.filter(eId => eId !== id);
-        });
+        deleteElementById(id, true);
         
         renderElementsTable();
         renderRelationshipsTable();
@@ -4719,6 +4918,9 @@
         datalist.innerHTML = [...allTags].sort().map(tag => 
             `<option value="${escapeHtml(tag)}">`
         ).join('');
+        
+        // Also update export tag select
+        updateExportTagSelect();
     }
     
     function updateStereotypeFilter() {
@@ -6163,7 +6365,8 @@
         container.insertBefore(countInfo, container.firstChild);
         
         if (filteredElements.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="no-data">' + t('noElements') + '</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="9" class="no-data">' + t('noElements') + '</td></tr>';
+            updateElementsBulkPanel();
             return;
         }
         
@@ -6186,6 +6389,7 @@
             
             return `
                 <tr>
+                    <td><input type="checkbox" class="element-checkbox" value="${escapeHtml(e.id)}" onchange="updateElementsBulkPanel()"></td>
                     <td><code>${escapeHtml(e.id)}</code></td>
                     <td><span class="layer-badge layer-${e.layer}">${escapeHtml(layerName)}</span></td>
                     <td>${escapeHtml(e.type)}</td>
@@ -6201,6 +6405,8 @@
                 </tr>
             `;
         }).join('');
+        
+        updateElementsBulkPanel();
     }
 
     // ============================================
@@ -6501,18 +6707,19 @@
             relationships.push(relationship);
         }
         
-        // Ponechat vrstvy, typy a název vazby, jen resetovat výběr konkrétních prvků
+        // Ponechat zdroj, typ vazby a další, jen resetovat cíl
         editingRelationshipId = null;
         document.getElementById('relationship-form-title').textContent = t('newRelationship');
         document.getElementById('rel-id').value = '';
-        document.getElementById('rel-source').value = '';
-        document.getElementById('rel-target').value = '';
+        // Resetovat jen cíl, nechat zdroj
+        document.getElementById('rel-target-layer').value = '';
+        document.getElementById('rel-target-type').innerHTML = `<option value="">${t('selectTypeShort')}</option>`;
+        document.getElementById('rel-target').innerHTML = `<option value="">${t('selectElementShort')}</option>`;
         document.getElementById('rel-type').innerHTML = `<option value="">${t('selectElements')}</option>`;
         document.getElementById('relationship-info').style.display = 'none';
         document.getElementById('statement-preview').style.display = 'none';
         
-        // Aktualizovat seznamy prvků v dropdownech (odebrat právě použité)
-        updateSourceElements();
+        // Aktualizovat seznamy prvků v dropdownech
         updateTargetElements();
         updateRelNameSuggestions();
         updatePříznakySuggestions();
@@ -6775,7 +6982,8 @@
         container.insertBefore(countInfo, container.firstChild);
         
         if (filteredRelationships.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="8" class="no-data">' + t('noRelationships') + '</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="9" class="no-data">' + t('noRelationships') + '</td></tr>';
+            updateRelationshipsBulkPanel();
             return;
         }
         
@@ -6803,6 +7011,7 @@
             
             return `
                 <tr>
+                    <td><input type="checkbox" class="relationship-checkbox" value="${escapeHtml(r.id)}" onchange="updateRelationshipsBulkPanel()"></td>
                     <td>${sourceStereotype}<a href="#" class="element-link" onclick="filterBySource('${escapeHtml(r.sourceId)}'); return false;" title="${currentLanguage === 'cs' ? 'Zobrazit vazby s tímto zdrojem' : 'Show relationships with this source'}">${escapeHtml(sourceName)}</a></td>
                     <td><strong>${escapeHtml(r.type)}</strong> ${relInfo ? `(${relInfo.notation})` : ''}</td>
                     <td>${escapeHtml(r.name || '-')}</td>
@@ -6818,6 +7027,8 @@
                 </tr>
             `;
         }).join('');
+        
+        updateRelationshipsBulkPanel();
     }
 
     // ============================================
@@ -7223,6 +7434,284 @@
         };
         const extensions = extMap[mimeType] || ['.' + filename.split('.').pop()];
         await saveFileWithDialog(content, filename, mimeType, extensions);
+    }
+    
+    // ============================================
+    // Export by Tag Functions
+    // ============================================
+    
+    function updateExportTagSelect() {
+        const select = document.getElementById('export-tag-select');
+        if (!select) return;
+        
+        // Gather all tags from elements and relationships
+        const allTags = new Set();
+        elements.forEach(e => {
+            if (e.příznaky) {
+                e.příznaky.split(',').forEach(tag => {
+                    const trimmed = tag.trim();
+                    if (trimmed) allTags.add(trimmed);
+                });
+            }
+        });
+        relationships.forEach(r => {
+            if (r.příznaky) {
+                r.příznaky.split(',').forEach(tag => {
+                    const trimmed = tag.trim();
+                    if (trimmed) allTags.add(trimmed);
+                });
+            }
+        });
+        
+        const sortedTags = [...allTags].sort((a, b) => a.localeCompare(b, 'cs'));
+        
+        select.innerHTML = `<option value="">${t('selectTagPlaceholder')}</option>`;
+        sortedTags.forEach(tag => {
+            select.innerHTML += `<option value="${escapeHtml(tag)}">${escapeHtml(tag)}</option>`;
+        });
+        
+        // Add change listener for stats update
+        select.onchange = updateExportTagStats;
+    }
+    
+    function updateExportTagStats() {
+        const select = document.getElementById('export-tag-select');
+        const statsDiv = document.getElementById('export-tag-stats');
+        if (!select || !statsDiv) return;
+        
+        const selectedTag = select.value;
+        if (!selectedTag) {
+            statsDiv.innerHTML = '';
+            return;
+        }
+        
+        const filteredElements = elements.filter(e => {
+            if (!e.příznaky) return false;
+            return e.příznaky.split(',').map(t => t.trim()).includes(selectedTag);
+        });
+        
+        const filteredRelationships = relationships.filter(r => {
+            if (!r.příznaky) return false;
+            return r.příznaky.split(',').map(t => t.trim()).includes(selectedTag);
+        });
+        
+        statsDiv.innerHTML = t('exportTagStats', filteredElements.length, filteredRelationships.length);
+    }
+    
+    function getItemsByTag(tag) {
+        const filteredElements = elements.filter(e => {
+            if (!e.příznaky) return false;
+            return e.příznaky.split(',').map(t => t.trim()).includes(tag);
+        });
+        
+        // Get element IDs for relationship filtering
+        const elementIds = new Set(filteredElements.map(e => e.id));
+        
+        // Include relationships that have the tag OR connect filtered elements
+        const filteredRelationships = relationships.filter(r => {
+            // Include if relationship has the tag
+            if (r.příznaky) {
+                const tags = r.příznaky.split(',').map(t => t.trim());
+                if (tags.includes(tag)) return true;
+            }
+            // Include if both source and target are in filtered elements
+            if (elementIds.has(r.sourceId) && elementIds.has(r.targetId)) return true;
+            return false;
+        });
+        
+        return { elements: filteredElements, relationships: filteredRelationships };
+    }
+    
+    function exportByTagAJX() {
+        const select = document.getElementById('export-tag-select');
+        const selectedTag = select ? select.value : '';
+        
+        if (!selectedTag) {
+            alert(t('noTagSelected'));
+            return;
+        }
+        
+        const { elements: filteredElements, relationships: filteredRelationships } = getItemsByTag(selectedTag);
+        
+        if (filteredElements.length === 0 && filteredRelationships.length === 0) {
+            alert(t('noItemsWithTag'));
+            return;
+        }
+        
+        const data = {
+            exportDate: new Date().toISOString(),
+            archimateVersion: "3.2",
+            exportedByTag: selectedTag,
+            model: { ...modelMetadata, name: `${modelMetadata.name || 'Model'} [${selectedTag}]` },
+            elements: filteredElements,
+            relationships: filteredRelationships,
+            diagrams: [],
+            adr: [],
+            notes: [],
+            tasks: []
+        };
+        
+        const json = JSON.stringify(data, null, 2);
+        document.getElementById('export-preview').textContent = json;
+        
+        const safeTag = selectedTag.replace(/[^a-zA-Z0-9áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/g, '-');
+        downloadFile(json, `${modelMetadata.name || 'archimate-model'}-${safeTag}.ajx`, 'application/json');
+    }
+    
+    function exportByTagXML() {
+        const select = document.getElementById('export-tag-select');
+        const selectedTag = select ? select.value : '';
+        
+        if (!selectedTag) {
+            alert(t('noTagSelected'));
+            return;
+        }
+        
+        const { elements: filteredElements, relationships: filteredRelationships } = getItemsByTag(selectedTag);
+        
+        if (filteredElements.length === 0 && filteredRelationships.length === 0) {
+            alert(t('noItemsWithTag'));
+            return;
+        }
+        
+        const xml = generateArchiMateXMLFiltered(filteredElements, filteredRelationships, selectedTag);
+        document.getElementById('export-preview').textContent = xml;
+        
+        const safeTag = selectedTag.replace(/[^a-zA-Z0-9áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/g, '-');
+        downloadFile(xml, `${modelMetadata.name || 'archimate-model'}-${safeTag}.xml`, 'application/xml');
+    }
+    
+    function generateArchiMateXMLFiltered(filteredElements, filteredRelationships, tag) {
+        const dc = modelMetadata.dublinCore || {};
+        const hasDublinCore = dc.creator || dc.publisher || dc.date || dc.rights || dc.subject || dc.description;
+        
+        let stereotypePropId = 'propid-1';
+        let určujePropId = 'propid-2';
+        let příznakyPropId = 'propid-3';
+        
+        if (modelMetadata.importedPropertyDefs) {
+            for (const [id, def] of Object.entries(modelMetadata.importedPropertyDefs)) {
+                if (def.name.toLowerCase() === 'stereotype') stereotypePropId = id;
+                else if (def.name === 'Určuje' || def.name.toLowerCase() === 'určuje') určujePropId = id;
+                else if (def.name === 'Příznaky' || def.name.toLowerCase() === 'příznaky') příznakyPropId = id;
+            }
+        }
+        
+        const modelName = `${modelMetadata.name || 'ArchiMate Model'} [${tag}]`;
+        
+        let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"${hasDublinCore ? '\n       xmlns:dc="http://purl.org/dc/elements/1.1/"' : ''}
+       xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Diagram.xsd"
+       identifier="${escapeXml(modelMetadata.id || 'id-model-001')}-export"${modelMetadata.version ? ` version="${escapeXml(modelMetadata.version)}"` : ''}>
+    
+    <name xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(modelName)}</name>
+`;
+
+        if (modelMetadata.documentation) {
+            xml += `    <documentation xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(modelMetadata.documentation)}</documentation>\n`;
+        }
+
+        if (hasDublinCore) {
+            xml += `    <metadata>
+        <schema>http://purl.org/dc/elements/1.1/</schema>
+        <schemaversion>1.1</schemaversion>
+`;
+            if (dc.creator) xml += `        <dc:creator>${escapeXml(dc.creator)}</dc:creator>\n`;
+            if (dc.publisher) xml += `        <dc:publisher>${escapeXml(dc.publisher)}</dc:publisher>\n`;
+            if (dc.date) xml += `        <dc:date>${escapeXml(dc.date)}</dc:date>\n`;
+            if (dc.language) xml += `        <dc:language>${escapeXml(dc.language)}</dc:language>\n`;
+            if (dc.rights) xml += `        <dc:rights>${escapeXml(dc.rights)}</dc:rights>\n`;
+            if (dc.subject) xml += `        <dc:subject>${escapeXml(dc.subject)}</dc:subject>\n`;
+            if (dc.description) xml += `        <dc:description>${escapeXml(dc.description)}</dc:description>\n`;
+            xml += `    </metadata>\n`;
+        }
+
+        if (filteredElements.length > 0) {
+            xml += `    <elements>\n`;
+            filteredElements.forEach(e => {
+                xml += `        <element xsi:type="${escapeXml(e.type)}" identifier="${escapeXml(e.id)}">\n`;
+                xml += `            <name xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(e.name)}</name>\n`;
+                if (e.description) {
+                    xml += `            <documentation xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(e.description)}</documentation>\n`;
+                }
+                if (e.stereotype || e.určuje || e.příznaky) {
+                    xml += `            <properties>\n`;
+                    if (e.stereotype) {
+                        xml += `                <property propertyDefinitionRef="${stereotypePropId}">\n`;
+                        xml += `                    <value xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(e.stereotype)}</value>\n`;
+                        xml += `                </property>\n`;
+                    }
+                    if (e.určuje) {
+                        xml += `                <property propertyDefinitionRef="${určujePropId}">\n`;
+                        xml += `                    <value xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(e.určuje)}</value>\n`;
+                        xml += `                </property>\n`;
+                    }
+                    if (e.příznaky) {
+                        xml += `                <property propertyDefinitionRef="${příznakyPropId}">\n`;
+                        xml += `                    <value xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(e.příznaky)}</value>\n`;
+                        xml += `                </property>\n`;
+                    }
+                    xml += `            </properties>\n`;
+                }
+                xml += `        </element>\n`;
+            });
+            xml += `    </elements>\n`;
+        }
+
+        if (filteredRelationships.length > 0) {
+            xml += `    <relationships>\n`;
+            filteredRelationships.forEach(r => {
+                xml += `        <relationship xsi:type="${escapeXml(r.type)}" identifier="${escapeXml(r.id)}" source="${escapeXml(r.sourceId)}" target="${escapeXml(r.targetId)}"`;
+                if (r.name || r.description || r.příznaky) {
+                    xml += `>\n`;
+                    if (r.name) {
+                        xml += `            <name xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(r.name)}</name>\n`;
+                    }
+                    if (r.description) {
+                        xml += `            <documentation xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(r.description)}</documentation>\n`;
+                    }
+                    if (r.příznaky) {
+                        xml += `            <properties>\n`;
+                        xml += `                <property propertyDefinitionRef="${příznakyPropId}">\n`;
+                        xml += `                    <value xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(r.příznaky)}</value>\n`;
+                        xml += `                </property>\n`;
+                        xml += `            </properties>\n`;
+                    }
+                    xml += `        </relationship>\n`;
+                } else {
+                    xml += `/>\n`;
+                }
+            });
+            xml += `    </relationships>\n`;
+        }
+
+        const hasStereotype = filteredElements.some(e => e.stereotype);
+        const hasUrčuje = filteredElements.some(e => e.určuje);
+        const hasPříznaky = filteredElements.some(e => e.příznaky) || filteredRelationships.some(r => r.příznaky);
+        
+        if (hasStereotype || hasUrčuje || hasPříznaky) {
+            xml += `    <propertyDefinitions>\n`;
+            if (hasStereotype) {
+                xml += `        <propertyDefinition identifier="${stereotypePropId}" type="string">\n`;
+                xml += `            <name>Stereotype</name>\n`;
+                xml += `        </propertyDefinition>\n`;
+            }
+            if (hasUrčuje) {
+                xml += `        <propertyDefinition identifier="${určujePropId}" type="string">\n`;
+                xml += `            <name>Určuje</name>\n`;
+                xml += `        </propertyDefinition>\n`;
+            }
+            if (hasPříznaky) {
+                xml += `        <propertyDefinition identifier="${příznakyPropId}" type="string">\n`;
+                xml += `            <name>Příznaky</name>\n`;
+                xml += `        </propertyDefinition>\n`;
+            }
+            xml += `    </propertyDefinitions>\n`;
+        }
+
+        xml += `</model>`;
+        return xml;
     }
     
     // ============================================
@@ -8029,8 +8518,9 @@
             let totalCount = labels.length;
             
             labels.forEach(label => {
-                const text = label.textContent.toLowerCase();
-                const matches = searchTerm === '' || text.includes(searchTerm);
+                // Use data-search attribute if available, otherwise fallback to textContent
+                const searchText = label.dataset.search || label.textContent.toLowerCase();
+                const matches = searchTerm === '' || searchText.includes(searchTerm);
                 label.style.display = matches ? 'flex' : 'none';
                 if (matches) visibleCount++;
             });
@@ -8054,8 +8544,9 @@
             let totalCount = labels.length;
             
             labels.forEach(label => {
-                const text = label.textContent.toLowerCase();
-                const matches = searchTerm === '' || text.includes(searchTerm);
+                // Use data-search attribute if available, otherwise fallback to textContent
+                const searchText = label.dataset.search || label.textContent.toLowerCase();
+                const matches = searchTerm === '' || searchText.includes(searchTerm);
                 label.style.display = matches ? 'flex' : 'none';
                 if (matches) visibleCount++;
             });
@@ -8204,13 +8695,17 @@
                 const existsInModel = elements.some(e => e.id === el.id);
                 const existsLabel = existsInModel ? '<span style="color: #c90; font-size: 11px;" title="Prvek s tímto ID již existuje v modelu">⚠️ existuje</span>' : '<span style="color: #090; font-size: 11px;">nový</span>';
                 const stereotypePart = el.stereotype ? `<span style="color: #666;">«${escapeHtml(el.stereotype)}»</span> ` : '';
+                const tagsHtml = el.příznaky ? `<span style="color: #1976d2; font-size: 11px; margin-left: 6px;">🏷️ ${escapeHtml(el.příznaky)}</span>` : '';
+                
+                // Store searchable text in data attribute for filtering
+                const searchableText = [el.name || '', el.id, el.type, el.stereotype || '', el.příznaky || '', el.description || ''].join(' ').toLowerCase();
                 
                 html += `
-                    <label style="display: flex; align-items: center; padding: 4px 8px; margin: 2px 0; background: ${existsInModel ? '#fff8e6' : '#fff'}; border-radius: 3px; cursor: pointer;">
-                        <input type="checkbox" class="merge-element-checkbox" value="${escapeHtml(el.id)}" checked style="margin-right: 8px;">
+                    <label style="display: flex; align-items: center; padding: 4px 8px; margin: 2px 0; background: ${existsInModel ? '#fff8e6' : '#fff'}; border-radius: 3px; cursor: pointer;" data-search="${escapeHtml(searchableText)}">
+                        <input type="checkbox" class="merge-element-checkbox" value="${escapeHtml(el.id)}" style="margin-right: 8px;">
                         <span style="flex: 1;">
                             ${stereotypePart}<strong>${escapeHtml(el.name || el.id)}</strong>
-                            <span style="color: #888; font-size: 12px;"> — ${escapeHtml(el.type)}</span>
+                            <span style="color: #888; font-size: 12px;"> — ${escapeHtml(el.type)}</span>${tagsHtml}
                         </span>
                         ${existsLabel}
                     </label>
@@ -8282,12 +8777,16 @@
                 const targetName = targetEl ? (targetEl.name || targetEl.id) : rel.targetId;
                 
                 const namePart = rel.name ? `<strong>"${escapeHtml(rel.name)}"</strong>: ` : '';
+                const tagsHtml = rel.příznaky ? `<span style="color: #1976d2; font-size: 11px; margin-left: 6px;">🏷️ ${escapeHtml(rel.příznaky)}</span>` : '';
+                
+                // Store searchable text in data attribute for filtering
+                const searchableText = [rel.name || '', rel.type, sourceName, targetName, rel.příznaky || '', rel.description || ''].join(' ').toLowerCase();
                 
                 html += `
-                    <label style="display: flex; align-items: center; padding: 4px 8px; margin: 2px 0; background: ${existsInModel ? '#fff8e6' : '#fff'}; border-radius: 3px; cursor: pointer;">
+                    <label style="display: flex; align-items: center; padding: 4px 8px; margin: 2px 0; background: ${existsInModel ? '#fff8e6' : '#fff'}; border-radius: 3px; cursor: pointer;" data-search="${escapeHtml(searchableText)}">
                         <input type="checkbox" class="merge-relationship-checkbox" value="${escapeHtml(rel.id)}" data-source="${escapeHtml(rel.sourceId)}" data-target="${escapeHtml(rel.targetId)}" style="margin-right: 8px;">
                         <span style="flex: 1; font-size: 13px;">
-                            ${namePart}${escapeHtml(sourceName)} → ${escapeHtml(targetName)}
+                            ${namePart}${escapeHtml(sourceName)} → ${escapeHtml(targetName)}${tagsHtml}
                         </span>
                         ${existsLabel}
                     </label>
@@ -9084,6 +9583,493 @@
     }
 
     // ============================================
+    // ============================================
+    // Bulk Operations - Elements
+    // ============================================
+    
+    let selectedElementIds = new Set();
+    
+    function toggleAllElements(checked) {
+        const checkboxes = document.querySelectorAll('.element-checkbox');
+        checkboxes.forEach(cb => {
+            cb.checked = checked;
+            if (checked) {
+                selectedElementIds.add(cb.value);
+            } else {
+                selectedElementIds.delete(cb.value);
+            }
+        });
+        updateElementsBulkPanel();
+    }
+    
+    function updateElementsBulkPanel() {
+        const checkboxes = document.querySelectorAll('.element-checkbox:checked');
+        selectedElementIds = new Set(Array.from(checkboxes).map(cb => cb.value));
+        
+        const panel = document.getElementById('elements-bulk-panel');
+        const countEl = document.getElementById('elements-selected-count');
+        
+        if (selectedElementIds.size > 0) {
+            panel.style.display = 'flex';
+            countEl.textContent = selectedElementIds.size;
+        } else {
+            panel.style.display = 'none';
+        }
+        
+        // Update select-all checkbox state
+        const allCheckboxes = document.querySelectorAll('.element-checkbox');
+        const selectAll = document.getElementById('elements-select-all');
+        if (selectAll) {
+            selectAll.checked = allCheckboxes.length > 0 && checkboxes.length === allCheckboxes.length;
+            selectAll.indeterminate = checkboxes.length > 0 && checkboxes.length < allCheckboxes.length;
+        }
+    }
+    
+    function clearElementSelection() {
+        selectedElementIds.clear();
+        document.querySelectorAll('.element-checkbox').forEach(cb => cb.checked = false);
+        document.getElementById('elements-select-all').checked = false;
+        document.getElementById('elements-bulk-action').value = '';
+        document.getElementById('elements-bulk-fields').innerHTML = '';
+        updateElementsBulkPanel();
+    }
+    
+    function showElementsBulkFields() {
+        const action = document.getElementById('elements-bulk-action').value;
+        const fieldsDiv = document.getElementById('elements-bulk-fields');
+        fieldsDiv.innerHTML = '';
+        
+        if (action === 'type') {
+            // Get all unique types from selected elements' layers
+            const selectedLayers = new Set();
+            selectedElementIds.forEach(id => {
+                const el = elements.find(e => e.id === id);
+                if (el) selectedLayers.add(el.layer);
+            });
+            
+            let html = `<label>${t('bulkSelectType')}</label><select id="bulk-element-type">`;
+            html += `<option value="">--</option>`;
+            
+            // Add types from selected layers
+            selectedLayers.forEach(layer => {
+                if (ARCHIMATE_LAYERS[layer]) {
+                    Object.keys(ARCHIMATE_LAYERS[layer].elements).forEach(type => {
+                        html += `<option value="${type}">${type}</option>`;
+                    });
+                }
+            });
+            html += `</select>`;
+            fieldsDiv.innerHTML = html;
+        } else if (action === 'stereotype' || action === 'determines' || action === 'description') {
+            fieldsDiv.innerHTML = `<label>${t('bulkEnterValue')}</label><input type="text" id="bulk-element-value" style="min-width: 200px;">`;
+        } else if (action === 'addTags') {
+            fieldsDiv.innerHTML = `<label>${t('bulkEnterTags')}</label><input type="text" id="bulk-element-tags" style="min-width: 200px;">`;
+        }
+    }
+    
+    function executeElementsBulkAction() {
+        const action = document.getElementById('elements-bulk-action').value;
+        if (!action || selectedElementIds.size === 0) return;
+        
+        if (action === 'delete') {
+            const msg = t('confirmBulkDelete', selectedElementIds.size) + '\n\n' + t('bulkDeleteWarning');
+            if (!confirm(msg)) return;
+            
+            let deleted = 0;
+            selectedElementIds.forEach(id => {
+                deleteElementById(id, true); // silent delete
+                deleted++;
+            });
+            
+            clearElementSelection();
+            renderElementsTable();
+            renderRelationshipsTable();
+            updateModelStats();
+            saveToLocalStorage();
+            alert(t('bulkDeleted', deleted));
+            return;
+        }
+        
+        let updated = 0;
+        
+        if (action === 'type') {
+            const newType = document.getElementById('bulk-element-type').value;
+            if (!newType) return;
+            
+            selectedElementIds.forEach(id => {
+                const el = elements.find(e => e.id === id);
+                if (el) {
+                    el.type = newType;
+                    updated++;
+                }
+            });
+        } else if (action === 'stereotype') {
+            const value = document.getElementById('bulk-element-value').value;
+            selectedElementIds.forEach(id => {
+                const el = elements.find(e => e.id === id);
+                if (el) {
+                    el.stereotype = value;
+                    updated++;
+                }
+            });
+        } else if (action === 'determines') {
+            const value = document.getElementById('bulk-element-value').value;
+            selectedElementIds.forEach(id => {
+                const el = elements.find(e => e.id === id);
+                if (el) {
+                    el.určuje = value;
+                    updated++;
+                }
+            });
+        } else if (action === 'description') {
+            const value = document.getElementById('bulk-element-value').value;
+            selectedElementIds.forEach(id => {
+                const el = elements.find(e => e.id === id);
+                if (el) {
+                    el.description = value;
+                    updated++;
+                }
+            });
+        } else if (action === 'addTags') {
+            const newTags = document.getElementById('bulk-element-tags').value.split(',').map(t => t.trim()).filter(t => t);
+            if (newTags.length === 0) return;
+            
+            selectedElementIds.forEach(id => {
+                const el = elements.find(e => e.id === id);
+                if (el) {
+                    const existingTags = el.příznaky ? el.příznaky.split(',').map(t => t.trim()).filter(t => t) : [];
+                    const mergedTags = [...new Set([...existingTags, ...newTags])];
+                    el.příznaky = mergedTags.join(', ');
+                    updated++;
+                }
+            });
+        }
+        
+        if (updated > 0) {
+            clearElementSelection();
+            renderElementsTable();
+            updateStereotypeSuggestions();
+            updatePříznakySuggestions();
+            updateModelStats();
+            saveToLocalStorage();
+            alert(t('bulkUpdated', updated));
+        }
+    }
+    
+    function deleteElementById(id, silent = false) {
+        const element = elements.find(e => e.id === id);
+        if (!element) return false;
+        
+        if (!silent) {
+            const relCount = relationships.filter(r => r.sourceId === id || r.targetId === id).length;
+            const msg = t('confirmDeleteElement', element.name || id);
+            if (!confirm(msg)) return false;
+        }
+        
+        // Remove from elements array
+        const index = elements.findIndex(e => e.id === id);
+        if (index !== -1) {
+            elements.splice(index, 1);
+        }
+        
+        // Remove all relationships containing this element
+        relationships = relationships.filter(r => r.sourceId !== id && r.targetId !== id);
+        
+        // Remove from all diagrams
+        diagrams.forEach(d => {
+            const idx = d.elementIds.indexOf(id);
+            if (idx !== -1) {
+                d.elementIds.splice(idx, 1);
+            }
+        });
+        
+        // Remove from ADR linkedElements
+        adrRecords.forEach(a => {
+            if (a.linkedElements) {
+                const idx = a.linkedElements.indexOf(id);
+                if (idx !== -1) a.linkedElements.splice(idx, 1);
+            }
+        });
+        
+        // Remove from notes linkedElements
+        notes.forEach(n => {
+            if (n.linkedElements) {
+                const idx = n.linkedElements.indexOf(id);
+                if (idx !== -1) n.linkedElements.splice(idx, 1);
+            }
+        });
+        
+        // Remove from tasks linkedElements
+        tasks.forEach(t => {
+            if (t.linkedElements) {
+                const idx = t.linkedElements.indexOf(id);
+                if (idx !== -1) t.linkedElements.splice(idx, 1);
+            }
+        });
+        
+        return true;
+    }
+    
+    // ============================================
+    // Bulk Operations - Relationships
+    // ============================================
+    
+    let selectedRelationshipIds = new Set();
+    
+    function toggleAllRelationships(checked) {
+        const checkboxes = document.querySelectorAll('.relationship-checkbox');
+        checkboxes.forEach(cb => {
+            cb.checked = checked;
+            if (checked) {
+                selectedRelationshipIds.add(cb.value);
+            } else {
+                selectedRelationshipIds.delete(cb.value);
+            }
+        });
+        updateRelationshipsBulkPanel();
+    }
+    
+    function updateRelationshipsBulkPanel() {
+        const checkboxes = document.querySelectorAll('.relationship-checkbox:checked');
+        selectedRelationshipIds = new Set(Array.from(checkboxes).map(cb => cb.value));
+        
+        const panel = document.getElementById('relationships-bulk-panel');
+        const countEl = document.getElementById('relationships-selected-count');
+        
+        if (selectedRelationshipIds.size > 0) {
+            panel.style.display = 'flex';
+            countEl.textContent = selectedRelationshipIds.size;
+        } else {
+            panel.style.display = 'none';
+        }
+        
+        // Update select-all checkbox state
+        const allCheckboxes = document.querySelectorAll('.relationship-checkbox');
+        const selectAll = document.getElementById('relationships-select-all');
+        if (selectAll) {
+            selectAll.checked = allCheckboxes.length > 0 && checkboxes.length === allCheckboxes.length;
+            selectAll.indeterminate = checkboxes.length > 0 && checkboxes.length < allCheckboxes.length;
+        }
+    }
+    
+    function clearRelationshipSelection() {
+        selectedRelationshipIds.clear();
+        document.querySelectorAll('.relationship-checkbox').forEach(cb => cb.checked = false);
+        document.getElementById('relationships-select-all').checked = false;
+        document.getElementById('relationships-bulk-action').value = '';
+        document.getElementById('relationships-bulk-fields').innerHTML = '';
+        updateRelationshipsBulkPanel();
+    }
+    
+    function showRelationshipsBulkFields() {
+        const action = document.getElementById('relationships-bulk-action').value;
+        const fieldsDiv = document.getElementById('relationships-bulk-fields');
+        fieldsDiv.innerHTML = '';
+        
+        if (action === 'type') {
+            let html = `<label>${t('bulkSelectType')}</label><select id="bulk-rel-type">`;
+            html += `<option value="">--</option>`;
+            Object.keys(RELATIONSHIP_TYPES).forEach(type => {
+                html += `<option value="${type}">${type}</option>`;
+            });
+            html += `</select>`;
+            fieldsDiv.innerHTML = html;
+        } else if (action === 'source' || action === 'target') {
+            let html = `<label>${t('bulkSelectElement')}</label><select id="bulk-rel-element">`;
+            html += `<option value="">--</option>`;
+            elements.forEach(e => {
+                const stereotypePart = e.stereotype ? ` «${e.stereotype}»` : '';
+                html += `<option value="${escapeHtml(e.id)}">${escapeHtml(e.name)}${escapeHtml(stereotypePart)} (${e.type})</option>`;
+            });
+            html += `</select>`;
+            fieldsDiv.innerHTML = html;
+        } else if (action === 'name' || action === 'description') {
+            fieldsDiv.innerHTML = `<label>${t('bulkEnterValue')}</label><input type="text" id="bulk-rel-value" style="min-width: 200px;">`;
+        } else if (action === 'addTags') {
+            fieldsDiv.innerHTML = `<label>${t('bulkEnterTags')}</label><input type="text" id="bulk-rel-tags" style="min-width: 200px;">`;
+        }
+    }
+    
+    function executeRelationshipsBulkAction() {
+        const action = document.getElementById('relationships-bulk-action').value;
+        if (!action || selectedRelationshipIds.size === 0) return;
+        
+        if (action === 'delete') {
+            if (!confirm(t('confirmBulkDelete', selectedRelationshipIds.size))) return;
+            
+            let deleted = 0;
+            selectedRelationshipIds.forEach(id => {
+                const index = relationships.findIndex(r => r.id === id);
+                if (index !== -1) {
+                    relationships.splice(index, 1);
+                    deleted++;
+                }
+            });
+            
+            // Remove from ADR/notes/tasks linkedRelationships
+            const idsToRemove = Array.from(selectedRelationshipIds);
+            adrRecords.forEach(a => {
+                if (a.linkedRelationships) {
+                    a.linkedRelationships = a.linkedRelationships.filter(id => !idsToRemove.includes(id));
+                }
+            });
+            notes.forEach(n => {
+                if (n.linkedRelationships) {
+                    n.linkedRelationships = n.linkedRelationships.filter(id => !idsToRemove.includes(id));
+                }
+            });
+            tasks.forEach(t => {
+                if (t.linkedRelationships) {
+                    t.linkedRelationships = t.linkedRelationships.filter(id => !idsToRemove.includes(id));
+                }
+            });
+            
+            clearRelationshipSelection();
+            renderRelationshipsTable();
+            updateModelStats();
+            saveToLocalStorage();
+            alert(t('bulkDeleted', deleted));
+            return;
+        }
+        
+        let updated = 0;
+        let skipped = 0;
+        
+        if (action === 'type') {
+            const newType = document.getElementById('bulk-rel-type').value;
+            if (!newType) return;
+            
+            selectedRelationshipIds.forEach(id => {
+                const rel = relationships.find(r => r.id === id);
+                if (rel) {
+                    rel.type = newType;
+                    updated++;
+                }
+            });
+        } else if (action === 'source') {
+            const newSourceId = document.getElementById('bulk-rel-element').value;
+            if (!newSourceId) return;
+            
+            // Check for duplicates
+            const wouldCreateDuplicates = [];
+            selectedRelationshipIds.forEach(id => {
+                const rel = relationships.find(r => r.id === id);
+                if (rel && rel.sourceId !== newSourceId) {
+                    // Check if this would create a duplicate
+                    const duplicate = relationships.find(r => 
+                        r.id !== id && 
+                        r.sourceId === newSourceId && 
+                        r.targetId === rel.targetId
+                    );
+                    if (duplicate) {
+                        wouldCreateDuplicates.push(id);
+                    }
+                }
+            });
+            
+            if (wouldCreateDuplicates.length === selectedRelationshipIds.size) {
+                alert(t('noDuplicatesAllowed'));
+                return;
+            }
+            
+            if (wouldCreateDuplicates.length > 0) {
+                alert(t('bulkDuplicateWarning'));
+            }
+            
+            selectedRelationshipIds.forEach(id => {
+                if (wouldCreateDuplicates.includes(id)) {
+                    skipped++;
+                    return;
+                }
+                const rel = relationships.find(r => r.id === id);
+                if (rel && rel.sourceId !== newSourceId && rel.targetId !== newSourceId) {
+                    rel.sourceId = newSourceId;
+                    updated++;
+                }
+            });
+        } else if (action === 'target') {
+            const newTargetId = document.getElementById('bulk-rel-element').value;
+            if (!newTargetId) return;
+            
+            // Check for duplicates
+            const wouldCreateDuplicates = [];
+            selectedRelationshipIds.forEach(id => {
+                const rel = relationships.find(r => r.id === id);
+                if (rel && rel.targetId !== newTargetId) {
+                    const duplicate = relationships.find(r => 
+                        r.id !== id && 
+                        r.sourceId === rel.sourceId && 
+                        r.targetId === newTargetId
+                    );
+                    if (duplicate) {
+                        wouldCreateDuplicates.push(id);
+                    }
+                }
+            });
+            
+            if (wouldCreateDuplicates.length === selectedRelationshipIds.size) {
+                alert(t('noDuplicatesAllowed'));
+                return;
+            }
+            
+            if (wouldCreateDuplicates.length > 0) {
+                alert(t('bulkDuplicateWarning'));
+            }
+            
+            selectedRelationshipIds.forEach(id => {
+                if (wouldCreateDuplicates.includes(id)) {
+                    skipped++;
+                    return;
+                }
+                const rel = relationships.find(r => r.id === id);
+                if (rel && rel.targetId !== newTargetId && rel.sourceId !== newTargetId) {
+                    rel.targetId = newTargetId;
+                    updated++;
+                }
+            });
+        } else if (action === 'name') {
+            const value = document.getElementById('bulk-rel-value').value;
+            selectedRelationshipIds.forEach(id => {
+                const rel = relationships.find(r => r.id === id);
+                if (rel) {
+                    rel.name = value;
+                    updated++;
+                }
+            });
+        } else if (action === 'description') {
+            const value = document.getElementById('bulk-rel-value').value;
+            selectedRelationshipIds.forEach(id => {
+                const rel = relationships.find(r => r.id === id);
+                if (rel) {
+                    rel.description = value;
+                    updated++;
+                }
+            });
+        } else if (action === 'addTags') {
+            const newTags = document.getElementById('bulk-rel-tags').value.split(',').map(t => t.trim()).filter(t => t);
+            if (newTags.length === 0) return;
+            
+            selectedRelationshipIds.forEach(id => {
+                const rel = relationships.find(r => r.id === id);
+                if (rel) {
+                    const existingTags = rel.příznaky ? rel.příznaky.split(',').map(t => t.trim()).filter(t => t) : [];
+                    const mergedTags = [...new Set([...existingTags, ...newTags])];
+                    rel.příznaky = mergedTags.join(', ');
+                    updated++;
+                }
+            });
+        }
+        
+        if (updated > 0) {
+            clearRelationshipSelection();
+            renderRelationshipsTable();
+            updateRelNameSuggestions();
+            updatePříznakySuggestions();
+            saveToLocalStorage();
+            alert(t('bulkUpdated', updated));
+        }
+    }
+
     // Utility Functions
     // ============================================
     
