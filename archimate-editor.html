@@ -876,38 +876,49 @@
             </div>
         </div>
         
-        <nav class="tabs" role="tablist" aria-label="Hlavní navigace">
-            <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-model" id="btn-model" onclick="switchTab('model')" data-i18n="tabModel">
-                Model
-            </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-elements" id="btn-elements" onclick="switchTab('elements')" accesskey="e" data-i18n="tabElements">
-                Prvky
-            </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-relationships" id="btn-relationships" onclick="switchTab('relationships')" accesskey="r" data-i18n="tabRelationships">
-                Vazby
-            </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-diagrams" id="btn-diagrams" onclick="switchTab('diagrams')" accesskey="d" data-i18n="tabDiagrams">
-                Diagramy
-            </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tasks" id="btn-tasks" onclick="switchTab('tasks')" data-i18n="tasksTab">
-                Úkoly
-            </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-notes" id="btn-notes" onclick="switchTab('notes')" accesskey="m" data-i18n="notesTab">
-                Poznámky
-            </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-adr" id="btn-adr" onclick="switchTab('adr')" data-i18n="adrTab">
-                ADR
-            </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tools" id="btn-tools" onclick="switchTab('tools')" accesskey="t" data-i18n="tabTools">
-                Nástroje
-            </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-export" id="btn-export" onclick="switchTab('export')" data-i18n="tabExport">
-                Export / Import
-            </button>
-            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-reference" id="btn-reference" onclick="switchTab('reference')" data-i18n="tabReference">
-                Reference
-            </button>
-        </nav>
+        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; margin-bottom: 10px;">
+            <nav class="tabs" role="tablist" aria-label="Hlavní navigace" style="flex: 1;">
+                <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-model" id="btn-model" onclick="switchTab('model')" data-i18n="tabModel">
+                    Model
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-elements" id="btn-elements" onclick="switchTab('elements')" accesskey="e" data-i18n="tabElements">
+                    Prvky
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-relationships" id="btn-relationships" onclick="switchTab('relationships')" accesskey="r" data-i18n="tabRelationships">
+                    Vazby
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-diagrams" id="btn-diagrams" onclick="switchTab('diagrams')" accesskey="d" data-i18n="tabDiagrams">
+                    Diagramy
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tasks" id="btn-tasks" onclick="switchTab('tasks')" data-i18n="tasksTab">
+                    Úkoly
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-notes" id="btn-notes" onclick="switchTab('notes')" accesskey="m" data-i18n="notesTab">
+                    Poznámky
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-adr" id="btn-adr" onclick="switchTab('adr')" data-i18n="adrTab">
+                    ADR
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tools" id="btn-tools" onclick="switchTab('tools')" accesskey="t" data-i18n="tabTools">
+                    Nástroje
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-export" id="btn-export" onclick="switchTab('export')" data-i18n="tabExport">
+                    Export / Import
+                </button>
+                <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-reference" id="btn-reference" onclick="switchTab('reference')" data-i18n="tabReference">
+                    Reference
+                </button>
+            </nav>
+            <div style="display: flex; gap: 8px;">
+                <input type="file" id="quick-open-file" accept=".ajx,.xml" style="display: none;" onchange="quickOpenFile(event)">
+                <button type="button" onclick="document.getElementById('quick-open-file').click()" accesskey="o" style="padding: 8px 16px; background: #17a2b8; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;" title="Alt+O">
+                    📂 <span data-i18n="openFile">Otevřít</span>
+                </button>
+                <button type="button" onclick="exportJSON()" accesskey="s" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;" title="Alt+S">
+                    💾 <span data-i18n="saveFile">Uložit</span>
+                </button>
+            </div>
+        </div>
 
         <!-- TAB: Model -->
         <div id="tab-model" class="tab-content active" role="tabpanel" aria-labelledby="btn-model">
@@ -1687,7 +1698,7 @@
                     <h2 data-i18n="export">Export</h2>
                     
                     <div class="actions">
-                        <button type="button" class="btn-success" onclick="exportJSON()" accesskey="s" data-i18n="exportJson">Export AJX</button>
+                        <button type="button" class="btn-success" onclick="exportJSON()" data-i18n="exportJson">Export AJX</button>
                         <button type="button" class="btn-secondary" onclick="copyJSONToClipboard()" data-i18n="copyJsonClipboard">📋 Zkopírovat AJX</button>
                         <button type="button" class="btn-success" onclick="exportCSV()" data-i18n="exportCsv">Export CSV</button>
                         <button type="button" class="btn-success" onclick="exportArchiMateXML()" data-i18n="exportXml">Export ArchiMate XML</button>
@@ -1790,6 +1801,86 @@
                     </div>
                     
                     <div id="merge-result" style="display:none; margin-top: 15px; padding: 10px; border-radius: 4px;"></div>
+                </div>
+                
+                <!-- Import elementů z CSV/TSV -->
+                <div class="panel">
+                    <h2 data-i18n="importElementsCsv">Import prvků z CSV/TSV</h2>
+                    <p style="color: #666; margin-bottom: 15px;" data-i18n="importElementsCsvDesc">Importuje prvky z CSV nebo TSV souboru. První řádek by měl obsahovat záhlaví sloupců.</p>
+                    
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 15px;">
+                        <div class="form-group">
+                            <label for="csv-import-collision" data-i18n="onIdCollision">Při kolizi ID:</label>
+                            <select id="csv-import-collision">
+                                <option value="skip" data-i18n="skipExisting">Přeskočit (ponechat stávající)</option>
+                                <option value="overwrite" data-i18n="overwriteExisting">Přepsat stávající</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="csv-import-file" data-i18n="csvFile">CSV/TSV soubor:</label>
+                            <input type="file" id="csv-import-file" accept=".csv,.tsv,.txt" style="padding: 6px;" onchange="loadCsvImportPreview()">
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <label for="csv-import-data" data-i18n="pasteDataManually">Nebo vložte data ručně:</label>
+                        <button type="button" class="btn-secondary" onclick="pasteCsvFromClipboard()" style="font-size: 12px; padding: 4px 8px;" data-i18n="pasteFromClipboard">📋 Vložit ze schránky</button>
+                    </div>
+                    <textarea id="csv-import-data" placeholder="ID;type;Name;Documentation;Specialization&#10;app-001;ApplicationComponent;CRM System;Customer relationship management;..." rows="5" onchange="loadCsvImportPreviewFromTextarea()"></textarea>
+                    
+                    <div id="csv-mapping-section" style="display: none; margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+                        <h3 style="margin: 0 0 10px 0;" data-i18n="columnMapping">Mapování sloupců</h3>
+                        <p style="color: #666; font-size: 13px; margin-bottom: 10px;" data-i18n="columnMappingDesc">Přiřaďte sloupce ze souboru k polím prvku. Prázdné = neimportovat.</p>
+                        
+                        <div class="form-grid" style="grid-template-columns: repeat(5, 1fr); gap: 10px;">
+                            <div class="form-group">
+                                <label for="csv-map-id">ID:</label>
+                                <select id="csv-map-id"><option value="">-- Generovat --</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="csv-map-type" data-i18n="type">Typ:</label>
+                                <select id="csv-map-type"><option value="">-- Nevybráno --</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="csv-map-name" data-i18n="name">Název:</label>
+                                <select id="csv-map-name"><option value="">-- Nevybráno --</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="csv-map-documentation" data-i18n="description">Popis:</label>
+                                <select id="csv-map-documentation"><option value="">-- Nevybráno --</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="csv-map-specialization" data-i18n="stereotype">Stereotyp:</label>
+                                <select id="csv-map-specialization"><option value="">-- Nevybráno --</option></select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 10px;">
+                            <label for="csv-map-tags" data-i18n="příznaky">Příznaky:</label>
+                            <select id="csv-map-tags" style="width: auto;"><option value="">-- Nevybráno --</option></select>
+                            <small style="color: #666; margin-left: 10px;" data-i18n="csvTagsHelp">Hodnoty oddělené čárkou budou rozděleny na jednotlivé příznaky.</small>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 10px;">
+                            <label for="csv-map-určuje" data-i18n="určuje">Určuje:</label>
+                            <select id="csv-map-určuje" style="width: auto;"><option value="">-- Nevybráno --</option></select>
+                        </div>
+                        
+                        <div style="margin-top: 15px; padding: 10px; background: white; border: 1px solid #ddd; border-radius: 4px; max-height: 200px; overflow: auto;">
+                            <strong data-i18n="preview">Náhled</strong> (<span id="csv-preview-count">0</span> <span data-i18n="rows">řádků</span>):
+                            <table class="data-table" style="margin-top: 10px; font-size: 12px;">
+                                <thead id="csv-preview-thead"></thead>
+                                <tbody id="csv-preview-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="actions" style="margin-top: 15px;">
+                        <button type="button" class="btn-primary" onclick="importElementsFromCsv()" data-i18n="importElements">Importovat prvky</button>
+                        <button type="button" class="btn-secondary" onclick="clearCsvImport()" data-i18n="clear">Vyčistit</button>
+                    </div>
+                    
+                    <div id="csv-import-result" style="display:none; margin-top: 15px; padding: 10px; border-radius: 4px;"></div>
                 </div>
             </div>
         </div>
@@ -2712,6 +2803,30 @@
             exportTagStats: 'Vybraný příznak: {0} prvků, {1} vazeb',
             noTagSelected: 'Vyberte příznak pro export.',
             noItemsWithTag: 'Žádné položky s tímto příznakem.',
+            openFile: 'Otevřít',
+            saveFile: 'Uložit',
+            importElementsCsv: 'Import prvků z CSV/TSV',
+            importElementsCsvDesc: 'Importuje prvky z CSV nebo TSV souboru. První řádek by měl obsahovat záhlaví sloupců.',
+            csvFile: 'CSV/TSV soubor',
+            columnMapping: 'Mapování sloupců',
+            columnMappingDesc: 'Přiřaďte sloupce ze souboru k polím prvku. Prázdné = neimportovat.',
+            generateAuto: 'Generovat automaticky',
+            notSelected: 'Nevybráno',
+            csvTagsHelp: 'Hodnoty oddělené čárkou budou rozděleny na jednotlivé příznaky.',
+            preview: 'Náhled',
+            rows: 'řádků',
+            importElements: 'Importovat prvky',
+            clear: 'Vyčistit',
+            csvNoHeaders: 'CSV/TSV neobsahuje záhlaví sloupců.',
+            csvNoData: 'Nejsou k dispozici žádná data pro import.',
+            csvTypeRequired: 'Je nutné vybrat sloupec s typem prvku.',
+            importComplete: 'Import dokončen',
+            imported: 'Importováno',
+            overwritten: 'Přepsáno',
+            skipped: 'Přeskočeno',
+            invalidType: 'Neplatný typ',
+            skipExisting: 'Přeskočit (ponechat stávající)',
+            overwriteExisting: 'Přepsat stávající',
             importJson: 'Import AJX',
             importXml: 'Import XML (ArchiMate Open Exchange)',
             selectFile: 'Vyberte soubor',
@@ -3306,6 +3421,30 @@
             exportTagStats: 'Selected tag: {0} elements, {1} relationships',
             noTagSelected: 'Select a tag for export.',
             noItemsWithTag: 'No items with this tag.',
+            openFile: 'Open',
+            saveFile: 'Save',
+            importElementsCsv: 'Import elements from CSV/TSV',
+            importElementsCsvDesc: 'Imports elements from a CSV or TSV file. First row should contain column headers.',
+            csvFile: 'CSV/TSV file',
+            columnMapping: 'Column Mapping',
+            columnMappingDesc: 'Map file columns to element fields. Empty = do not import.',
+            generateAuto: 'Generate automatically',
+            notSelected: 'Not selected',
+            csvTagsHelp: 'Comma-separated values will be split into individual tags.',
+            preview: 'Preview',
+            rows: 'rows',
+            importElements: 'Import elements',
+            clear: 'Clear',
+            csvNoHeaders: 'CSV/TSV does not contain column headers.',
+            csvNoData: 'No data available for import.',
+            csvTypeRequired: 'Element type column must be selected.',
+            importComplete: 'Import complete',
+            imported: 'Imported',
+            overwritten: 'Overwritten',
+            skipped: 'Skipped',
+            invalidType: 'Invalid type',
+            skipExisting: 'Skip (keep existing)',
+            overwriteExisting: 'Overwrite existing',
             importJson: 'Import AJX',
             importXml: 'Import XML (ArchiMate Open Exchange)',
             selectFile: 'Select file',
@@ -4056,6 +4195,14 @@
             }
         }
     };
+
+    // Build ELEMENT_TYPES from ARCHIMATE_LAYERS for validation
+    const ELEMENT_TYPES = {};
+    Object.values(ARCHIMATE_LAYERS).forEach(layer => {
+        if (layer.elements) {
+            Object.assign(ELEMENT_TYPES, layer.elements);
+        }
+    });
 
     const RELATIONSHIP_TYPES = {
         "Composition": { category: "structural", description: "Prvek se skládá z jiných prvků stejného typu", notation: "◆───", verb: "se skládá z" },
@@ -8157,6 +8304,32 @@
         }
     }
     
+    function quickOpenFile(e) {
+        const files = e.target.files;
+        if (files.length === 0) return;
+        
+        const file = files[0];
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+            const content = ev.target.result;
+            
+            // Detect format by extension or content
+            const isXML = file.name.toLowerCase().endsWith('.xml') || 
+                          content.trim().startsWith('<?xml') || 
+                          content.trim().startsWith('<model');
+            
+            if (isXML) {
+                importXML(content);
+            } else {
+                importJSON(content);
+            }
+        };
+        reader.readAsText(file);
+        
+        // Reset input so same file can be opened again
+        e.target.value = '';
+    }
+    
     function processImportFile(file) {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -9456,6 +9629,454 @@
             relationships: parsedRelationships,
             diagrams: parsedDiagrams
         };
+    }
+    
+    // ============================================
+    // CSV/TSV Import for Elements
+    // ============================================
+    
+    let csvImportData = null;
+    let csvImportHeaders = [];
+    let csvImportRows = [];
+    
+    function detectDelimiter(text) {
+        const firstLine = text.split(/\r?\n/)[0] || '';
+        const tabCount = (firstLine.match(/\t/g) || []).length;
+        const semicolonCount = (firstLine.match(/;/g) || []).length;
+        const commaCount = (firstLine.match(/,/g) || []).length;
+        
+        if (tabCount >= semicolonCount && tabCount >= commaCount) return '\t';
+        if (semicolonCount >= commaCount) return ';';
+        return ',';
+    }
+    
+    function parseCSV(text, delimiter) {
+        // Split by newlines, keeping empty check more lenient
+        const allLines = text.split(/\r?\n/);
+        const lines = [];
+        for (let i = 0; i < allLines.length; i++) {
+            // Keep line if it has any content (not just whitespace)
+            if (allLines[i].length > 0 && allLines[i].trim().length > 0) {
+                lines.push(allLines[i]);
+            }
+        }
+        
+        if (lines.length === 0) return { headers: [], rows: [] };
+        
+        const parseRow = (line) => {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    if (inQuotes && line[i + 1] === '"') {
+                        current += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === delimiter && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            return result;
+        };
+        
+        const headers = parseRow(lines[0]);
+        const rows = [];
+        for (let i = 1; i < lines.length; i++) {
+            const row = parseRow(lines[i]);
+            // Only add row if it has at least one non-empty value
+            if (row.some(cell => cell.length > 0)) {
+                rows.push(row);
+            }
+        }
+        
+        return { headers, rows };
+    }
+    
+    function loadCsvImportPreview() {
+        const fileInput = document.getElementById('csv-import-file');
+        if (!fileInput.files.length) return;
+        
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('csv-import-data').value = e.target.result;
+            processCsvData(e.target.result);
+        };
+        reader.readAsText(file);
+    }
+    
+    function loadCsvImportPreviewFromTextarea() {
+        const text = document.getElementById('csv-import-data').value.trim();
+        if (text) processCsvData(text);
+    }
+    
+    function pasteCsvFromClipboard() {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+            navigator.clipboard.readText().then(text => {
+                document.getElementById('csv-import-data').value = text;
+                processCsvData(text);
+            }).catch(err => {
+                showClipboardModal('csv-import-data', processCsvData);
+            });
+        } else {
+            showClipboardModal('csv-import-data', processCsvData);
+        }
+    }
+    
+    function processCsvData(text) {
+        if (!text || !text.trim()) {
+            document.getElementById('csv-mapping-section').style.display = 'none';
+            return;
+        }
+        
+        const delimiter = detectDelimiter(text);
+        const { headers, rows } = parseCSV(text, delimiter);
+        
+        if (headers.length === 0) {
+            alert(t('csvNoHeaders'));
+            return;
+        }
+        
+        csvImportHeaders = headers;
+        csvImportRows = rows;
+        
+        // Populate mapping dropdowns
+        const mappingFields = ['csv-map-id', 'csv-map-type', 'csv-map-name', 'csv-map-documentation', 'csv-map-specialization', 'csv-map-tags', 'csv-map-určuje'];
+        mappingFields.forEach(fieldId => {
+            const select = document.getElementById(fieldId);
+            const currentValue = select.value;
+            select.innerHTML = fieldId === 'csv-map-id' 
+                ? '<option value="">-- ' + t('generateAuto') + ' --</option>'
+                : '<option value="">-- ' + t('notSelected') + ' --</option>';
+            
+            headers.forEach((header, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = header;
+                select.appendChild(option);
+            });
+        });
+        
+        // Auto-map columns based on header names
+        autoMapCsvColumns();
+        
+        // Show mapping section
+        document.getElementById('csv-mapping-section').style.display = 'block';
+        
+        // Update preview - předáme data přímo
+        updateCsvPreview(headers, rows);
+    }
+    
+    function autoMapCsvColumns() {
+        const mappings = {
+            'csv-map-id': ['id', 'oid', 'identifier', 'element id', 'elementid'],
+            'csv-map-type': ['type', 'typ', 'element type', 'elementtype', 'archimate type'],
+            'csv-map-name': ['name', 'název', 'nazev', 'element name', 'elementname', 'label'],
+            'csv-map-documentation': ['documentation', 'description', 'popis', 'doc', 'dokumentace', 'note', 'notes'],
+            'csv-map-specialization': ['specialization', 'stereotype', 'stereotyp', 'spec'],
+            'csv-map-tags': ['tags', 'příznaky', 'priznaky', 'labels', 'kategorie', 'categories'],
+            'csv-map-určuje': ['určuje', 'urcuje', 'defines', 'specifies', 'determines']
+        };
+        
+        const headerLower = csvImportHeaders.map(h => h.toLowerCase().trim());
+        
+        Object.entries(mappings).forEach(([fieldId, aliases]) => {
+            const select = document.getElementById(fieldId);
+            const matchIndex = headerLower.findIndex(h => aliases.includes(h));
+            if (matchIndex !== -1) {
+                select.value = matchIndex;
+            }
+        });
+    }
+    
+    function updateCsvPreview(passedHeaders, passedRows) {
+        // Pokud jsou předány parametry, použij je a ulož do globálních
+        if (passedHeaders !== undefined && passedRows !== undefined) {
+            csvImportHeaders = passedHeaders;
+            csvImportRows = passedRows;
+        }
+        
+        const thead = document.getElementById('csv-preview-thead');
+        const tbody = document.getElementById('csv-preview-tbody');
+        const countSpan = document.getElementById('csv-preview-count');
+        
+        // Show row count
+        countSpan.textContent = csvImportRows.length;
+        
+        // If no rows, show message
+        if (!csvImportRows || csvImportRows.length === 0) {
+            thead.innerHTML = '<tr><th colspan="7">' + t('csvNoData') + '</th></tr>';
+            tbody.innerHTML = '';
+            return;
+        }
+        
+        // Get mapping
+        const idCol = document.getElementById('csv-map-id').value;
+        const typeCol = document.getElementById('csv-map-type').value;
+        const nameCol = document.getElementById('csv-map-name').value;
+        const docCol = document.getElementById('csv-map-documentation').value;
+        const specCol = document.getElementById('csv-map-specialization').value;
+        const tagsCol = document.getElementById('csv-map-tags').value;
+        const určujeCol = document.getElementById('csv-map-určuje').value;
+        
+        // Build header
+        thead.innerHTML = '<tr><th>ID</th><th>' + t('type') + '</th><th>' + t('name') + '</th><th>' + t('určuje') + '</th><th>' + t('description') + '</th><th>' + t('stereotype') + '</th><th>' + t('příznaky') + '</th></tr>';
+        
+        // Build preview rows (max 5)
+        const previewRows = csvImportRows.slice(0, 5);
+        let rowsHtml = '';
+        
+        for (let idx = 0; idx < previewRows.length; idx++) {
+            const row = previewRows[idx];
+            
+            const id = idCol !== '' ? (row[parseInt(idCol)] || '') : generateImportId(idx);
+            const rawType = typeCol !== '' ? (row[parseInt(typeCol)] || '') : '';
+            const type = normalizeElementType(rawType);
+            const name = nameCol !== '' ? (row[parseInt(nameCol)] || '') : '';
+            const určuje = určujeCol !== '' ? (row[parseInt(určujeCol)] || '') : '';
+            const doc = docCol !== '' ? (row[parseInt(docCol)] || '') : '';
+            const spec = specCol !== '' ? (row[parseInt(specCol)] || '') : '';
+            const tags = tagsCol !== '' ? (row[parseInt(tagsCol)] || '') : '';
+            
+            const typeValid = type && ELEMENT_TYPES[type];
+            const typeStyle = typeValid ? '' : ' style="color: #dc3545;"';
+            const typeDisplay = type || rawType || '<em style="color:#999;">' + t('notSelected') + '</em>';
+            
+            rowsHtml += '<tr>' +
+                '<td>' + escapeHtml(id) + '</td>' +
+                '<td' + typeStyle + '>' + escapeHtml(typeDisplay) + '</td>' +
+                '<td>' + escapeHtml(name) + '</td>' +
+                '<td>' + escapeHtml(určuje) + '</td>' +
+                '<td>' + escapeHtml(doc.substring(0, 50)) + (doc.length > 50 ? '...' : '') + '</td>' +
+                '<td>' + escapeHtml(spec) + '</td>' +
+                '<td>' + escapeHtml(tags) + '</td>' +
+                '</tr>';
+        }
+        
+        tbody.innerHTML = rowsHtml;
+        
+        // Attach change listeners to update preview
+        ['csv-map-id', 'csv-map-type', 'csv-map-name', 'csv-map-documentation', 'csv-map-specialization', 'csv-map-tags', 'csv-map-určuje'].forEach(id => {
+            document.getElementById(id).onchange = updateCsvPreview;
+        });
+    }
+    
+    function generateImportId(index) {
+        const date = new Date();
+        const dateStr = date.getFullYear().toString() + 
+                       (date.getMonth() + 1).toString().padStart(2, '0') + 
+                       date.getDate().toString().padStart(2, '0');
+        return `import${dateStr}-${(index + 1).toString().padStart(4, '0')}`;
+    }
+    
+    function normalizeElementType(typeStr) {
+        if (!typeStr) return '';
+        
+        // Direct match
+        if (ELEMENT_TYPES[typeStr]) return typeStr;
+        
+        // Case-insensitive match
+        const typeLower = typeStr.toLowerCase().replace(/\s+/g, '');
+        for (const type of Object.keys(ELEMENT_TYPES)) {
+            if (type.toLowerCase().replace(/\s+/g, '') === typeLower) return type;
+        }
+        
+        // Common aliases
+        const aliases = {
+            'aplikační komponenta': 'ApplicationComponent',
+            'application component': 'ApplicationComponent',
+            'aplikace': 'ApplicationComponent',
+            'application': 'ApplicationComponent',
+            'aplikační služba': 'ApplicationService',
+            'application service': 'ApplicationService',
+            'aplikační rozhraní': 'ApplicationInterface',
+            'application interface': 'ApplicationInterface',
+            'aplikační proces': 'ApplicationProcess',
+            'application process': 'ApplicationProcess',
+            'aplikační funkce': 'ApplicationFunction',
+            'application function': 'ApplicationFunction',
+            'datový objekt': 'DataObject',
+            'data object': 'DataObject',
+            'obchodní proces': 'BusinessProcess',
+            'business process': 'BusinessProcess',
+            'obchodní služba': 'BusinessService',
+            'business service': 'BusinessService',
+            'obchodní funkce': 'BusinessFunction',
+            'business function': 'BusinessFunction',
+            'obchodní objekt': 'BusinessObject',
+            'business object': 'BusinessObject',
+            'obchodní aktér': 'BusinessActor',
+            'business actor': 'BusinessActor',
+            'obchodní role': 'BusinessRole',
+            'business role': 'BusinessRole',
+            'uzel': 'Node',
+            'node': 'Node',
+            'zařízení': 'Device',
+            'device': 'Device',
+            'systémový software': 'SystemSoftware',
+            'system software': 'SystemSoftware',
+            'artefakt': 'Artifact',
+            'artifact': 'Artifact',
+            'technologická služba': 'TechnologyService',
+            'technology service': 'TechnologyService',
+            'schopnost': 'Capability',
+            'capability': 'Capability',
+            'zdroj': 'Resource',
+            'resource': 'Resource',
+            'cíl': 'Goal',
+            'goal': 'Goal',
+            'požadavek': 'Requirement',
+            'requirement': 'Requirement',
+            'princip': 'Principle',
+            'principle': 'Principle',
+            'omezení': 'Constraint',
+            'constraint': 'Constraint',
+            'hodnota': 'Value',
+            'value': 'Value',
+            'stakeholder': 'Stakeholder',
+            'zainteresovaná strana': 'Stakeholder',
+            'driver': 'Driver',
+            'hybatel': 'Driver',
+            'assessment': 'Assessment',
+            'posouzení': 'Assessment',
+            'outcome': 'Outcome',
+            'výsledek': 'Outcome',
+            'produkt': 'Product',
+            'product': 'Product',
+            'smlouva': 'Contract',
+            'contract': 'Contract',
+            'lokace': 'Location',
+            'location': 'Location',
+            'umístění': 'Location',
+            'grouping': 'Grouping',
+            'seskupení': 'Grouping',
+            'plateau': 'Plateau',
+            'plató': 'Plateau',
+            'gap': 'Gap',
+            'mezera': 'Gap',
+            'work package': 'WorkPackage',
+            'pracovní balíček': 'WorkPackage',
+            'deliverable': 'Deliverable',
+            'dodávka': 'Deliverable'
+        };
+        
+        const aliasMatch = aliases[typeLower];
+        if (aliasMatch) return aliasMatch;
+        
+        // Return original if no match found
+        return typeStr;
+    }
+    
+    function getLayerForType(type) {
+        for (const [layer, data] of Object.entries(ARCHIMATE_LAYERS)) {
+            if (data.elements && data.elements[type]) {
+                return layer;
+            }
+        }
+        return 'application';
+    }
+    
+    function importElementsFromCsv() {
+        if (!csvImportRows || csvImportRows.length === 0) {
+            alert(t('csvNoData'));
+            return;
+        }
+        
+        const idCol = document.getElementById('csv-map-id').value;
+        const typeCol = document.getElementById('csv-map-type').value;
+        const nameCol = document.getElementById('csv-map-name').value;
+        const docCol = document.getElementById('csv-map-documentation').value;
+        const specCol = document.getElementById('csv-map-specialization').value;
+        const tagsCol = document.getElementById('csv-map-tags').value;
+        const určujeCol = document.getElementById('csv-map-určuje').value;
+        const collisionMode = document.getElementById('csv-import-collision').value;
+        
+        if (typeCol === '') {
+            alert(t('csvTypeRequired'));
+            return;
+        }
+        
+        let imported = 0;
+        let skipped = 0;
+        let overwritten = 0;
+        let invalidType = 0;
+        
+        csvImportRows.forEach((row, idx) => {
+            const rawType = typeCol !== '' ? row[parseInt(typeCol)] || '' : '';
+            const type = normalizeElementType(rawType);
+            
+            if (!type || !ELEMENT_TYPES[type]) {
+                invalidType++;
+                return;
+            }
+            
+            const id = idCol !== '' && row[parseInt(idCol)] ? row[parseInt(idCol)].trim() : generateImportId(idx);
+            const name = nameCol !== '' ? row[parseInt(nameCol)] || '' : '';
+            const description = docCol !== '' ? row[parseInt(docCol)] || '' : '';
+            const stereotype = specCol !== '' ? row[parseInt(specCol)] || '' : '';
+            const příznaky = tagsCol !== '' ? row[parseInt(tagsCol)] || '' : '';
+            const určuje = určujeCol !== '' ? row[parseInt(určujeCol)] || '' : '';
+            const layer = getLayerForType(type);
+            
+            // Check for existing element
+            const existingIndex = elements.findIndex(e => e.id === id);
+            
+            if (existingIndex !== -1) {
+                if (collisionMode === 'skip') {
+                    skipped++;
+                    return;
+                } else {
+                    // Overwrite
+                    elements[existingIndex] = { id, layer, type, stereotype, name, určuje, příznaky, description };
+                    overwritten++;
+                }
+            } else {
+                elements.push({ id, layer, type, stereotype, name, určuje, příznaky, description });
+                imported++;
+            }
+        });
+        
+        // Refresh UI
+        renderElementsTable();
+        populateElementSelects();
+        updateTypeFilter();
+        updateStereotypeSuggestions();
+        updatePříznakySuggestions();
+        updateStereotypeFilter();
+        updatePříznakyFilters();
+        updateModelStats();
+        saveToLocalStorage();
+        
+        // Show result
+        const resultDiv = document.getElementById('csv-import-result');
+        resultDiv.style.display = 'block';
+        resultDiv.style.background = '#d4edda';
+        resultDiv.style.color = '#155724';
+        resultDiv.innerHTML = `<strong>${t('importComplete')}</strong><br>
+            ${t('imported')}: ${imported}<br>
+            ${overwritten > 0 ? t('overwritten') + ': ' + overwritten + '<br>' : ''}
+            ${skipped > 0 ? t('skipped') + ': ' + skipped + '<br>' : ''}
+            ${invalidType > 0 ? t('invalidType') + ': ' + invalidType : ''}`;
+        
+        // Clear form
+        clearCsvImport();
+    }
+    
+    function clearCsvImport() {
+        document.getElementById('csv-import-file').value = '';
+        document.getElementById('csv-import-data').value = '';
+        document.getElementById('csv-mapping-section').style.display = 'none';
+        csvImportHeaders = [];
+        csvImportRows = [];
     }
     
     function clearAllData() {
