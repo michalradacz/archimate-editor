@@ -839,8 +839,193 @@
             justify-content: flex-end;
             gap: 10px;
         }
+        
+        /* Diagram Visual Editor */
+        #diagram-editor-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #2c3e50;
+            z-index: 20000;
+        }
+        #diagram-editor-toolbar {
+            height: 50px;
+            background: #34495e;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            gap: 10px;
+            border-bottom: 1px solid #1a252f;
+        }
+        #diagram-editor-toolbar button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #diagram-editor-toolbar .btn-save {
+            background: #27ae60;
+            color: white;
+        }
+        #diagram-editor-toolbar .btn-close {
+            background: #e74c3c;
+            color: white;
+        }
+        #diagram-editor-toolbar .btn-tool {
+            background: #3498db;
+            color: white;
+        }
+        #diagram-editor-toolbar .btn-tool:hover,
+        #diagram-editor-toolbar .btn-save:hover,
+        #diagram-editor-toolbar .btn-close:hover {
+            opacity: 0.9;
+        }
+        #diagram-editor-toolbar .separator {
+            width: 1px;
+            height: 30px;
+            background: #4a6278;
+            margin: 0 5px;
+        }
+        #diagram-editor-toolbar .diagram-title {
+            color: white;
+            font-weight: bold;
+            margin-left: 10px;
+            flex: 1;
+        }
+        #diagram-editor-toolbar .zoom-display {
+            color: #bdc3c7;
+            font-size: 12px;
+            min-width: 50px;
+            text-align: center;
+        }
+        #diagram-editor-main {
+            display: flex;
+            height: calc(100% - 50px);
+        }
+        #diagram-editor-palette {
+            width: 250px;
+            background: #3d566e;
+            border-right: 1px solid #1a252f;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        #diagram-editor-palette h4 {
+            color: #ecf0f1;
+            margin: 0 0 10px 0;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .palette-layer {
+            margin-bottom: 15px;
+        }
+        .palette-layer-title {
+            color: #bdc3c7;
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .palette-item {
+            padding: 8px 10px;
+            margin: 2px 0;
+            background: #4a6278;
+            border-radius: 4px;
+            color: white;
+            font-size: 12px;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        .palette-item:hover {
+            background: #5a7a9a;
+        }
+        .palette-item.dragging {
+            opacity: 0.5;
+        }
+        .palette-item-icon {
+            width: 20px;
+            height: 14px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        #diagram-editor-canvas-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            background: #1a252f;
+        }
+        #diagram-editor-canvas-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+        #diagram-editor-properties {
+            width: 280px;
+            background: #3d566e;
+            border-left: 1px solid #1a252f;
+            padding: 15px;
+            overflow-y: auto;
+            color: #ecf0f1;
+        }
+        #diagram-editor-properties h4 {
+            margin: 0 0 15px 0;
+            color: #ecf0f1;
+            font-size: 14px;
+        }
+        #diagram-editor-properties .prop-group {
+            margin-bottom: 15px;
+        }
+        #diagram-editor-properties label {
+            display: block;
+            font-size: 11px;
+            color: #bdc3c7;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        #diagram-editor-properties input,
+        #diagram-editor-properties select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #4a6278;
+            border-radius: 4px;
+            background: #2c3e50;
+            color: white;
+            font-size: 13px;
+        }
+        #diagram-editor-properties .prop-readonly {
+            background: #3d566e;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        #diagram-editor-properties .prop-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #diagram-editor-properties .prop-checkbox input {
+            width: auto;
+        }
+        .no-selection-msg {
+            color: #7f8c8d;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/docx@9.0.0/build/index.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -1595,8 +1780,10 @@
                     <!-- Subtab: Náhled diagramu -->
                     <div id="diagram-content-preview" class="diagram-subtab-content">
                         <div class="layout-controls">
+                            <button type="button" class="btn-primary" onclick="openDiagramVisualEditorFromPreview()" data-i18n="editVisually">✏️ Upravit vizuálně</button>
                             <button type="button" class="btn-secondary" onclick="renderDiagramPreview()" data-i18n="redraw">Překreslit</button>
                             <button type="button" class="btn-secondary" onclick="downloadDiagramSVG()" data-i18n="downloadSvg">Stáhnout SVG</button>
+                            <button type="button" class="btn-secondary" onclick="downloadDiagramPNG()" data-i18n="downloadPng">Stáhnout PNG</button>
                         </div>
                         <div class="svg-container" id="diagram-svg-container" role="img" aria-label="Náhled diagramu">
                             <p style="padding: 20px; color: #666;" data-i18n="addElementsForPreview">Přidejte prvky na diagram pro zobrazení náhledu.</p>
@@ -2781,10 +2968,27 @@
             elementsInDiagram: 'Prvků',
             noDiagrams: 'Žádné diagramy. Přidejte první diagram pomocí formuláře výše.',
             
+            // Visual Diagram Editor
+            visual: 'Vizuálně',
+            editVisually: 'Upravit vizuálně',
+            elementAlreadyOnDiagram: 'Prvek je již na diagramu',
+            selectElementToEdit: 'Vyberte prvek pro úpravu vlastností',
+            fitContent: 'Přizpůsobit',
+            hideConnection: 'Skrýt vazbu v tomto diagramu',
+            removeFromDiagram: 'Odebrat z diagramu',
+            confirmRemoveFromDiagram: 'Opravdu odebrat prvek z diagramu?',
+            width: 'Šířka',
+            height: 'Výška',
+            saved: 'Uloženo',
+            close: 'Zavřít',
+            properties: 'Vlastnosti',
+            
             // Diagram preview
             diagramPreview: 'Náhled diagramu',
             downloadSvg: 'Stáhnout SVG',
+            downloadPng: 'Stáhnout PNG',
             selectDiagram: 'Vyberte diagram',
+            selectDiagramFirst: 'Nejprve vyberte diagram',
             
             // Reference tab
             archimateLayers: 'ArchiMate vrstvy a typy prvků',
@@ -3399,10 +3603,27 @@
             elementsInDiagram: 'Elements',
             noDiagrams: 'No diagrams. Add your first diagram using the form above.',
             
+            // Visual Diagram Editor
+            visual: 'Visual',
+            editVisually: 'Edit Visually',
+            elementAlreadyOnDiagram: 'Element is already on diagram',
+            selectElementToEdit: 'Select element to edit properties',
+            fitContent: 'Fit Content',
+            hideConnection: 'Hide connection in this diagram',
+            removeFromDiagram: 'Remove from Diagram',
+            confirmRemoveFromDiagram: 'Really remove element from diagram?',
+            width: 'Width',
+            height: 'Height',
+            saved: 'Saved',
+            close: 'Close',
+            properties: 'Properties',
+            
             // Diagram preview
             diagramPreview: 'Diagram Preview',
             downloadSvg: 'Download SVG',
+            downloadPng: 'Download PNG',
             selectDiagram: 'Select diagram',
+            selectDiagramFirst: 'Please select a diagram first',
             
             // Reference tab
             archimateLayers: 'ArchiMate Layers and Element Types',
@@ -7428,13 +7649,13 @@
                     }
                     if (r.description) {
                         xml += `            <documentation xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(r.description)}</documentation>\n`;
+                    }
                     if (r.příznaky) {
                         xml += `            <properties>\n`;
                         xml += `                <property propertyDefinitionRef="${příznakyPropId}">\n`;
                         xml += `                    <value xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(r.příznaky)}</value>\n`;
                         xml += `                </property>\n`;
                         xml += `            </properties>\n`;
-                    }
                     }
                     xml += `        </relationship>\n`;
                 } else {
@@ -7495,31 +7716,83 @@
                     xml += `                <documentation xml:lang="${escapeXml(dc.language || 'cs')}">${escapeXml(diagram.description)}</documentation>\n`;
                 }
                 
-                // Get elements on this diagram
-                const diagramElements = diagram.elementIds
-                    .map(id => elements.find(e => e.id === id))
-                    .filter(e => e);
-                
-                // Calculate positions
-                const positions = calculateLayout(diagramElements, diagram.layoutType || 'layered');
-                
-                // Generate nodes
-                diagramElements.forEach(el => {
-                    const pos = positions[el.id];
-                    if (pos) {
-                        xml += `                <node identifier="node-${escapeXml(el.id)}" xsi:type="Element" elementRef="${escapeXml(el.id)}" x="${pos.x}" y="${pos.y}" w="${pos.w}" h="${pos.h}"/>\n`;
+                // Check if diagram has visual nodes from visual editor
+                if (diagram.nodes && diagram.nodes.length > 0) {
+                    // Use nodes from visual editor
+                    diagram.nodes.forEach(node => {
+                        const elem = elements.find(e => e.id === node.elementRef);
+                        if (elem) {
+                            xml += `                <node identifier="${escapeXml(node.id)}" xsi:type="Element" elementRef="${escapeXml(node.elementRef)}" x="${Math.round(node.x)}" y="${Math.round(node.y)}" w="${Math.round(node.w || 120)}" h="${Math.round(node.h || 55)}"`;
+                            if (node.style && (node.style.fillColor || node.style.lineColor)) {
+                                xml += `>\n`;
+                                xml += `                    <style>\n`;
+                                if (node.style.fillColor) {
+                                    const fc = hexToRgb(node.style.fillColor);
+                                    if (fc) xml += `                        <fillColor r="${fc.r}" g="${fc.g}" b="${fc.b}"/>\n`;
+                                }
+                                if (node.style.lineColor) {
+                                    const lc = hexToRgb(node.style.lineColor);
+                                    if (lc) xml += `                        <lineColor r="${lc.r}" g="${lc.g}" b="${lc.b}"/>\n`;
+                                }
+                                xml += `                    </style>\n`;
+                                xml += `                </node>\n`;
+                            } else {
+                                xml += `/>\n`;
+                            }
+                        }
+                    });
+                    
+                    // Generate connections from visual editor
+                    if (diagram.connections) {
+                        diagram.connections.forEach(conn => {
+                            if (!conn.hidden) {
+                                xml += `                <connection identifier="${escapeXml(conn.id)}" xsi:type="Relationship" relationshipRef="${escapeXml(conn.relationshipRef)}" source="${escapeXml(conn.sourceNode)}" target="${escapeXml(conn.targetNode)}"`;
+                                if (conn.bendpoints && conn.bendpoints.length > 0) {
+                                    xml += `>\n`;
+                                    conn.bendpoints.forEach(bp => {
+                                        xml += `                    <bendpoint x="${Math.round(bp.x)}" y="${Math.round(bp.y)}"/>\n`;
+                                    });
+                                    xml += `                </connection>\n`;
+                                } else {
+                                    xml += `/>\n`;
+                                }
+                            }
+                        });
                     }
-                });
-                
-                // Generate connections
-                const diagramRels = relationships.filter(r => 
-                    diagram.elementIds.includes(r.sourceId) && 
-                    diagram.elementIds.includes(r.targetId)
-                );
-                
-                diagramRels.forEach(r => {
-                    xml += `                <connection identifier="conn-${escapeXml(r.id)}" xsi:type="Relationship" relationshipRef="${escapeXml(r.id)}" source="node-${escapeXml(r.sourceId)}" target="node-${escapeXml(r.targetId)}"/>\n`;
-                });
+                } else {
+                    // Fallback: calculate positions for diagrams without visual data
+                    const diagramElements = diagram.elementIds
+                        .map(id => elements.find(e => e.id === id))
+                        .filter(e => e);
+                    
+                    const positions = calculateLayout(diagramElements, diagram.layoutType || 'layered');
+                    
+                    // Build node ID map for connections
+                    const nodeIdMap = {};
+                    
+                    diagramElements.forEach(el => {
+                        const pos = positions[el.id];
+                        if (pos) {
+                            const nodeId = `node-${el.id}`;
+                            nodeIdMap[el.id] = nodeId;
+                            xml += `                <node identifier="${escapeXml(nodeId)}" xsi:type="Element" elementRef="${escapeXml(el.id)}" x="${pos.x}" y="${pos.y}" w="${pos.w}" h="${pos.h}"/>\n`;
+                        }
+                    });
+                    
+                    // Generate connections
+                    const diagramRels = relationships.filter(r => 
+                        diagram.elementIds.includes(r.sourceId) && 
+                        diagram.elementIds.includes(r.targetId)
+                    );
+                    
+                    diagramRels.forEach(r => {
+                        const sourceNode = nodeIdMap[r.sourceId];
+                        const targetNode = nodeIdMap[r.targetId];
+                        if (sourceNode && targetNode) {
+                            xml += `                <connection identifier="conn-${escapeXml(r.id)}" xsi:type="Relationship" relationshipRef="${escapeXml(r.id)}" source="${escapeXml(sourceNode)}" target="${escapeXml(targetNode)}"/>\n`;
+                        }
+                    });
+                }
                 
                 xml += `            </view>\n`;
             });
@@ -7529,6 +7802,7 @@
         }
 
         xml += `</model>`;
+
         
         return xml;
     }
@@ -9604,22 +9878,106 @@
             const description = docNode ? docNode.textContent : '';
             
             const elementIds = [];
-            const nodes = view.querySelectorAll('node');
-            nodes.forEach(node => {
-                const elRef = node.getAttribute('elementRef');
+            const parsedNodes = [];
+            const nodeElements = view.querySelectorAll(':scope > node');
+            
+            nodeElements.forEach(node => {
+                const nodeId = node.getAttribute('identifier') || '';
+                const elRef = node.getAttribute('elementRef') || '';
+                const x = parseFloat(node.getAttribute('x')) || 0;
+                const y = parseFloat(node.getAttribute('y')) || 0;
+                const w = parseFloat(node.getAttribute('w')) || 120;
+                const h = parseFloat(node.getAttribute('h')) || 55;
+                
+                // Parse style if present
+                let style = {};
+                const styleEl = node.querySelector('style');
+                if (styleEl) {
+                    const fillColorEl = styleEl.querySelector('fillColor');
+                    if (fillColorEl) {
+                        const r = fillColorEl.getAttribute('r');
+                        const g = fillColorEl.getAttribute('g');
+                        const b = fillColorEl.getAttribute('b');
+                        if (r && g && b) {
+                            style.fillColor = rgbToHex(parseInt(r), parseInt(g), parseInt(b));
+                        }
+                    }
+                    const lineColorEl = styleEl.querySelector('lineColor');
+                    if (lineColorEl) {
+                        const r = lineColorEl.getAttribute('r');
+                        const g = lineColorEl.getAttribute('g');
+                        const b = lineColorEl.getAttribute('b');
+                        if (r && g && b) {
+                            style.lineColor = rgbToHex(parseInt(r), parseInt(g), parseInt(b));
+                        }
+                    }
+                }
+                
                 if (elRef && !elementIds.includes(elRef)) {
                     elementIds.push(elRef);
+                }
+                
+                if (nodeId && elRef) {
+                    parsedNodes.push({
+                        id: nodeId,
+                        elementRef: elRef,
+                        x: x,
+                        y: y,
+                        w: w,
+                        h: h,
+                        style: Object.keys(style).length > 0 ? style : undefined
+                    });
+                }
+            });
+            
+            // Parse connections
+            const parsedConnections = [];
+            const connElements = view.querySelectorAll(':scope > connection');
+            connElements.forEach(conn => {
+                const connId = conn.getAttribute('identifier') || '';
+                const relRef = conn.getAttribute('relationshipRef') || '';
+                const sourceNode = conn.getAttribute('source') || '';
+                const targetNode = conn.getAttribute('target') || '';
+                
+                // Parse bendpoints if present
+                const bendpoints = [];
+                const bpElements = conn.querySelectorAll('bendpoint');
+                bpElements.forEach(bp => {
+                    const bpX = parseFloat(bp.getAttribute('x')) || 0;
+                    const bpY = parseFloat(bp.getAttribute('y')) || 0;
+                    bendpoints.push({ x: bpX, y: bpY });
+                });
+                
+                if (connId && relRef && sourceNode && targetNode) {
+                    parsedConnections.push({
+                        id: connId,
+                        relationshipRef: relRef,
+                        sourceNode: sourceNode,
+                        targetNode: targetNode,
+                        hidden: false,
+                        bendpoints: bendpoints
+                    });
                 }
             });
             
             if (id && name) {
-                parsedDiagrams.push({
+                const diagramData = {
                     id,
                     name,
                     description,
                     elementIds,
                     layoutType: 'layered'
-                });
+                };
+                
+                // Only add nodes/connections if they exist
+                if (parsedNodes.length > 0) {
+                    diagramData.nodes = parsedNodes;
+                }
+                if (parsedConnections.length > 0) {
+                    diagramData.connections = parsedConnections;
+                }
+                
+                parsedDiagrams.push(diagramData);
             }
         });
         
@@ -10767,6 +11125,24 @@
             .replace(/'/g, '&apos;');
     }
     
+    // Color conversion helpers for XML export/import
+    function hexToRgb(hex) {
+        if (!hex) return null;
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+    
+    function rgbToHex(r, g, b) {
+        return '#' + [r, g, b].map(x => {
+            const hex = x.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        }).join('');
+    }
+    
     function toggleColumn(tableId, columnIndex, visible) {
         const table = document.getElementById(tableId);
         if (!table) return;
@@ -10899,6 +11275,7 @@
                     <td>${d.elementIds.length}</td>
                     <td>${relCount}</td>
                     <td class="actions">
+                        <button type="button" class="btn-primary" onclick="openDiagramVisualEditor('${escapeHtml(d.id)}')" title="${t('editVisually') || 'Upravit vizuálně'}">✏️ ${t('visual') || 'Vizuálně'}</button>
                         <button type="button" class="btn-secondary" onclick="openDiagramEditor('${escapeHtml(d.id)}')">${t('edit')}</button>
                         <button type="button" class="btn-danger" onclick="deleteDiagram('${escapeHtml(d.id)}')">${t('delete')}</button>
                     </td>
@@ -11182,7 +11559,21 @@
         }
         
         const diagram = diagrams.find(d => d.id === currentDiagramId);
-        if (!diagram || diagram.elementIds.length === 0) {
+        if (!diagram) {
+            container.innerHTML = '<p style="padding: 20px; color: #666;">Diagram nenalezen.</p>';
+            return;
+        }
+        
+        // Check if diagram has visual nodes from visual editor
+        if (diagram.nodes && diagram.nodes.length > 0) {
+            // Use nodes from visual editor
+            const svg = generateSVGFromVisualData(diagram);
+            container.innerHTML = svg;
+            return;
+        }
+        
+        // Fallback to auto-calculated layout
+        if (diagram.elementIds.length === 0) {
             container.innerHTML = '<p style="padding: 20px; color: #666;">Přidejte prvky na diagram pro zobrazení náhledu.</p>';
             return;
         }
@@ -11201,6 +11592,200 @@
         // Generate SVG
         const svg = generateSVG(diagramElements, diagramRels, positions);
         container.innerHTML = svg;
+    }
+    
+    function generateSVGFromVisualData(diagram) {
+        // Calculate SVG dimensions from nodes
+        let maxX = 200;
+        let maxY = 200;
+        diagram.nodes.forEach(node => {
+            maxX = Math.max(maxX, node.x + (node.w || 120) + 50);
+            maxY = Math.max(maxY, node.y + (node.h || 55) + 50);
+        });
+        
+        let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${maxX}" height="${maxY}" role="img" aria-label="ArchiMate diagram">`;
+        svg += `<title>${escapeXml(diagram.name || 'Diagram')}</title>`;
+        
+        // Build node position map for connections
+        const nodePositions = {};
+        diagram.nodes.forEach(node => {
+            nodePositions[node.id] = {
+                x: node.x,
+                y: node.y,
+                w: node.w || 120,
+                h: node.h || 55,
+                elementRef: node.elementRef
+            };
+        });
+        
+        // Draw connections first (behind elements)
+        if (diagram.connections) {
+            diagram.connections.forEach(conn => {
+                if (conn.hidden) return;
+                
+                const sourceNode = nodePositions[conn.sourceNode];
+                const targetNode = nodePositions[conn.targetNode];
+                if (!sourceNode || !targetNode) return;
+                
+                const rel = relationships.find(r => r.id === conn.relationshipRef);
+                if (!rel) return;
+                
+                // Calculate connection points (center of nodes)
+                const x1 = sourceNode.x + sourceNode.w / 2;
+                const y1 = sourceNode.y + sourceNode.h / 2;
+                const x2 = targetNode.x + targetNode.w / 2;
+                const y2 = targetNode.y + targetNode.h / 2;
+                
+                svg += generateRelationshipLineFromPoints(rel, x1, y1, x2, y2, conn.bendpoints);
+            });
+        }
+        
+        // Draw elements
+        diagram.nodes.forEach(node => {
+            const elem = elements.find(e => e.id === node.elementRef);
+            if (!elem) return;
+            
+            const pos = {
+                x: node.x,
+                y: node.y,
+                w: node.w || 120,
+                h: node.h || 55
+            };
+            
+            // Use node's custom style or default
+            const customStyle = node.style || {};
+            svg += generateElementShapeWithStyle(elem, pos, customStyle);
+        });
+        
+        svg += '</svg>';
+        return svg;
+    }
+    
+    function generateRelationshipLineFromPoints(rel, x1, y1, x2, y2, bendpoints) {
+        // Determine line style based on relationship type
+        let dashArray = '';
+        if (['Realization', 'Access', 'Influence', 'Flow'].includes(rel.type)) {
+            dashArray = ' stroke-dasharray="5,3"';
+        }
+        
+        let pathD;
+        if (bendpoints && bendpoints.length > 0) {
+            pathD = `M ${x1} ${y1}`;
+            bendpoints.forEach(bp => {
+                pathD += ` L ${bp.x} ${bp.y}`;
+            });
+            pathD += ` L ${x2} ${y2}`;
+        } else {
+            pathD = `M ${x1} ${y1} L ${x2} ${y2}`;
+        }
+        
+        const strokeColor = '#666';
+        const strokeWidth = 1.5;
+        
+        // Create accessible group
+        const statement = generateStatement(rel);
+        let line = `<g role="img" aria-label="${escapeXml(statement)}">`;
+        line += `<title>${escapeXml(statement)}</title>`;
+        
+        line += `<path d="${pathD}" stroke="${strokeColor}" stroke-width="${strokeWidth}" fill="none"${dashArray}/>`;
+        
+        // Add marker at target end
+        const lastBpX = bendpoints && bendpoints.length > 0 ? bendpoints[bendpoints.length - 1].x : x1;
+        const lastBpY = bendpoints && bendpoints.length > 0 ? bendpoints[bendpoints.length - 1].y : y1;
+        line += generateRelationshipMarkerForVisual(rel.type, lastBpX, lastBpY, x2, y2);
+        
+        // Add relationship name if present
+        if (rel.name) {
+            const midX = (x1 + x2) / 2;
+            const midY = (y1 + y2) / 2;
+            line += `<text x="${midX}" y="${midY - 5}" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#666">${escapeXml(rel.name)}</text>`;
+        }
+        
+        line += '</g>';
+        return line;
+    }
+    
+    function generateRelationshipMarkerForVisual(type, x1, y1, x2, y2) {
+        const angle = Math.atan2(y2 - y1, x2 - x1);
+        const arrowSize = 8;
+        
+        let marker = '';
+        
+        // Source markers
+        if (type === 'Composition') {
+            // Filled diamond at source
+            const dx = Math.cos(angle) * arrowSize;
+            const dy = Math.sin(angle) * arrowSize;
+            const px = Math.cos(angle + Math.PI/2) * arrowSize/2;
+            const py = Math.sin(angle + Math.PI/2) * arrowSize/2;
+            marker += `<polygon points="${x1},${y1} ${x1+dx/2+px},${y1+dy/2+py} ${x1+dx},${y1+dy} ${x1+dx/2-px},${y1+dy/2-py}" fill="#666" stroke="#666"/>`;
+        } else if (type === 'Aggregation') {
+            // Empty diamond at source
+            const dx = Math.cos(angle) * arrowSize;
+            const dy = Math.sin(angle) * arrowSize;
+            const px = Math.cos(angle + Math.PI/2) * arrowSize/2;
+            const py = Math.sin(angle + Math.PI/2) * arrowSize/2;
+            marker += `<polygon points="${x1},${y1} ${x1+dx/2+px},${y1+dy/2+py} ${x1+dx},${y1+dy} ${x1+dx/2-px},${y1+dy/2-py}" fill="white" stroke="#666"/>`;
+        } else if (type === 'Assignment') {
+            // Filled circle at source
+            marker += `<circle cx="${x1}" cy="${y1}" r="4" fill="#666"/>`;
+        }
+        
+        // Target markers (arrows)
+        if (['Serving', 'Access', 'Influence', 'Realization', 'Specialization'].includes(type)) {
+            // Empty triangle (open arrow)
+            const ax = x2 - Math.cos(angle) * arrowSize;
+            const ay = y2 - Math.sin(angle) * arrowSize;
+            const px = Math.cos(angle + Math.PI/2) * arrowSize/2;
+            const py = Math.sin(angle + Math.PI/2) * arrowSize/2;
+            marker += `<polygon points="${x2},${y2} ${ax+px},${ay+py} ${ax-px},${ay-py}" fill="white" stroke="#666"/>`;
+        } else if (['Triggering', 'Flow'].includes(type)) {
+            // Filled triangle (closed arrow)
+            const ax = x2 - Math.cos(angle) * arrowSize;
+            const ay = y2 - Math.sin(angle) * arrowSize;
+            const px = Math.cos(angle + Math.PI/2) * arrowSize/2;
+            const py = Math.sin(angle + Math.PI/2) * arrowSize/2;
+            marker += `<polygon points="${x2},${y2} ${ax+px},${ay+py} ${ax-px},${ay-py}" fill="#666"/>`;
+        }
+        
+        return marker;
+    }
+    
+    function generateElementShapeWithStyle(el, pos, customStyle) {
+        const visual = ELEMENT_VISUALS[el.type] || { shape: 'rect', color: '#FFFFFF' };
+        const { x, y, w, h } = pos;
+        
+        // Use custom colors if provided, otherwise use defaults
+        const fillColor = customStyle.fillColor || visual.color;
+        const strokeColor = customStyle.lineColor || '#333';
+        const strokeWidth = 1.5;
+        
+        let shape = '';
+        
+        // Create accessible group
+        const labelText = el.stereotype 
+            ? `«${el.stereotype}» ${el.type}: ${el.name}`
+            : `${el.type}: ${el.name}`;
+        shape += `<g role="img" aria-label="${escapeXml(labelText)}">`;
+        
+        // Draw shape based on element type (simplified)
+        shape += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fillColor}" stroke="${strokeColor}" stroke-width="${strokeWidth}" rx="3" ry="3"/>`;
+        
+        // Draw text
+        const displayName = el.name || el.id;
+        const fontSize = 11;
+        const textY = y + h / 2 + fontSize / 3;
+        
+        // Truncate text if needed
+        const maxChars = Math.floor(w / 7);
+        const truncatedName = displayName.length > maxChars 
+            ? displayName.substring(0, maxChars - 2) + '...'
+            : displayName;
+        
+        shape += `<text x="${x + w / 2}" y="${textY}" text-anchor="middle" font-family="system-ui, sans-serif" font-size="${fontSize}" fill="#333">${escapeXml(truncatedName)}</text>`;
+        
+        shape += '</g>';
+        return shape;
     }
     
     function calculateLayout(diagramElements, layoutType) {
@@ -11512,6 +12097,66 @@
         
         const svgData = new XMLSerializer().serializeToString(svg);
         await saveFileWithDialog(svgData, filename, 'image/svg+xml', ['.svg']);
+    }
+    
+    async function downloadDiagramPNG() {
+        const container = document.getElementById('diagram-svg-container');
+        const svg = container.querySelector('svg');
+        if (!svg) {
+            alert(t('alertDiagramEmpty'));
+            return;
+        }
+        
+        const diagram = diagrams.find(d => d.id === currentDiagramId);
+        const filename = diagram ? diagram.name.replace(/[^a-zA-Z0-9]/g, '_') + '.png' : 'diagram.png';
+        
+        // Get SVG dimensions
+        const svgRect = svg.getBoundingClientRect();
+        const width = parseInt(svg.getAttribute('width')) || svgRect.width || 800;
+        const height = parseInt(svg.getAttribute('height')) || svgRect.height || 600;
+        
+        // Create canvas
+        const canvas = document.createElement('canvas');
+        const scale = 2; // Higher resolution
+        canvas.width = width * scale;
+        canvas.height = height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(scale, scale);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, width, height);
+        
+        // Convert SVG to data URL
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+        
+        // Load image and draw to canvas
+        const img = new Image();
+        img.onload = async function() {
+            ctx.drawImage(img, 0, 0, width, height);
+            URL.revokeObjectURL(url);
+            
+            // Convert canvas to PNG blob
+            canvas.toBlob(async function(blob) {
+                if (blob) {
+                    await saveFileWithDialog(blob, filename, 'image/png', ['.png']);
+                }
+            }, 'image/png');
+        };
+        img.onerror = function() {
+            URL.revokeObjectURL(url);
+            alert('Chyba při generování PNG');
+        };
+        img.src = url;
+    }
+    
+    function openDiagramVisualEditorFromPreview() {
+        if (!currentDiagramId) {
+            alert(t('selectDiagramFirst') || 'Nejprve vyberte diagram');
+            return;
+        }
+        closeDiagramEditor();
+        openDiagramVisualEditor(currentDiagramId);
     }
 
     // ============================================
@@ -13858,6 +14503,1236 @@
         renderTasksTable();
         updateTaskAssigneeFilter();
     });
+    
+    // ============================================
+    // Diagram Visual Editor
+    // ============================================
+    
+    let diagramEditorCanvas = null;
+    let currentEditingDiagram = null;
+    let diagramEditorZoom = 1;
+    const DIAGRAM_CANVAS_WIDTH = 3000;
+    const DIAGRAM_CANVAS_HEIGHT = 2000;
+    const GRID_SIZE = 20;
+    
+    // ArchiMate shape definitions with colors and icons
+    const ARCHIMATE_SHAPES = {
+        // Strategy Layer
+        Resource: { color: '#F5DEAA', borderColor: '#c9a86c', icon: '📦', shape: 'rect' },
+        Capability: { color: '#F5DEAA', borderColor: '#c9a86c', icon: '💪', shape: 'roundedRect' },
+        ValueStream: { color: '#F5DEAA', borderColor: '#c9a86c', icon: '➡️', shape: 'rect' },
+        CourseOfAction: { color: '#F5DEAA', borderColor: '#c9a86c', icon: '🎯', shape: 'roundedRect' },
+        
+        // Business Layer
+        BusinessActor: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '👤', shape: 'actor' },
+        BusinessRole: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '🎭', shape: 'roleRect' },
+        BusinessCollaboration: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '👥', shape: 'collaboration' },
+        BusinessInterface: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '🔌', shape: 'interface' },
+        BusinessProcess: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '⚙️', shape: 'process' },
+        BusinessFunction: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '🔧', shape: 'roundedRect' },
+        BusinessInteraction: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '🔄', shape: 'roundedRect' },
+        BusinessEvent: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '⚡', shape: 'event' },
+        BusinessService: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '🎁', shape: 'service' },
+        BusinessObject: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '📄', shape: 'object' },
+        Contract: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '📝', shape: 'object' },
+        Representation: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '🖼️', shape: 'object' },
+        Product: { color: '#FFFFB5', borderColor: '#c9c96c', icon: '📦', shape: 'rect' },
+        
+        // Application Layer
+        ApplicationComponent: { color: '#B5FFFF', borderColor: '#6cc9c9', icon: '🧩', shape: 'component' },
+        ApplicationCollaboration: { color: '#B5FFFF', borderColor: '#6cc9c9', icon: '👥', shape: 'collaboration' },
+        ApplicationInterface: { color: '#B5FFFF', borderColor: '#6cc9c9', icon: '🔌', shape: 'interface' },
+        ApplicationFunction: { color: '#B5FFFF', borderColor: '#6cc9c9', icon: '🔧', shape: 'roundedRect' },
+        ApplicationProcess: { color: '#B5FFFF', borderColor: '#6cc9c9', icon: '⚙️', shape: 'process' },
+        ApplicationInteraction: { color: '#B5FFFF', borderColor: '#6cc9c9', icon: '🔄', shape: 'roundedRect' },
+        ApplicationEvent: { color: '#B5FFFF', borderColor: '#6cc9c9', icon: '⚡', shape: 'event' },
+        ApplicationService: { color: '#B5FFFF', borderColor: '#6cc9c9', icon: '🎁', shape: 'service' },
+        DataObject: { color: '#B5FFFF', borderColor: '#6cc9c9', icon: '💾', shape: 'object' },
+        
+        // Technology Layer
+        Node: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '🖥️', shape: 'node3d' },
+        Device: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '💻', shape: 'device' },
+        SystemSoftware: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '⚙️', shape: 'rect' },
+        TechnologyCollaboration: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '👥', shape: 'collaboration' },
+        TechnologyInterface: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '🔌', shape: 'interface' },
+        Path: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '🔗', shape: 'rect' },
+        CommunicationNetwork: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '🌐', shape: 'rect' },
+        TechnologyFunction: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '🔧', shape: 'roundedRect' },
+        TechnologyProcess: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '⚙️', shape: 'process' },
+        TechnologyInteraction: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '🔄', shape: 'roundedRect' },
+        TechnologyEvent: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '⚡', shape: 'event' },
+        TechnologyService: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '🎁', shape: 'service' },
+        Artifact: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '📄', shape: 'artifact' },
+        
+        // Physical Layer
+        Equipment: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '🔩', shape: 'device' },
+        Facility: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '🏭', shape: 'node3d' },
+        DistributionNetwork: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '🚚', shape: 'rect' },
+        Material: { color: '#C9E7B7', borderColor: '#8cb87a', icon: '📦', shape: 'rect' },
+        
+        // Implementation & Migration Layer
+        WorkPackage: { color: '#FFE0E0', borderColor: '#c9a0a0', icon: '📋', shape: 'roundedRect' },
+        Deliverable: { color: '#FFE0E0', borderColor: '#c9a0a0', icon: '📦', shape: 'object' },
+        ImplementationEvent: { color: '#FFE0E0', borderColor: '#c9a0a0', icon: '⚡', shape: 'event' },
+        Plateau: { color: '#FFE0E0', borderColor: '#c9a0a0', icon: '🏔️', shape: 'node3d' },
+        Gap: { color: '#FFE0E0', borderColor: '#c9a0a0', icon: '🕳️', shape: 'ellipse' },
+        
+        // Motivation Layer
+        Stakeholder: { color: '#CCCCFF', borderColor: '#9999cc', icon: '👤', shape: 'actor' },
+        Driver: { color: '#CCCCFF', borderColor: '#9999cc', icon: '🎯', shape: 'ellipse' },
+        Assessment: { color: '#CCCCFF', borderColor: '#9999cc', icon: '📊', shape: 'ellipse' },
+        Goal: { color: '#CCCCFF', borderColor: '#9999cc', icon: '🎯', shape: 'ellipse' },
+        Outcome: { color: '#CCCCFF', borderColor: '#9999cc', icon: '✅', shape: 'ellipse' },
+        Principle: { color: '#CCCCFF', borderColor: '#9999cc', icon: '📜', shape: 'rect' },
+        Requirement: { color: '#CCCCFF', borderColor: '#9999cc', icon: '📋', shape: 'rect' },
+        Constraint: { color: '#CCCCFF', borderColor: '#9999cc', icon: '🚫', shape: 'rect' },
+        Meaning: { color: '#CCCCFF', borderColor: '#9999cc', icon: '💭', shape: 'ellipse' },
+        Value: { color: '#CCCCFF', borderColor: '#9999cc', icon: '💎', shape: 'ellipse' },
+        
+        // Composite Elements
+        Location: { color: '#FFDAB5', borderColor: '#c9a87a', icon: '📍', shape: 'rect' },
+        Grouping: { color: '#FFDAB5', borderColor: '#c9a87a', icon: '📁', shape: 'grouping' }
+    };
+    
+    // Relationship line styles
+    const RELATIONSHIP_STYLES = {
+        Composition: { stroke: '#000', strokeWidth: 1.5, dashArray: null, sourceMarker: 'diamond-filled', targetMarker: null },
+        Aggregation: { stroke: '#000', strokeWidth: 1.5, dashArray: null, sourceMarker: 'diamond-empty', targetMarker: null },
+        Assignment: { stroke: '#000', strokeWidth: 1.5, dashArray: null, sourceMarker: 'circle-filled', targetMarker: null },
+        Realization: { stroke: '#000', strokeWidth: 1.5, dashArray: [8, 4], sourceMarker: null, targetMarker: 'triangle-empty' },
+        Serving: { stroke: '#000', strokeWidth: 1.5, dashArray: null, sourceMarker: null, targetMarker: 'triangle-empty' },
+        Access: { stroke: '#000', strokeWidth: 1.5, dashArray: [4, 4], sourceMarker: null, targetMarker: 'arrow' },
+        Influence: { stroke: '#000', strokeWidth: 1.5, dashArray: [4, 4], sourceMarker: null, targetMarker: 'triangle-empty' },
+        Triggering: { stroke: '#000', strokeWidth: 1.5, dashArray: null, sourceMarker: null, targetMarker: 'triangle-filled' },
+        Flow: { stroke: '#000', strokeWidth: 1.5, dashArray: [4, 4], sourceMarker: null, targetMarker: 'triangle-filled' },
+        Specialization: { stroke: '#000', strokeWidth: 1.5, dashArray: null, sourceMarker: null, targetMarker: 'triangle-empty' },
+        Association: { stroke: '#000', strokeWidth: 1.5, dashArray: null, sourceMarker: null, targetMarker: null }
+    };
+    
+    function openDiagramVisualEditor(diagramId) {
+        const diagram = diagrams.find(d => d.id === diagramId);
+        if (!diagram) return;
+        
+        currentEditingDiagram = diagram;
+        
+        // Initialize nodes and connections if not present
+        if (!diagram.nodes) diagram.nodes = [];
+        if (!diagram.connections) diagram.connections = [];
+        
+        // If diagram has elementIds but no visual nodes, auto-generate them
+        if (diagram.nodes.length === 0 && diagram.elementIds && diagram.elementIds.length > 0) {
+            // Get elements on diagram
+            const diagramElements = diagram.elementIds
+                .map(id => elements.find(e => e.id === id))
+                .filter(e => e);
+            
+            // Calculate positions using existing layout function
+            const positions = calculateLayout(diagramElements, diagram.layoutType || 'layered');
+            
+            // Create nodes from positions
+            diagramElements.forEach(elem => {
+                const pos = positions[elem.id];
+                if (pos) {
+                    const shapeInfo = ARCHIMATE_SHAPES[elem.type] || { color: '#ddd', borderColor: '#999' };
+                    const nodeId = 'node-' + elem.id + '-' + Date.now();
+                    diagram.nodes.push({
+                        id: nodeId,
+                        elementRef: elem.id,
+                        x: pos.x,
+                        y: pos.y,
+                        w: pos.w || 120,
+                        h: pos.h || 55,
+                        style: {
+                            fillColor: shapeInfo.color,
+                            lineColor: shapeInfo.borderColor
+                        }
+                    });
+                }
+            });
+            
+            // Create connections for relationships between diagram elements
+            const diagramRels = relationships.filter(r => 
+                diagram.elementIds.includes(r.sourceId) && 
+                diagram.elementIds.includes(r.targetId)
+            );
+            
+            diagramRels.forEach(rel => {
+                const sourceNode = diagram.nodes.find(n => n.elementRef === rel.sourceId);
+                const targetNode = diagram.nodes.find(n => n.elementRef === rel.targetId);
+                if (sourceNode && targetNode) {
+                    diagram.connections.push({
+                        id: 'conn-' + rel.id + '-' + Date.now(),
+                        relationshipRef: rel.id,
+                        sourceNode: sourceNode.id,
+                        targetNode: targetNode.id,
+                        hidden: false,
+                        bendpoints: []
+                    });
+                }
+            });
+        }
+        
+        // Show modal
+        document.getElementById('diagram-editor-modal').style.display = 'block';
+        document.getElementById('diagram-editor-title').textContent = diagram.name || 'Diagram';
+        
+        // Initialize canvas
+        initDiagramEditorCanvas();
+        
+        // Populate palette
+        populateDiagramPalette();
+        
+        // Load diagram content
+        loadDiagramToCanvas();
+        
+        // Update translations
+        updateTranslations();
+    }
+    
+    function initDiagramEditorCanvas() {
+        const container = document.getElementById('diagram-editor-canvas-container');
+        const wrapper = document.getElementById('diagram-editor-canvas-wrapper');
+        
+        // Set canvas size
+        const canvasEl = document.getElementById('diagram-editor-canvas');
+        canvasEl.width = DIAGRAM_CANVAS_WIDTH;
+        canvasEl.height = DIAGRAM_CANVAS_HEIGHT;
+        
+        // Initialize Fabric.js canvas
+        if (diagramEditorCanvas) {
+            diagramEditorCanvas.dispose();
+        }
+        
+        diagramEditorCanvas = new fabric.Canvas('diagram-editor-canvas', {
+            width: DIAGRAM_CANVAS_WIDTH,
+            height: DIAGRAM_CANVAS_HEIGHT,
+            backgroundColor: '#ffffff',
+            selection: true,
+            preserveObjectStacking: true
+        });
+        
+        // Draw grid
+        drawCanvasGrid();
+        
+        // Set up event handlers
+        diagramEditorCanvas.on('selection:created', onDiagramSelectionChanged);
+        diagramEditorCanvas.on('selection:updated', onDiagramSelectionChanged);
+        diagramEditorCanvas.on('selection:cleared', onDiagramSelectionCleared);
+        diagramEditorCanvas.on('object:modified', onDiagramObjectModified);
+        
+        // Enable panning with middle mouse button or space+drag
+        diagramEditorCanvas.on('mouse:down', function(opt) {
+            if (opt.e.button === 1 || opt.e.buttons === 4) { // Middle mouse
+                this.isDragging = true;
+                this.lastPosX = opt.e.clientX;
+                this.lastPosY = opt.e.clientY;
+                opt.e.preventDefault();
+            }
+        });
+        
+        diagramEditorCanvas.on('mouse:move', function(opt) {
+            if (this.isDragging) {
+                const vpt = this.viewportTransform;
+                vpt[4] += opt.e.clientX - this.lastPosX;
+                vpt[5] += opt.e.clientY - this.lastPosY;
+                this.requestRenderAll();
+                this.lastPosX = opt.e.clientX;
+                this.lastPosY = opt.e.clientY;
+            }
+        });
+        
+        diagramEditorCanvas.on('mouse:up', function(opt) {
+            this.isDragging = false;
+        });
+        
+        // Mouse wheel zoom
+        diagramEditorCanvas.on('mouse:wheel', function(opt) {
+            const delta = opt.e.deltaY;
+            let zoom = diagramEditorCanvas.getZoom();
+            zoom *= 0.999 ** delta;
+            if (zoom > 3) zoom = 3;
+            if (zoom < 0.2) zoom = 0.2;
+            diagramEditorCanvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+            diagramEditorZoom = zoom;
+            updateZoomDisplay();
+            opt.e.preventDefault();
+            opt.e.stopPropagation();
+        });
+        
+        diagramEditorZoom = 1;
+        updateZoomDisplay();
+    }
+    
+    function drawCanvasGrid() {
+        const gridLines = [];
+        for (let i = 0; i <= DIAGRAM_CANVAS_WIDTH; i += GRID_SIZE) {
+            gridLines.push(new fabric.Line([i, 0, i, DIAGRAM_CANVAS_HEIGHT], {
+                stroke: '#e0e0e0',
+                strokeWidth: 0.5,
+                selectable: false,
+                evented: false
+            }));
+        }
+        for (let i = 0; i <= DIAGRAM_CANVAS_HEIGHT; i += GRID_SIZE) {
+            gridLines.push(new fabric.Line([0, i, DIAGRAM_CANVAS_WIDTH, i], {
+                stroke: '#e0e0e0',
+                strokeWidth: 0.5,
+                selectable: false,
+                evented: false
+            }));
+        }
+        gridLines.forEach(line => {
+            line.isGrid = true;
+            diagramEditorCanvas.add(line);
+        });
+        diagramEditorCanvas.sendToBack(...gridLines);
+    }
+    
+    function populateDiagramPalette() {
+        const paletteList = document.getElementById('palette-elements-list');
+        paletteList.innerHTML = '';
+        
+        // Group elements by layer
+        const layerGroups = {};
+        elements.forEach(elem => {
+            const layer = elem.layer || 'other';
+            if (!layerGroups[layer]) layerGroups[layer] = [];
+            layerGroups[layer].push(elem);
+        });
+        
+        // Create palette sections
+        const layerNames = {
+            strategy: 'Strategy',
+            business: 'Business',
+            application: 'Application',
+            technology: 'Technology',
+            physical: 'Physical',
+            implementation: 'Implementation',
+            motivation: 'Motivation',
+            composite: 'Composite',
+            other: 'Other'
+        };
+        
+        const layerColors = {
+            strategy: '#F5DEAA',
+            business: '#FFFFB5',
+            application: '#B5FFFF',
+            technology: '#C9E7B7',
+            physical: '#C9E7B7',
+            implementation: '#FFE0E0',
+            motivation: '#CCCCFF',
+            composite: '#FFDAB5',
+            other: '#ddd'
+        };
+        
+        Object.keys(layerNames).forEach(layer => {
+            const elems = layerGroups[layer];
+            if (!elems || elems.length === 0) return;
+            
+            const section = document.createElement('div');
+            section.className = 'palette-layer';
+            
+            const title = document.createElement('div');
+            title.className = 'palette-layer-title';
+            title.style.background = layerColors[layer] || '#ddd';
+            title.style.color = '#333';
+            title.textContent = layerNames[layer];
+            section.appendChild(title);
+            
+            elems.forEach(elem => {
+                const item = document.createElement('div');
+                item.className = 'palette-item';
+                item.dataset.elementId = elem.id;
+                item.draggable = true;
+                
+                const shapeInfo = ARCHIMATE_SHAPES[elem.type] || { color: '#ddd', icon: '📄' };
+                
+                const icon = document.createElement('span');
+                icon.className = 'palette-item-icon';
+                icon.style.background = shapeInfo.color;
+                
+                const text = document.createElement('span');
+                text.textContent = elem.name || elem.id;
+                
+                item.appendChild(icon);
+                item.appendChild(text);
+                
+                // Drag events
+                item.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('elementId', elem.id);
+                    item.classList.add('dragging');
+                });
+                item.addEventListener('dragend', () => {
+                    item.classList.remove('dragging');
+                });
+                
+                // Double-click to add at center
+                item.addEventListener('dblclick', () => {
+                    addElementToVisualDiagram(elem.id, DIAGRAM_CANVAS_WIDTH / 2, DIAGRAM_CANVAS_HEIGHT / 2);
+                });
+                
+                section.appendChild(item);
+            });
+            
+            paletteList.appendChild(section);
+        });
+        
+        // Set up drop on canvas
+        const canvasContainer = document.getElementById('diagram-editor-canvas-container');
+        canvasContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+        canvasContainer.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const elementId = e.dataTransfer.getData('elementId');
+            if (elementId) {
+                const rect = canvasContainer.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / diagramEditorZoom;
+                const y = (e.clientY - rect.top) / diagramEditorZoom;
+                addElementToVisualDiagram(elementId, x, y);
+            }
+        });
+    }
+    
+    function addElementToVisualDiagram(elementId, x, y) {
+        // Check if already on diagram
+        const existing = currentEditingDiagram.nodes.find(n => n.elementRef === elementId);
+        if (existing) {
+            alert(t('elementAlreadyOnDiagram') || 'Prvek je již na diagramu');
+            return;
+        }
+        
+        const elem = elements.find(e => e.id === elementId);
+        if (!elem) return;
+        
+        // Snap to grid
+        x = Math.round(x / GRID_SIZE) * GRID_SIZE;
+        y = Math.round(y / GRID_SIZE) * GRID_SIZE;
+        
+        const nodeId = 'node-' + Date.now();
+        const shapeInfo = ARCHIMATE_SHAPES[elem.type] || { color: '#ddd', borderColor: '#999' };
+        
+        const node = {
+            id: nodeId,
+            elementRef: elementId,
+            x: x,
+            y: y,
+            w: 120,
+            h: 55,
+            style: {
+                fillColor: shapeInfo.color,
+                lineColor: shapeInfo.borderColor
+            }
+        };
+        
+        currentEditingDiagram.nodes.push(node);
+        
+        // Also add to elementIds for compatibility with text editor
+        if (!currentEditingDiagram.elementIds) {
+            currentEditingDiagram.elementIds = [];
+        }
+        if (!currentEditingDiagram.elementIds.includes(elementId)) {
+            currentEditingDiagram.elementIds.push(elementId);
+        }
+        
+        // Create Fabric object
+        const fabricObj = createArchiMateShape(elem, node);
+        diagramEditorCanvas.add(fabricObj);
+        diagramEditorCanvas.setActiveObject(fabricObj);
+        diagramEditorCanvas.renderAll();
+        
+        // Add connections for existing relationships
+        addConnectionsForNode(nodeId, elementId);
+    }
+    
+    function addConnectionsForNode(nodeId, elementId) {
+        // Find relationships where this element is source or target
+        relationships.forEach(rel => {
+            if (rel.sourceId === elementId || rel.targetId === elementId) {
+                const sourceNode = currentEditingDiagram.nodes.find(n => n.elementRef === rel.sourceId);
+                const targetNode = currentEditingDiagram.nodes.find(n => n.elementRef === rel.targetId);
+                
+                if (sourceNode && targetNode) {
+                    // Check if connection already exists
+                    const existingConn = currentEditingDiagram.connections.find(c => c.relationshipRef === rel.id);
+                    if (!existingConn) {
+                        const conn = {
+                            id: 'conn-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+                            relationshipRef: rel.id,
+                            sourceNode: sourceNode.id,
+                            targetNode: targetNode.id,
+                            hidden: false,
+                            bendpoints: []
+                        };
+                        currentEditingDiagram.connections.push(conn);
+                        drawConnection(conn);
+                    }
+                }
+            }
+        });
+    }
+    
+    function createArchiMateShape(element, node) {
+        const shapeInfo = ARCHIMATE_SHAPES[element.type] || { color: '#ddd', borderColor: '#999', icon: '📄', shape: 'rect' };
+        const x = node.x;
+        const y = node.y;
+        const w = node.w || 120;
+        const h = node.h || 55;
+        
+        let shape;
+        const shapeType = shapeInfo.shape;
+        
+        // Create base shape based on ArchiMate notation
+        switch (shapeType) {
+            case 'roundedRect':
+                shape = new fabric.Rect({
+                    left: x,
+                    top: y,
+                    width: w,
+                    height: h,
+                    fill: node.style?.fillColor || shapeInfo.color,
+                    stroke: node.style?.lineColor || shapeInfo.borderColor,
+                    strokeWidth: 1.5,
+                    rx: 10,
+                    ry: 10
+                });
+                break;
+                
+            case 'ellipse':
+                shape = new fabric.Ellipse({
+                    left: x,
+                    top: y,
+                    rx: w / 2,
+                    ry: h / 2,
+                    fill: node.style?.fillColor || shapeInfo.color,
+                    stroke: node.style?.lineColor || shapeInfo.borderColor,
+                    strokeWidth: 1.5
+                });
+                break;
+                
+            case 'service':
+                // Service: rectangle with rounded top
+                shape = new fabric.Path(`M 0 10 Q 0 0 10 0 L ${w-10} 0 Q ${w} 0 ${w} 10 L ${w} ${h} L 0 ${h} Z`, {
+                    left: x,
+                    top: y,
+                    fill: node.style?.fillColor || shapeInfo.color,
+                    stroke: node.style?.lineColor || shapeInfo.borderColor,
+                    strokeWidth: 1.5
+                });
+                break;
+                
+            case 'process':
+                // Process: rectangle with arrow on right
+                shape = new fabric.Path(`M 0 0 L ${w-15} 0 L ${w} ${h/2} L ${w-15} ${h} L 0 ${h} Z`, {
+                    left: x,
+                    top: y,
+                    fill: node.style?.fillColor || shapeInfo.color,
+                    stroke: node.style?.lineColor || shapeInfo.borderColor,
+                    strokeWidth: 1.5
+                });
+                break;
+                
+            case 'event':
+                // Event: rounded left and right ends
+                shape = new fabric.Path(`M 15 0 L ${w-15} 0 Q ${w} 0 ${w} ${h/2} Q ${w} ${h} ${w-15} ${h} L 15 ${h} Q 0 ${h} 0 ${h/2} Q 0 0 15 0 Z`, {
+                    left: x,
+                    top: y,
+                    fill: node.style?.fillColor || shapeInfo.color,
+                    stroke: node.style?.lineColor || shapeInfo.borderColor,
+                    strokeWidth: 1.5
+                });
+                break;
+                
+            case 'interface':
+                // Interface: rectangle with small connector on left
+                shape = new fabric.Group([
+                    new fabric.Rect({
+                        left: 8,
+                        top: 0,
+                        width: w - 8,
+                        height: h,
+                        fill: node.style?.fillColor || shapeInfo.color,
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    new fabric.Line([0, h/2, 8, h/2], {
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    new fabric.Circle({
+                        left: -4,
+                        top: h/2 - 4,
+                        radius: 4,
+                        fill: node.style?.fillColor || shapeInfo.color,
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    })
+                ], { left: x, top: y });
+                break;
+                
+            case 'component':
+                // Component: rectangle with two small rectangles on left
+                shape = new fabric.Group([
+                    new fabric.Rect({
+                        left: 10,
+                        top: 0,
+                        width: w - 10,
+                        height: h,
+                        fill: node.style?.fillColor || shapeInfo.color,
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    new fabric.Rect({
+                        left: 0,
+                        top: 10,
+                        width: 15,
+                        height: 8,
+                        fill: node.style?.fillColor || shapeInfo.color,
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1
+                    }),
+                    new fabric.Rect({
+                        left: 0,
+                        top: h - 18,
+                        width: 15,
+                        height: 8,
+                        fill: node.style?.fillColor || shapeInfo.color,
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1
+                    })
+                ], { left: x, top: y });
+                break;
+                
+            case 'node3d':
+                // Node/Plateau: 3D box effect
+                shape = new fabric.Group([
+                    new fabric.Polygon([
+                        { x: 0, y: 10 },
+                        { x: 10, y: 0 },
+                        { x: w, y: 0 },
+                        { x: w, y: h - 10 },
+                        { x: w - 10, y: h },
+                        { x: 0, y: h }
+                    ], {
+                        fill: node.style?.fillColor || shapeInfo.color,
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    new fabric.Line([0, 10, w - 10, 10], {
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1
+                    }),
+                    new fabric.Line([w - 10, 10, w, 0], {
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1
+                    }),
+                    new fabric.Line([w - 10, 10, w - 10, h], {
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1
+                    })
+                ], { left: x, top: y });
+                break;
+                
+            case 'device':
+                // Device: 3D box with rounded bottom
+                shape = new fabric.Group([
+                    new fabric.Polygon([
+                        { x: 0, y: 10 },
+                        { x: 10, y: 0 },
+                        { x: w, y: 0 },
+                        { x: w, y: h - 15 },
+                        { x: w - 5, y: h - 10 },
+                        { x: w - 10, y: h },
+                        { x: 10, y: h },
+                        { x: 5, y: h - 10 },
+                        { x: 0, y: h - 15 }
+                    ], {
+                        fill: node.style?.fillColor || shapeInfo.color,
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    new fabric.Line([0, 10, w - 10, 10], {
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1
+                    }),
+                    new fabric.Line([w - 10, 10, w, 0], {
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1
+                    })
+                ], { left: x, top: y });
+                break;
+                
+            case 'object':
+                // Object: rectangle with header bar
+                shape = new fabric.Group([
+                    new fabric.Rect({
+                        left: 0,
+                        top: 0,
+                        width: w,
+                        height: h,
+                        fill: node.style?.fillColor || shapeInfo.color,
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    new fabric.Line([0, 12, w, 12], {
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1
+                    })
+                ], { left: x, top: y });
+                break;
+                
+            case 'artifact':
+                // Artifact: document with folded corner
+                shape = new fabric.Path(`M 0 0 L ${w-12} 0 L ${w} 12 L ${w} ${h} L 0 ${h} Z M ${w-12} 0 L ${w-12} 12 L ${w} 12`, {
+                    left: x,
+                    top: y,
+                    fill: node.style?.fillColor || shapeInfo.color,
+                    stroke: node.style?.lineColor || shapeInfo.borderColor,
+                    strokeWidth: 1.5
+                });
+                break;
+                
+            case 'actor':
+                // Actor: stick figure representation
+                const stickFigure = new fabric.Group([
+                    // Body rectangle
+                    new fabric.Rect({
+                        left: 0,
+                        top: 0,
+                        width: w,
+                        height: h,
+                        fill: node.style?.fillColor || shapeInfo.color,
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    // Head
+                    new fabric.Circle({
+                        left: w - 20,
+                        top: 5,
+                        radius: 6,
+                        fill: 'transparent',
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    // Body
+                    new fabric.Line([w - 14, 17, w - 14, 30], {
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    // Arms
+                    new fabric.Line([w - 22, 22, w - 6, 22], {
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    // Legs
+                    new fabric.Line([w - 14, 30, w - 20, 40], {
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    new fabric.Line([w - 14, 30, w - 8, 40], {
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    })
+                ], { left: x, top: y });
+                shape = stickFigure;
+                break;
+                
+            case 'collaboration':
+                // Collaboration: two overlapping circles
+                shape = new fabric.Group([
+                    new fabric.Rect({
+                        left: 0,
+                        top: 0,
+                        width: w,
+                        height: h,
+                        fill: node.style?.fillColor || shapeInfo.color,
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1.5
+                    }),
+                    new fabric.Ellipse({
+                        left: w - 32,
+                        top: 8,
+                        rx: 10,
+                        ry: 8,
+                        fill: 'transparent',
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1
+                    }),
+                    new fabric.Ellipse({
+                        left: w - 22,
+                        top: 8,
+                        rx: 10,
+                        ry: 8,
+                        fill: 'transparent',
+                        stroke: node.style?.lineColor || shapeInfo.borderColor,
+                        strokeWidth: 1
+                    })
+                ], { left: x, top: y });
+                break;
+                
+            case 'grouping':
+                // Grouping: dashed rectangle
+                shape = new fabric.Rect({
+                    left: x,
+                    top: y,
+                    width: w,
+                    height: h,
+                    fill: 'rgba(255,218,181,0.3)',
+                    stroke: node.style?.lineColor || shapeInfo.borderColor,
+                    strokeWidth: 1.5,
+                    strokeDashArray: [5, 5]
+                });
+                break;
+                
+            case 'roleRect':
+                // Role: rectangle with rounded left corners
+                shape = new fabric.Path(`M 10 0 L ${w} 0 L ${w} ${h} L 10 ${h} Q 0 ${h} 0 ${h-10} L 0 10 Q 0 0 10 0 Z`, {
+                    left: x,
+                    top: y,
+                    fill: node.style?.fillColor || shapeInfo.color,
+                    stroke: node.style?.lineColor || shapeInfo.borderColor,
+                    strokeWidth: 1.5
+                });
+                break;
+                
+            default:
+                // Default rectangle
+                shape = new fabric.Rect({
+                    left: x,
+                    top: y,
+                    width: w,
+                    height: h,
+                    fill: node.style?.fillColor || shapeInfo.color,
+                    stroke: node.style?.lineColor || shapeInfo.borderColor,
+                    strokeWidth: 1.5
+                });
+        }
+        
+        // Create text label
+        const displayName = element.name || element.id;
+        const textLabel = new fabric.Text(displayName, {
+            fontSize: 11,
+            fontFamily: 'system-ui, sans-serif',
+            fill: '#333',
+            originX: 'center',
+            originY: 'center',
+            left: x + w / 2,
+            top: y + h / 2 + 5,
+            textAlign: 'center',
+            width: w - 10
+        });
+        
+        // Truncate text if too long
+        if (textLabel.width > w - 10) {
+            let truncated = displayName;
+            while (textLabel.width > w - 15 && truncated.length > 3) {
+                truncated = truncated.slice(0, -1);
+                textLabel.set('text', truncated + '...');
+            }
+        }
+        
+        // Create icon text
+        const iconText = new fabric.Text(shapeInfo.icon || '', {
+            fontSize: 12,
+            left: x + 5,
+            top: y + 3,
+            selectable: false
+        });
+        
+        // Group shape with text
+        const group = new fabric.Group([shape, iconText, textLabel], {
+            left: x,
+            top: y,
+            hasControls: true,
+            hasBorders: true,
+            lockRotation: true,
+            cornerStyle: 'circle',
+            cornerSize: 8,
+            transparentCorners: false,
+            cornerColor: '#3498db'
+        });
+        
+        // Store metadata
+        group.nodeId = node.id;
+        group.elementRef = element.id;
+        group.isArchiMateNode = true;
+        
+        return group;
+    }
+    
+    function drawConnection(conn) {
+        if (conn.hidden) return;
+        
+        const sourceNode = currentEditingDiagram.nodes.find(n => n.id === conn.sourceNode);
+        const targetNode = currentEditingDiagram.nodes.find(n => n.id === conn.targetNode);
+        if (!sourceNode || !targetNode) return;
+        
+        const rel = relationships.find(r => r.id === conn.relationshipRef);
+        const style = RELATIONSHIP_STYLES[rel?.type] || RELATIONSHIP_STYLES.Association;
+        
+        // Calculate connection points (center of nodes)
+        const x1 = sourceNode.x + (sourceNode.w || 120) / 2;
+        const y1 = sourceNode.y + (sourceNode.h || 55) / 2;
+        const x2 = targetNode.x + (targetNode.w || 120) / 2;
+        const y2 = targetNode.y + (targetNode.h || 55) / 2;
+        
+        // Create line
+        const line = new fabric.Line([x1, y1, x2, y2], {
+            stroke: style.stroke,
+            strokeWidth: style.strokeWidth,
+            strokeDashArray: style.dashArray,
+            selectable: true,
+            evented: true,
+            hasControls: false,
+            hasBorders: false
+        });
+        
+        line.connectionId = conn.id;
+        line.isArchiMateConnection = true;
+        
+        diagramEditorCanvas.add(line);
+        diagramEditorCanvas.sendToBack(line);
+        
+        // Move grid lines to back
+        diagramEditorCanvas.getObjects().filter(o => o.isGrid).forEach(g => {
+            diagramEditorCanvas.sendToBack(g);
+        });
+    }
+    
+    function loadDiagramToCanvas() {
+        if (!currentEditingDiagram) return;
+        
+        // Clear existing objects except grid
+        const objectsToRemove = diagramEditorCanvas.getObjects().filter(o => !o.isGrid);
+        objectsToRemove.forEach(obj => diagramEditorCanvas.remove(obj));
+        
+        // Load nodes
+        currentEditingDiagram.nodes.forEach(node => {
+            const elem = elements.find(e => e.id === node.elementRef);
+            if (elem) {
+                const fabricObj = createArchiMateShape(elem, node);
+                diagramEditorCanvas.add(fabricObj);
+            }
+        });
+        
+        // Load connections
+        currentEditingDiagram.connections.forEach(conn => {
+            drawConnection(conn);
+        });
+        
+        diagramEditorCanvas.renderAll();
+    }
+    
+    function onDiagramSelectionChanged(e) {
+        const selected = e.selected?.[0];
+        if (!selected) {
+            onDiagramSelectionCleared();
+            return;
+        }
+        
+        const propsContent = document.getElementById('diagram-properties-content');
+        
+        if (selected.isArchiMateNode) {
+            const node = currentEditingDiagram.nodes.find(n => n.id === selected.nodeId);
+            const elem = elements.find(e => e.id === selected.elementRef);
+            
+            if (node && elem) {
+                propsContent.innerHTML = `
+                    <div class="prop-group">
+                        <label>${t('name')}</label>
+                        <div class="prop-readonly">${escapeHtml(elem.name || elem.id)}</div>
+                    </div>
+                    <div class="prop-group">
+                        <label>${t('type')}</label>
+                        <div class="prop-readonly">${escapeHtml(elem.type)}</div>
+                    </div>
+                    <div class="prop-group">
+                        <label>X</label>
+                        <input type="number" id="prop-x" value="${Math.round(node.x)}" onchange="updateNodePosition('x', this.value)">
+                    </div>
+                    <div class="prop-group">
+                        <label>Y</label>
+                        <input type="number" id="prop-y" value="${Math.round(node.y)}" onchange="updateNodePosition('y', this.value)">
+                    </div>
+                    <div class="prop-group">
+                        <label>${t('width') || 'Šířka'}</label>
+                        <input type="number" id="prop-w" value="${Math.round(node.w || 120)}" onchange="updateNodeSize('w', this.value)">
+                    </div>
+                    <div class="prop-group">
+                        <label>${t('height') || 'Výška'}</label>
+                        <input type="number" id="prop-h" value="${Math.round(node.h || 55)}" onchange="updateNodeSize('h', this.value)">
+                    </div>
+                    <div class="prop-group">
+                        <button type="button" onclick="removeNodeFromDiagram('${node.id}')" style="background:#e74c3c;color:white;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;width:100%;">
+                            🗑️ ${t('removeFromDiagram') || 'Odebrat z diagramu'}
+                        </button>
+                    </div>
+                `;
+            }
+        } else if (selected.isArchiMateConnection) {
+            const conn = currentEditingDiagram.connections.find(c => c.id === selected.connectionId);
+            const rel = relationships.find(r => r.id === conn?.relationshipRef);
+            
+            if (conn && rel) {
+                const sourceName = elements.find(e => e.id === rel.sourceId)?.name || rel.sourceId;
+                const targetName = elements.find(e => e.id === rel.targetId)?.name || rel.targetId;
+                
+                propsContent.innerHTML = `
+                    <div class="prop-group">
+                        <label>${t('relationship') || 'Vazba'}</label>
+                        <div class="prop-readonly">${escapeHtml(rel.type)}</div>
+                    </div>
+                    <div class="prop-group">
+                        <label>${t('source') || 'Zdroj'}</label>
+                        <div class="prop-readonly">${escapeHtml(sourceName)}</div>
+                    </div>
+                    <div class="prop-group">
+                        <label>${t('target') || 'Cíl'}</label>
+                        <div class="prop-readonly">${escapeHtml(targetName)}</div>
+                    </div>
+                    <div class="prop-group prop-checkbox">
+                        <input type="checkbox" id="prop-conn-hidden" ${conn.hidden ? 'checked' : ''} onchange="toggleConnectionVisibility('${conn.id}', this.checked)">
+                        <label for="prop-conn-hidden" style="display:inline;text-transform:none;">${t('hideConnection') || 'Skrýt vazbu'}</label>
+                    </div>
+                `;
+            }
+        } else {
+            onDiagramSelectionCleared();
+        }
+    }
+    
+    function onDiagramSelectionCleared() {
+        const propsContent = document.getElementById('diagram-properties-content');
+        propsContent.innerHTML = `<p class="no-selection-msg">${t('selectElementToEdit') || 'Vyberte prvek pro úpravu vlastností'}</p>`;
+    }
+    
+    function onDiagramObjectModified(e) {
+        const obj = e.target;
+        if (!obj.isArchiMateNode) return;
+        
+        const node = currentEditingDiagram.nodes.find(n => n.id === obj.nodeId);
+        if (!node) return;
+        
+        // Snap to grid
+        let newX = Math.round(obj.left / GRID_SIZE) * GRID_SIZE;
+        let newY = Math.round(obj.top / GRID_SIZE) * GRID_SIZE;
+        
+        obj.set({ left: newX, top: newY });
+        
+        node.x = newX;
+        node.y = newY;
+        
+        // Handle scaling
+        if (obj.scaleX !== 1 || obj.scaleY !== 1) {
+            node.w = Math.round((node.w || 120) * obj.scaleX);
+            node.h = Math.round((node.h || 55) * obj.scaleY);
+            obj.scaleX = 1;
+            obj.scaleY = 1;
+            
+            // Recreate object with new size
+            const elem = elements.find(e => e.id === obj.elementRef);
+            if (elem) {
+                diagramEditorCanvas.remove(obj);
+                const newObj = createArchiMateShape(elem, node);
+                diagramEditorCanvas.add(newObj);
+                diagramEditorCanvas.setActiveObject(newObj);
+            }
+        }
+        
+        // Update connections
+        updateConnectionsForNode(node.id);
+        
+        diagramEditorCanvas.renderAll();
+        
+        // Update properties panel
+        onDiagramSelectionChanged({ selected: [obj] });
+    }
+    
+    function updateConnectionsForNode(nodeId) {
+        const node = currentEditingDiagram.nodes.find(n => n.id === nodeId);
+        if (!node) return;
+        
+        // Find all connections involving this node
+        const connections = currentEditingDiagram.connections.filter(c => c.sourceNode === nodeId || c.targetNode === nodeId);
+        
+        connections.forEach(conn => {
+            // Remove old line
+            const oldLine = diagramEditorCanvas.getObjects().find(o => o.connectionId === conn.id);
+            if (oldLine) {
+                diagramEditorCanvas.remove(oldLine);
+            }
+            // Redraw
+            drawConnection(conn);
+        });
+    }
+    
+    function updateNodePosition(axis, value) {
+        const activeObj = diagramEditorCanvas.getActiveObject();
+        if (!activeObj || !activeObj.isArchiMateNode) return;
+        
+        const node = currentEditingDiagram.nodes.find(n => n.id === activeObj.nodeId);
+        if (!node) return;
+        
+        const numValue = parseInt(value) || 0;
+        node[axis] = numValue;
+        activeObj.set(axis === 'x' ? 'left' : 'top', numValue);
+        
+        updateConnectionsForNode(node.id);
+        diagramEditorCanvas.renderAll();
+    }
+    
+    function updateNodeSize(dim, value) {
+        const activeObj = diagramEditorCanvas.getActiveObject();
+        if (!activeObj || !activeObj.isArchiMateNode) return;
+        
+        const node = currentEditingDiagram.nodes.find(n => n.id === activeObj.nodeId);
+        if (!node) return;
+        
+        const numValue = parseInt(value) || (dim === 'w' ? 120 : 55);
+        node[dim] = numValue;
+        
+        // Recreate object with new size
+        const elem = elements.find(e => e.id === activeObj.elementRef);
+        if (elem) {
+            diagramEditorCanvas.remove(activeObj);
+            const newObj = createArchiMateShape(elem, node);
+            diagramEditorCanvas.add(newObj);
+            diagramEditorCanvas.setActiveObject(newObj);
+            updateConnectionsForNode(node.id);
+            diagramEditorCanvas.renderAll();
+        }
+    }
+    
+    function removeNodeFromDiagram(nodeId) {
+        if (!confirm(t('confirmRemoveFromDiagram') || 'Opravdu odebrat prvek z diagramu?')) return;
+        
+        // Find the node to get elementRef before removing
+        const nodeToRemove = currentEditingDiagram.nodes.find(n => n.id === nodeId);
+        const elementRef = nodeToRemove ? nodeToRemove.elementRef : null;
+        
+        // Remove node
+        currentEditingDiagram.nodes = currentEditingDiagram.nodes.filter(n => n.id !== nodeId);
+        
+        // Also remove from elementIds for compatibility
+        if (elementRef && currentEditingDiagram.elementIds) {
+            currentEditingDiagram.elementIds = currentEditingDiagram.elementIds.filter(id => id !== elementRef);
+        }
+        
+        // Remove connections involving this node
+        const connsToRemove = currentEditingDiagram.connections.filter(c => c.sourceNode === nodeId || c.targetNode === nodeId);
+        connsToRemove.forEach(conn => {
+            const line = diagramEditorCanvas.getObjects().find(o => o.connectionId === conn.id);
+            if (line) diagramEditorCanvas.remove(line);
+        });
+        currentEditingDiagram.connections = currentEditingDiagram.connections.filter(c => c.sourceNode !== nodeId && c.targetNode !== nodeId);
+        
+        // Remove fabric object
+        const obj = diagramEditorCanvas.getObjects().find(o => o.nodeId === nodeId);
+        if (obj) diagramEditorCanvas.remove(obj);
+        
+        diagramEditorCanvas.discardActiveObject();
+        diagramEditorCanvas.renderAll();
+        onDiagramSelectionCleared();
+    }
+    
+    function toggleConnectionVisibility(connId, hidden) {
+        const conn = currentEditingDiagram.connections.find(c => c.id === connId);
+        if (!conn) return;
+        
+        conn.hidden = hidden;
+        
+        const line = diagramEditorCanvas.getObjects().find(o => o.connectionId === connId);
+        if (line) {
+            if (hidden) {
+                diagramEditorCanvas.remove(line);
+            }
+        } else if (!hidden) {
+            drawConnection(conn);
+        }
+        
+        diagramEditorCanvas.renderAll();
+    }
+    
+    function diagramEditorZoomIn() {
+        diagramEditorZoom = Math.min(diagramEditorZoom * 1.2, 3);
+        diagramEditorCanvas.setZoom(diagramEditorZoom);
+        updateZoomDisplay();
+    }
+    
+    function diagramEditorZoomOut() {
+        diagramEditorZoom = Math.max(diagramEditorZoom / 1.2, 0.2);
+        diagramEditorCanvas.setZoom(diagramEditorZoom);
+        updateZoomDisplay();
+    }
+    
+    function diagramEditorResetZoom() {
+        diagramEditorZoom = 1;
+        diagramEditorCanvas.setZoom(1);
+        diagramEditorCanvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+        updateZoomDisplay();
+    }
+    
+    function diagramEditorFitContent() {
+        if (!currentEditingDiagram || currentEditingDiagram.nodes.length === 0) return;
+        
+        // Calculate bounding box
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        currentEditingDiagram.nodes.forEach(n => {
+            minX = Math.min(minX, n.x);
+            minY = Math.min(minY, n.y);
+            maxX = Math.max(maxX, n.x + (n.w || 120));
+            maxY = Math.max(maxY, n.y + (n.h || 55));
+        });
+        
+        const padding = 50;
+        const container = document.getElementById('diagram-editor-canvas-container');
+        const containerW = container.clientWidth;
+        const containerH = container.clientHeight;
+        
+        const contentW = maxX - minX + padding * 2;
+        const contentH = maxY - minY + padding * 2;
+        
+        const zoomX = containerW / contentW;
+        const zoomY = containerH / contentH;
+        diagramEditorZoom = Math.min(zoomX, zoomY, 1);
+        
+        diagramEditorCanvas.setZoom(diagramEditorZoom);
+        diagramEditorCanvas.setViewportTransform([
+            diagramEditorZoom, 0, 0, diagramEditorZoom,
+            -minX * diagramEditorZoom + padding,
+            -minY * diagramEditorZoom + padding
+        ]);
+        
+        updateZoomDisplay();
+    }
+    
+    function updateZoomDisplay() {
+        document.getElementById('diagram-zoom-display').textContent = Math.round(diagramEditorZoom * 100) + '%';
+    }
+    
+    function saveDiagramVisualEditor() {
+        if (!currentEditingDiagram) return;
+        
+        // Data is already updated in real-time, just save to localStorage
+        saveToLocalStorage();
+        renderDiagramsTable();
+        
+        alert(t('saved') || 'Uloženo');
+    }
+    
+    function closeDiagramVisualEditor() {
+        document.getElementById('diagram-editor-modal').style.display = 'none';
+        
+        if (diagramEditorCanvas) {
+            diagramEditorCanvas.dispose();
+            diagramEditorCanvas = null;
+        }
+        
+        currentEditingDiagram = null;
+        
+        // Refresh diagrams table to show updated preview
+        renderDiagramsTable();
+    }
     </script>
     <!-- Clipboard Paste Modal -->
     <div id="clipboard-paste-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;">
@@ -13868,6 +15743,43 @@
             <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
                 <button type="button" class="btn-secondary" onclick="closeClipboardModal()" data-i18n="cancel">Zrušit</button>
                 <button type="button" class="btn-primary" onclick="confirmClipboardPaste()" data-i18n="pasteAndLoad">Vložit a načíst</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diagram Visual Editor Modal -->
+    <div id="diagram-editor-modal">
+        <div id="diagram-editor-toolbar">
+            <button type="button" class="btn-save" onclick="saveDiagramVisualEditor()">
+                💾 <span data-i18n="save">Uložit</span>
+            </button>
+            <button type="button" class="btn-close" onclick="closeDiagramVisualEditor()">
+                ✖ <span data-i18n="close">Zavřít</span>
+            </button>
+            <div class="separator"></div>
+            <button type="button" class="btn-tool" onclick="diagramEditorZoomIn()">🔍+</button>
+            <button type="button" class="btn-tool" onclick="diagramEditorZoomOut()">🔍-</button>
+            <button type="button" class="btn-tool" onclick="diagramEditorResetZoom()">1:1</button>
+            <span class="zoom-display" id="diagram-zoom-display">100%</span>
+            <div class="separator"></div>
+            <button type="button" class="btn-tool" onclick="diagramEditorFitContent()">⬜ <span data-i18n="fitContent">Přizpůsobit</span></button>
+            <div class="diagram-title" id="diagram-editor-title"></div>
+        </div>
+        <div id="diagram-editor-main">
+            <div id="diagram-editor-palette">
+                <h4 data-i18n="elements">Prvky</h4>
+                <div id="palette-elements-list"></div>
+            </div>
+            <div id="diagram-editor-canvas-container">
+                <div id="diagram-editor-canvas-wrapper">
+                    <canvas id="diagram-editor-canvas"></canvas>
+                </div>
+            </div>
+            <div id="diagram-editor-properties">
+                <h4 data-i18n="properties">Vlastnosti</h4>
+                <div id="diagram-properties-content">
+                    <p class="no-selection-msg" data-i18n="selectElementToEdit">Vyberte prvek pro úpravu vlastností</p>
+                </div>
             </div>
         </div>
     </div>
