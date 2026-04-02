@@ -19,6 +19,8 @@ This is only accessible ArchiMate 3.2 architecture model editor. Works locally i
 
 It supports full architecture model creation and management for blind people, with designing diagrams too.
 
+It contains full web frawing editor for detailed diagram design too.
+
 ----------
 
 Tady je překlad do češtiny:
@@ -39,3 +41,4 @@ Toto je jediný plně přístupný editor architektonických modelů ArchiMate 3
 
 Umožňuje nevidomým uživatelům kompletní tvorbu a správu architektonických modelů, včetně návrhu diagramů.
 
+Obsahuje i vizuální editor pro detailní designování diagramů.
