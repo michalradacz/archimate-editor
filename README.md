@@ -5,7 +5,7 @@ In Czech and English
 
 # English: Web ArchiMate 3.2 editor
 
-Online version at https://mrt.site44.com/archimate-editor.html
+Online version at https://egdilna.github.io/nastroje/archimate
 
 You can download single HTML file at this repository to work at your infrastructure.
 
@@ -29,7 +29,7 @@ Tady je překlad do češtiny:
 
 # Česky: Webový editor ArchiMate 3.2
 
-Online verze na https://mrt.site44.com/archimate-editor.html
+Online verze na https://egdilna.github.io/nastroje/archimate
 
 Můžete si stáhnout jeden HTML soubor z tohoto repozitáře a provozovat editor na vlastní infrastruktuře.
 
