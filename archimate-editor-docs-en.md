@@ -4,8 +4,8 @@ Web-based editor for creating and managing architectural models according to the
 
 ## Online Version and Download
 
-- **Online version:** https://mrt.site44.com/archimate-editor.html
-- **GitHub:** https://github.com/michalradacz/archimate-editor
+- **Online version:** https://egdilna.github.io/nastroje/archimate
+- **GitHub:** https://github.com/egdilna/nastroje
 
 On GitHub you will find:
 - Editor for download as a single HTML file
@@ -31,10 +31,11 @@ On GitHub you will find:
 12. [Import and Export](#import-and-export)
 13. [Model Merging](#model-merging)
 14. [Bulk Tag Operations](#bulk-tag-operations)
-15. [DokuWiki Plugin](#dokuwiki-plugin)
-16. [Tips and Tricks](#tips-and-tricks)
-17. [Keyboard Shortcuts](#keyboard-shortcuts)
-18. [ArchiMate Reference Guide](#archimate-reference-guide)
+15. [GitHub Integration](#github-integration)
+16. [DokuWiki Plugin](#dokuwiki-plugin)
+17. [Tips and Tricks](#tips-and-tricks)
+18. [Keyboard Shortcuts](#keyboard-shortcuts)
+19. [ArchiMate Reference Guide](#archimate-reference-guide)
 
 ---
 
@@ -53,7 +54,7 @@ ArchiMate Editor is a complete tool for enterprise architecture modeling accordi
 - **Notes** - Markdown notes with versioning
 - **ADR (Architecture Decision Records)** - architecture decision management
 - **Text generator** - documentation creation from model using templates
-- **Diagrams** - visual preview with SVG export
+- **Diagrams** - visual editor with drag & drop and SVG/PNG export
 - **Bulk operations** - working with tags
 - **Accessibility** - fully accessible interface for screen readers
 - **DokuWiki integration** - plugin for team collaboration
@@ -275,149 +276,137 @@ After clicking **Open**, the editor displays three sub-tabs:
 #### Preview
 
 Visual diagram preview:
-- Elements are displayed as rectangles with layer-based colors
+- Elements are displayed as rectangles colored by layer
 - Relationships are displayed as lines with appropriate markers
-- **Download SVG** button exports the preview as a vector image
+- Automatic layout by layers (layered) or grid
+
+### Visual Diagram Editor
+
+The editor includes an advanced visual editor for interactive diagram editing.
+
+#### Opening the Visual Editor
+
+- In the diagrams table, click the **✏️ Visually** button
+- In the diagram preview, click **✏️ Edit Visually**
+
+#### Visual Editor Interface
+
+The editor opens in a fullscreen modal window with these parts:
+
+- **Left panel (Palette)** - list of available elements grouped by layer
+- **Center (Canvas)** - workspace with grid for editing
+- **Right panel (Properties)** - properties of selected element or relationship
+
+#### Working with Elements
+
+- **Adding element** - drag element from palette to canvas or double-click
+- **Moving** - click and drag element to new position
+- **Resizing** - use corner handles of selected element
+- **Removing** - select element and click "Remove from diagram" in properties panel
+
+#### Working with Relationships
+
+- Relationships are automatically created between elements that have a relationship in the model
+- **Hiding relationship** - in the properties panel you can hide a relationship
+- Relationships are redrawn automatically when elements are moved
+
+#### Canvas Controls
+
+- **Zoom** - +/- buttons in toolbar or mouse wheel
+- **Zoom 1:1** - resets zoom to 100%
+- **Fit Content** - adjusts zoom to show entire diagram
+- **Panning** - middle mouse button or drag on empty canvas
+
+#### Saving
+
+- Click **Save** to save element positions and styles
+- Element positions and sizes are saved to the diagram
+
+### Diagram Export
+
+In the diagram preview, export buttons are available:
+
+| Button | Description |
+|--------|-------------|
+| **Download SVG** | Export diagram as vector SVG file |
+| **Download PNG** | Export diagram as raster PNG image (2x resolution) |
 
 ---
 
 ## Tasks
 
-The task system enables tracking work needed for architecture development with a complete audit trail.
+Tasks are used for tracking and managing architecture work.
 
 ### Creating a Task
 
-1. Click **+ New Task**
-2. Fill in the required **Title** field
-3. Set **Status** and **Priority**
-4. Optionally fill in:
-   - **Number** - auto-generated
-   - **Assignee** - who solves the task
-   - **Reporter** - who created the task
-   - **Due Date** - completion date
-   - **Tags** - tags for categorization
-   - **Task description** - detailed description (Markdown)
-   - **Current state** - resolution progress notes
-   - **Linked elements/relationships** - link to model
-5. Click **Save**
+1. Enter task **name**
+2. Select **priority** (Low, Medium, High, Critical)
+3. Enter **assignee** and **reporter**
+4. Set **due date**
+5. Add **description** (supports Markdown)
+6. Optionally link to model **elements** or **relationships**
 
-### Task Statuses
+### Task States
 
-| Status | Icon | Description |
-|--------|------|-------------|
+| State | Icon | Description |
+|-------|------|-------------|
 | New | ⚪ | Newly created task |
-| In Progress | 🔵 | Actively worked on |
-| Blocked | 🔴 | Task is blocked |
-| In Review | 🟡 | Waiting for review/approval |
-| Done | 🟢 | Completed task |
-| Cancelled | ⚫ | Cancelled task |
+| Open | 🔵 | Task is in progress |
+| On Hold | ⏸️ | Task is on hold |
+| Done | 🟢 | Task is completed |
+| Cancelled | 🔴 | Task was cancelled |
 
-### Priorities
+### Current State
 
-| Priority | Color | Description |
-|----------|-------|-------------|
-| Critical | 🔴 red | Highest priority |
-| High | 🟠 orange | High priority |
-| Medium | 🟡 yellow | Normal priority |
-| Low | 🟢 green | Low priority |
-
-### Filtering Tasks
-
-- **Status** - filter by status
-- **Priority** - filter by priority
-- **Assignee** - filter by assigned person
-- **Search** - full-text search
-
-### Status History
-
-Every status or current state change is recorded in history including:
-- Date and time of change
-- Who made the change
-- Current state description at the time of change
-
-### Task Export
-
-- **📄 Save as Markdown** - downloads individual task as .md file
-- **📋 Copy Markdown** - copies to clipboard
-- **📦 Export All Tasks** - downloads all tasks as one file
-
-### Linking to Model
-
-Tasks can be linked to model elements and relationships using multi-select. Linked items in the task preview are clickable.
-
-### Overdue Indicator
-
-Overdue tasks are highlighted in red in the table with the ⚠️ icon.
+You can add notes about current state to each task (supports Markdown).
 
 ---
 
 ## Notes
 
-The notes system enables creating documentation with Markdown support and versioning.
+Notes are used for recording information related to architecture.
 
 ### Creating a Note
 
-1. Click **+ New Note**
-2. Fill in **Title** and **Author**
-3. Optionally add **Tags**
-4. Write **Content** (supports Markdown)
-5. Link to model **elements** and **relationships**
-6. Click **Save**
+1. Enter note **title**
+2. Enter **author**
+3. Write **content** (supports Markdown)
+4. Optionally add **tags** and link to elements/relationships
 
 ### Versioning
 
-- Each save creates a new version
-- Version history can be viewed in the editor
-- Previous versions can be restored
-
-### Note Preview
-
-- Click on the title to open preview
-- Markdown is rendered to formatted HTML
-- Linked elements/relationships are clickable
-
-### Copying Content
-
-- **📋** in table - quick content copy to clipboard
-- **📋 Copy** in preview - copy with confirmation
+Notes have automatic versioning:
+- Each change creates a new version
+- Version history is available in note detail
+- Previous versions can be viewed and restored
 
 ---
 
 ## Architecture Decision Records (ADR)
 
-ADR (Architecture Decision Records) serves to track and manage architecture decisions with a complete lifecycle.
+ADR (Architecture Decision Records) document important architecture decisions.
 
-### Creating an ADR
+### ADR Structure
 
-1. Click **+ New ADR**
-2. Fill in the required **Title** field
-3. Set decision **Status**
-4. Optionally fill in:
-   - **Number** - auto-generated (supports alphanumeric)
-   - **Author**, **Approver**, **Deciders**
-   - **Context** - background and reason for decision (Markdown)
-   - **Decision** - the actual decision (Markdown)
-   - **Consequences** - decision impacts (Markdown)
-   - **Alternatives** - considered options
-   - **Implementation** - implementation status and dates
-   - **Related ADR** - supersedes, superseded by, related to
-   - **Linked elements/relationships** - link to model
-   - **Links** - external URL references
-5. Click **Save**
+- **Number** - automatically generated sequence number
+- **Title** - brief decision description
+- **Status** - current decision state
+- **Author** and **Approver**
+- **Context** - situation leading to decision
+- **Decision** - what was decided
+- **Consequences** - decision impacts
 
-### ADR Statuses
+### ADR States
 
-| Status | Icon | Description |
-|--------|------|-------------|
-| Draft | ⚪ | Decision preparation |
-| Proposed | 🔵 | Awaiting approval |
-| Under Discussion | 💬 | Discussion in progress |
-| Returned | 🔙 | Returned for revision |
-| Accepted | 🟢 | Approved decision |
+| State | Icon | Description |
+|-------|------|-------------|
+| Draft | ⚪ | Decision in draft |
+| Discussed | 💬 | Under discussion |
+| Approved | 🟢 | Approved decision |
 | Rejected | 🔴 | Rejected decision |
 | Updated | 🔄 | Decision was updated |
 | Implemented | 🟣 | Decision is implemented |
-| Monitored | 👁️ | Decision is being monitored |
+| Tracked | 👁️ | Decision is being tracked |
 | Deprecated | 🟠 | Decision is deprecated |
 | Superseded | ⚫ | Superseded by another ADR |
 | Closed | 🔒 | Closed decision |
@@ -500,14 +489,26 @@ Enter a template with placeholders in curly brackets:
 |--------|-------------|
 | **Export AJX** | Download model in AJX (JSON) format |
 | **Copy AJX** | Copies AJX data to clipboard |
-| **Export XML** | ArchiMate Open Exchange format |
+| **Export XML** | ArchiMate Open Exchange format (including visual data) |
 | **Export CSV** | Elements and relationships as CSV files |
+
+### XML Export with Visual Data
+
+When exporting to ArchiMate Open Exchange XML, visual information from diagrams is also saved:
+- Element positions (x, y)
+- Element sizes (width, height)
+- Fill and border colors
+- Relationship bendpoints
+
+This information is compatible with Archi tool and other tools supporting ArchiMate Open Exchange format.
 
 ### Import
 
 Supported formats:
 - **AJX** - ArchiMate JSON eXchange (.ajx)
 - **XML** - ArchiMate Open Exchange (.xml)
+
+When importing XML, visual diagram data is also loaded if present in the file.
 
 #### Import Options
 
@@ -559,6 +560,40 @@ Imported items automatically get the tag `Import from: [source model name]`.
 - Check items for operation
 - **Select All** / **Deselect All**
 - **Select Currently Filtered** - selects items matching active filters
+
+---
+
+## GitHub Integration
+
+The editor allows saving and loading models directly from a GitHub repository. Each save creates a commit with history.
+
+### Setup
+
+1. Create a **Personal Access Token** at https://github.com/settings/tokens?type=beta
+   - Select the repository where you want to save
+   - Permissions: Contents → Read and write
+2. In the **Export/Import** tab, find the **GitHub Integration** section
+3. Paste the token and click **Save token**
+4. Enter the file path in format `owner/repo/path/file.ajx`
+
+### Usage
+
+| Button | Description |
+|--------|-------------|
+| **📥 Load from GitHub** | Loads model from the specified path |
+| **📤 Save to GitHub** | Saves model to the specified path (creates commit) |
+| **🔗 Copy link** | Copies direct link to the model |
+
+### Direct Links
+
+The file path is encoded in the URL parameter `?gh=...`, so you can share a direct link to a specific model. When opening the link, the model is automatically loaded from GitHub.
+
+### Security
+
+- Token is stored only in browser localStorage
+- Token is never saved to the data file or URL
+- For public repositories, token is only needed for writing
+- For private repositories, token is needed for reading too
 
 ---
 
@@ -671,9 +706,9 @@ Regularly export the model to an AJX file. Browser data may be deleted when clea
 
 The editor is an open-source tool available on GitHub.
 
-- **Online version:** https://mrt.site44.com/archimate-editor.html
-- **GitHub repository:** https://github.com/michalradacz/archimate-editor
-- **Bug reports:** https://github.com/michalradacz/archimate-editor/issues
+- **Online version:** https://egdilna.github.io/nastroje/archimate
+- **GitHub repository:** https://github.com/egdilna/nastroje
+- **Bug reports:** https://github.com/egdilna/nastroje/issues
 
 ### System Requirements
 
@@ -689,5 +724,5 @@ The editor is an open-source tool available on GitHub.
 
 ---
 
-*Documentation version: 2.0*
+*Documentation version: 3.0*
 *ArchiMate® is a registered trademark of The Open Group.*

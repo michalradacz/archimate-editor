@@ -656,6 +656,96 @@
         .diagram-subtab-content.active {
             display: block;
         }
+        /* Export/Import subtabs - používá stejné třídy jako diagram-subtabs */
+        .export-subtabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 0;
+            flex-wrap: wrap;
+        }
+        .export-subtab {
+            padding: 10px 20px;
+            background: #e9e9e9;
+            border: none;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            margin-bottom: -2px;
+        }
+        .export-subtab:hover {
+            background: #ddd;
+        }
+        .export-subtab.active {
+            background: white;
+            border: 2px solid #ddd;
+            border-bottom: 2px solid white;
+        }
+        .export-subtab-content {
+            display: none;
+        }
+        .export-subtab-content.active {
+            display: block;
+        }
+        /* Popup pro Z/Do vazby */
+        .rel-popup {
+            position: absolute;
+            z-index: 1000;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 10px;
+            max-width: 350px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .rel-popup-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .rel-popup-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+        }
+        .rel-popup-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .rel-popup-list li {
+            padding: 4px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+        .rel-popup-list li:last-child {
+            border-bottom: none;
+        }
+        .rel-popup-empty {
+            color: #666;
+            font-style: italic;
+        }
+        /* Malá tlačítka Z/Do */
+        .rel-btn-small {
+            padding: 1px 4px;
+            font-size: 10px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 2px;
+        }
+        .rel-btn-small:hover {
+            background: #e0e0e0;
+        }
         .svg-container {
             background: white;
             border: 1px solid #ccc;
@@ -1099,7 +1189,7 @@
                 <button type="button" onclick="document.getElementById('quick-open-file').click()" accesskey="o" style="padding: 8px 16px; background: #17a2b8; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;" title="Alt+O">
                     📂 <span data-i18n="openFile">Otevřít</span>
                 </button>
-                <button type="button" onclick="exportJSON()" accesskey="s" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;" title="Alt+S">
+                <button type="button" onclick="smartSave()" accesskey="s" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;" title="Alt+S">
                     💾 <span data-i18n="saveFile">Uložit</span>
                 </button>
             </div>
@@ -1775,6 +1865,15 @@
                                 </tbody>
                             </table>
                         </div>
+                        
+                        <h3 data-i18n="addRelToDiagram">Přidat vazbu na diagram</h3>
+                        <div class="form-group">
+                            <label for="diagram-add-rel-filter" data-i18n="searchRelationship">Hledat vazbu...</label>
+                            <input type="text" id="diagram-add-rel-filter" placeholder="Hledat ve zdroji, cíli, názvu, popisu..." oninput="filterDiagramRelationships()" data-i18n-placeholder="searchRelationship">
+                        </div>
+                        <div id="diagram-add-rel-results" style="max-height: 250px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; margin-top: 10px;">
+                            <p style="padding: 10px; color: #666;" data-i18n="noRelationshipsFound">Žádné vazby nenalezeny</p>
+                        </div>
                     </div>
                     
                     <!-- Subtab: Náhled diagramu -->
@@ -1880,10 +1979,27 @@
 
         <!-- TAB: Export/Import -->
         <div id="tab-export" class="tab-content" role="tabpanel" aria-labelledby="btn-export">
-            <div class="panels">
-                <div class="panel">
-                    <h2 data-i18n="export">Export</h2>
-                    
+            <div class="panel full-width">
+                <nav class="export-subtabs" role="tablist" aria-label="Export a import">
+                    <button class="export-subtab active" role="tab" aria-selected="true" onclick="switchExportSubtab('export')" id="export-subtab-export" data-i18n="export">
+                        Export
+                    </button>
+                    <button class="export-subtab" role="tab" aria-selected="false" onclick="switchExportSubtab('import')" id="export-subtab-import" data-i18n="import">
+                        Import
+                    </button>
+                    <button class="export-subtab" role="tab" aria-selected="false" onclick="switchExportSubtab('merge')" id="export-subtab-merge" data-i18n="mergeModels">
+                        Sloučení
+                    </button>
+                    <button class="export-subtab" role="tab" aria-selected="false" onclick="switchExportSubtab('csv')" id="export-subtab-csv" data-i18n="importCsv">
+                        Import CSV
+                    </button>
+                    <button class="export-subtab" role="tab" aria-selected="false" onclick="switchExportSubtab('github')" id="export-subtab-github">
+                        GitHub
+                    </button>
+                </nav>
+                
+                <!-- Subtab: Export -->
+                <div id="export-content-export" class="export-subtab-content active">
                     <div class="actions">
                         <button type="button" class="btn-success" onclick="exportJSON()" data-i18n="exportJson">Export AJX</button>
                         <button type="button" class="btn-secondary" onclick="copyJSONToClipboard()" data-i18n="copyJsonClipboard">📋 Zkopírovat AJX</button>
@@ -1908,9 +2024,8 @@
                     <div id="export-preview" class="code-preview" data-i18n="selectExportPreview">Vyberte export pro náhled...</div>
                 </div>
                 
-                <div class="panel">
-                    <h2 data-i18n="import">Import</h2>
-                    
+                <!-- Subtab: Import -->
+                <div id="export-content-import" class="export-subtab-content">
                     <div class="import-area" id="import-drop-area" 
                          ondrop="handleFileDrop(event)" 
                          ondragover="handleDragOver(event)" 
@@ -1924,7 +2039,7 @@
                         <p style="margin-top: 10px; color: #666; font-size: 13px;" data-i18n="supportedFormats">Podporované formáty: AJX, ArchiMate XML</p>
                     </div>
                     
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; margin-top: 20px;">
                         <label for="import-data" data-i18n="pasteDataManually">Nebo vložte data ručně:</label>
                         <button type="button" class="btn-secondary" onclick="pasteFromClipboard()" style="font-size: 12px; padding: 4px 8px;" data-i18n="pasteFromClipboard">📋 Vložit ze schránky</button>
                     </div>
@@ -1936,8 +2051,8 @@
                     </div>
                 </div>
                 
-                <div class="panel">
-                    <h2 data-i18n="mergeModels">Sloučit s jiným modelem</h2>
+                <!-- Subtab: Sloučení modelů -->
+                <div id="export-content-merge" class="export-subtab-content">
                     <p style="color: #666; margin-bottom: 15px;" data-i18n="mergeDescription">Importuje prvky, vazby a diagramy z jiného modelu do aktuálního. K nově přidaným položkám se přidá příznak s názvem zdrojového modelu.</p>
                     
                     <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 15px;">
@@ -1990,9 +2105,8 @@
                     <div id="merge-result" style="display:none; margin-top: 15px; padding: 10px; border-radius: 4px;"></div>
                 </div>
                 
-                <!-- Import elementů z CSV/TSV -->
-                <div class="panel">
-                    <h2 data-i18n="importElementsCsv">Import prvků z CSV/TSV</h2>
+                <!-- Subtab: Import CSV -->
+                <div id="export-content-csv" class="export-subtab-content">
                     <p style="color: #666; margin-bottom: 15px;" data-i18n="importElementsCsvDesc">Importuje prvky z CSV nebo TSV souboru. První řádek by měl obsahovat záhlaví sloupců.</p>
                     
                     <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 15px;">
@@ -2019,38 +2133,43 @@
                         <h3 style="margin: 0 0 10px 0;" data-i18n="columnMapping">Mapování sloupců</h3>
                         <p style="color: #666; font-size: 13px; margin-bottom: 10px;" data-i18n="columnMappingDesc">Přiřaďte sloupce ze souboru k polím prvku. Prázdné = neimportovat.</p>
                         
-                        <div class="form-grid" style="grid-template-columns: repeat(5, 1fr); gap: 10px;">
+                        <div class="form-grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px;">
                             <div class="form-group">
                                 <label for="csv-map-id">ID:</label>
-                                <select id="csv-map-id"><option value="">-- Generovat --</option></select>
-                            </div>
-                            <div class="form-group">
-                                <label for="csv-map-type" data-i18n="type">Typ:</label>
-                                <select id="csv-map-type"><option value="">-- Nevybráno --</option></select>
+                                <select id="csv-map-id" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
                             </div>
                             <div class="form-group">
                                 <label for="csv-map-name" data-i18n="name">Název:</label>
-                                <select id="csv-map-name"><option value="">-- Nevybráno --</option></select>
+                                <select id="csv-map-name" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
                             </div>
                             <div class="form-group">
-                                <label for="csv-map-documentation" data-i18n="description">Popis:</label>
-                                <select id="csv-map-documentation"><option value="">-- Nevybráno --</option></select>
+                                <label for="csv-map-type" data-i18n="type">Typ:</label>
+                                <select id="csv-map-type" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
                             </div>
                             <div class="form-group">
-                                <label for="csv-map-specialization" data-i18n="stereotype">Stereotyp:</label>
-                                <select id="csv-map-specialization"><option value="">-- Nevybráno --</option></select>
+                                <label for="csv-map-layer" data-i18n="layer">Vrstva:</label>
+                                <select id="csv-map-layer" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
                             </div>
-                        </div>
-                        
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label for="csv-map-tags" data-i18n="příznaky">Příznaky:</label>
-                            <select id="csv-map-tags" style="width: auto;"><option value="">-- Nevybráno --</option></select>
-                            <small style="color: #666; margin-left: 10px;" data-i18n="csvTagsHelp">Hodnoty oddělené čárkou budou rozděleny na jednotlivé příznaky.</small>
-                        </div>
-                        
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label for="csv-map-určuje" data-i18n="určuje">Určuje:</label>
-                            <select id="csv-map-určuje" style="width: auto;"><option value="">-- Nevybráno --</option></select>
+                            <div class="form-group">
+                                <label for="csv-map-stereotype" data-i18n="stereotype">Stereotyp:</label>
+                                <select id="csv-map-stereotype" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="csv-map-description" data-i18n="description">Popis:</label>
+                                <select id="csv-map-description" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="csv-map-documentation" data-i18n="documentation">Dokumentace:</label>
+                                <select id="csv-map-documentation" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="csv-map-příznaky" data-i18n="příznaky">Příznaky:</label>
+                                <select id="csv-map-příznaky" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="csv-map-určuje" data-i18n="určuje">Určuje:</label>
+                                <select id="csv-map-určuje" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
+                            </div>
                         </div>
                         
                         <div style="margin-top: 15px; padding: 10px; background: white; border: 1px solid #ddd; border-radius: 4px; max-height: 200px; overflow: auto;">
@@ -2068,6 +2187,37 @@
                     </div>
                     
                     <div id="csv-import-result" style="display:none; margin-top: 15px; padding: 10px; border-radius: 4px;"></div>
+                </div>
+                
+                <!-- Subtab: GitHub -->
+                <div id="export-content-github" class="export-subtab-content">
+                    <p style="color: #666; margin-bottom: 15px;" data-i18n="githubIntegrationDesc">Ukládejte a načítejte model přímo z GitHub repozitáře. Každé uložení vytvoří commit s historií změn.</p>
+                    
+                    <div class="form-grid" style="grid-template-columns: 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label for="github-token" data-i18n="githubToken">GitHub Personal Access Token:</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="password" id="github-token" style="flex: 1;" placeholder="ghp_xxxxxxxxxxxx">
+                                <button type="button" class="btn-secondary" onclick="saveGitHubToken()" data-i18n="saveToken">Uložit token</button>
+                            </div>
+                            <p style="color: #666; font-size: 12px; margin-top: 5px;" data-i18n="githubTokenNote">Token se ukládá pouze v tomto prohlížeči. <a href="https://github.com/settings/tokens?type=beta" target="_blank" data-i18n="createToken">Vytvořit token</a> (oprávnění: Contents → Read and write)</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="github-path" data-i18n="githubPath">Cesta k souboru (owner/repo/cesta/soubor.ajx):</label>
+                            <input type="text" id="github-path" placeholder="moje-org/archimate-modely/projekty/model.ajx">
+                        </div>
+                        
+                        <div id="github-status" style="display: none; padding: 10px; background: #e8f5e9; border-radius: 4px; font-size: 13px;"></div>
+                        
+                        <div class="actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button type="button" class="btn-primary" onclick="loadFromGitHub()" data-i18n="loadFromGitHub">📥 Načíst z GitHub</button>
+                            <button type="button" class="btn-success" onclick="saveToGitHub()" data-i18n="saveToGitHub">📤 Uložit do GitHub</button>
+                            <button type="button" class="btn-secondary" onclick="copyGitHubLink()" data-i18n="copyGitHubLink">🔗 Kopírovat odkaz</button>
+                        </div>
+                        
+                        <div id="github-link-preview" style="display: none; padding: 10px; background: #f5f5f5; border-radius: 4px; font-size: 12px; word-break: break-all;"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2835,6 +2985,34 @@
 
     <script>
     // ============================================
+    // Service Worker Cleanup (removes legacy SW)
+    // ============================================
+    (function() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                if (registrations.length > 0) {
+                    var unregisterPromises = registrations.map(function(reg) {
+                        return reg.unregister();
+                    });
+                    Promise.all(unregisterPromises).then(function() {
+                        if ('caches' in window) {
+                            caches.keys().then(function(cacheNames) {
+                                return Promise.all(cacheNames.map(function(cacheName) {
+                                    return caches.delete(cacheName);
+                                }));
+                            }).then(function() {
+                                location.reload();
+                            });
+                        } else {
+                            location.reload();
+                        }
+                    });
+                }
+            });
+        }
+    })();
+    
+    // ============================================
     // Internationalization (i18n)
     // ============================================
     
@@ -3035,6 +3213,7 @@
             importXml: 'Import XML (ArchiMate Open Exchange)',
             selectFile: 'Vyberte soubor',
             import: 'Importovat',
+            importCsv: 'Import CSV',
             mergeModels: 'Sloučit s jiným modelem',
             mergeStrategy: 'Strategie sloučení',
             keepExisting: 'Ponechat stávající',
@@ -3049,6 +3228,15 @@
             diagImportNote: 'Při výběru diagramu se automaticky vyberou i jeho prvky a jejich vazby.',
             diagSelectedCount: 'diagramů vybráno',
             diagToImport: 'diagramů k importu',
+            addRelToDiagram: 'Přidat vazbu na diagram',
+            searchRelationship: 'Hledat vazbu...',
+            relFrom: 'Z',
+            relTo: 'Do',
+            noRelationshipsFound: 'Žádné vazby nenalezeny',
+            relationsFrom: 'Vazby Z tohoto prvku',
+            relationsTo: 'Vazby DO tohoto prvku',
+            noRelationsFrom: 'Žádné vazby z tohoto prvku',
+            noRelationsTo: 'Žádné vazby do tohoto prvku',
             
             // Notes translations
             tasksTab: 'Úkoly',
@@ -3474,7 +3662,36 @@
             selectBothElements: '-- Vyberte oba prvky --',
             elementsNotFound: '-- Prvky nenalezeny --',
             selectTypeShort: '-- Typ --',
-            selectElementShort: '-- Prvek --'
+            selectElementShort: '-- Prvek --',
+            
+            // GitHub Integration
+            githubIntegration: 'GitHub integrace',
+            githubIntegrationDesc: 'Ukládejte a načítejte model přímo z GitHub repozitáře. Každé uložení vytvoří commit s historií změn.',
+            githubToken: 'GitHub Personal Access Token:',
+            saveToken: 'Uložit token',
+            githubTokenNote: 'Token se ukládá pouze v tomto prohlížeči.',
+            createToken: 'Vytvořit token',
+            githubPath: 'Cesta k souboru (owner/repo/cesta/soubor.ajx):',
+            loadFromGitHub: '📥 Načíst z GitHub',
+            saveToGitHub: '📤 Uložit do GitHub',
+            copyGitHubLink: '🔗 Kopírovat odkaz',
+            githubTokenSaved: 'Token byl uložen',
+            githubTokenRemoved: 'Token byl odebrán',
+            githubPathRequired: 'Zadejte cestu k souboru',
+            githubInvalidPath: 'Neplatná cesta (použijte formát: owner/repo/cesta/soubor.ajx)',
+            githubLoading: 'Načítám z GitHub...',
+            githubFileNotFound: 'Soubor nebyl nalezen',
+            githubUnauthorized: 'Neautorizováno - zkontrolujte token',
+            githubNoContent: 'Soubor nemá obsah',
+            githubLoadSuccess: 'Model byl úspěšně načten z GitHub',
+            githubLoadError: 'Chyba při načítání',
+            githubTokenRequired: 'Pro ukládání je potřeba nastavit GitHub token',
+            githubSaving: 'Ukládám do GitHub...',
+            githubSaveSuccess: 'Model byl úspěšně uložen do GitHub',
+            githubSaveError: 'Chyba při ukládání',
+            githubLinkCopied: 'Odkaz byl zkopírován do schránky',
+            githubCopyManually: 'Zkopírujte odkaz:',
+            githubDirectLink: 'Přímý odkaz na model'
         },
         en: {
             // App
@@ -3670,6 +3887,7 @@
             importXml: 'Import XML (ArchiMate Open Exchange)',
             selectFile: 'Select file',
             import: 'Import',
+            importCsv: 'Import CSV',
             mergeModels: 'Merge with another model',
             mergeStrategy: 'Merge strategy',
             keepExisting: 'Keep existing',
@@ -3684,6 +3902,15 @@
             diagImportNote: 'Selecting a diagram will automatically select its elements and their relationships.',
             diagSelectedCount: 'diagrams selected',
             diagToImport: 'diagrams to import',
+            addRelToDiagram: 'Add relationship to diagram',
+            searchRelationship: 'Search relationship...',
+            relFrom: 'From',
+            relTo: 'To',
+            noRelationshipsFound: 'No relationships found',
+            relationsFrom: 'Relations FROM this element',
+            relationsTo: 'Relations TO this element',
+            noRelationsFrom: 'No relations from this element',
+            noRelationsTo: 'No relations to this element',
             
             // Notes translations
             tasksTab: 'Tasks',
@@ -4109,7 +4336,36 @@
             selectBothElements: '-- Select both elements --',
             elementsNotFound: '-- Elements not found --',
             selectTypeShort: '-- Type --',
-            selectElementShort: '-- Element --'
+            selectElementShort: '-- Element --',
+            
+            // GitHub Integration
+            githubIntegration: 'GitHub Integration',
+            githubIntegrationDesc: 'Save and load model directly from a GitHub repository. Each save creates a commit with history.',
+            githubToken: 'GitHub Personal Access Token:',
+            saveToken: 'Save token',
+            githubTokenNote: 'Token is stored only in this browser.',
+            createToken: 'Create token',
+            githubPath: 'File path (owner/repo/path/file.ajx):',
+            loadFromGitHub: '📥 Load from GitHub',
+            saveToGitHub: '📤 Save to GitHub',
+            copyGitHubLink: '🔗 Copy link',
+            githubTokenSaved: 'Token has been saved',
+            githubTokenRemoved: 'Token has been removed',
+            githubPathRequired: 'Enter file path',
+            githubInvalidPath: 'Invalid path (use format: owner/repo/path/file.ajx)',
+            githubLoading: 'Loading from GitHub...',
+            githubFileNotFound: 'File not found',
+            githubUnauthorized: 'Unauthorized - check your token',
+            githubNoContent: 'File has no content',
+            githubLoadSuccess: 'Model successfully loaded from GitHub',
+            githubLoadError: 'Loading error',
+            githubTokenRequired: 'GitHub token is required for saving',
+            githubSaving: 'Saving to GitHub...',
+            githubSaveSuccess: 'Model successfully saved to GitHub',
+            githubSaveError: 'Save error',
+            githubLinkCopied: 'Link copied to clipboard',
+            githubCopyManually: 'Copy link:',
+            githubDirectLink: 'Direct link to model'
         }
     };
     
@@ -6503,6 +6759,108 @@
         renderRelationshipsTable();
     }
     
+    // Global popup element
+    let currentRelPopup = null;
+    
+    function showRelPopup(event, elementId, direction) {
+        event.stopPropagation();
+        
+        // Close any existing popup
+        closeRelPopup();
+        
+        const element = elements.find(e => e.id === elementId);
+        if (!element) return;
+        
+        // Get relationships
+        let rels;
+        let title;
+        let emptyMsg;
+        
+        if (direction === 'from') {
+            rels = relationships.filter(r => r.sourceId === elementId);
+            title = t('relationsFrom');
+            emptyMsg = t('noRelationsFrom');
+        } else {
+            rels = relationships.filter(r => r.targetId === elementId);
+            title = t('relationsTo');
+            emptyMsg = t('noRelationsTo');
+        }
+        
+        // Create popup
+        const popup = document.createElement('div');
+        popup.className = 'rel-popup';
+        popup.id = 'rel-popup-active';
+        
+        let listHtml;
+        if (rels.length === 0) {
+            listHtml = `<p class="rel-popup-empty">${emptyMsg}</p>`;
+        } else {
+            listHtml = `<ul class="rel-popup-list">
+                ${rels.map(r => {
+                    const otherElement = direction === 'from' 
+                        ? elements.find(e => e.id === r.targetId)
+                        : elements.find(e => e.id === r.sourceId);
+                    const otherName = otherElement ? otherElement.name : (direction === 'from' ? r.targetId : r.sourceId);
+                    const relName = r.name ? ` "${r.name}"` : '';
+                    return `<li>
+                        <strong>${escapeHtml(r.type)}</strong>${relName}: 
+                        <a href="#" class="element-link" onclick="filterByElement('${escapeHtml(otherElement ? otherElement.id : '')}'); closeRelPopup(); return false;">${escapeHtml(otherName)}</a>
+                        <button type="button" class="rel-btn-small" onclick="showRelPopup(event, '${escapeHtml(otherElement ? otherElement.id : '')}', 'from')" title="${t('relFrom')}">${t('relFrom')}</button>
+                        <button type="button" class="rel-btn-small" onclick="showRelPopup(event, '${escapeHtml(otherElement ? otherElement.id : '')}', 'to')" title="${t('relTo')}">${t('relTo')}</button>
+                    </li>`;
+                }).join('')}
+            </ul>`;
+        }
+        
+        popup.innerHTML = `
+            <div class="rel-popup-header">
+                <span>${title}</span>
+                <button type="button" class="rel-popup-close" onclick="closeRelPopup()" aria-label="Zavřít">×</button>
+            </div>
+            ${listHtml}
+        `;
+        
+        document.body.appendChild(popup);
+        currentRelPopup = popup;
+        
+        // Position popup near the button
+        const rect = event.target.getBoundingClientRect();
+        const popupRect = popup.getBoundingClientRect();
+        
+        let left = rect.left + window.scrollX;
+        let top = rect.bottom + window.scrollY + 5;
+        
+        // Adjust if would go off screen
+        if (left + popupRect.width > window.innerWidth) {
+            left = window.innerWidth - popupRect.width - 10;
+        }
+        if (top + popupRect.height > window.innerHeight + window.scrollY) {
+            top = rect.top + window.scrollY - popupRect.height - 5;
+        }
+        
+        popup.style.left = left + 'px';
+        popup.style.top = top + 'px';
+        
+        // Close on click outside
+        setTimeout(() => {
+            document.addEventListener('click', closeRelPopupOnClickOutside);
+        }, 10);
+    }
+    
+    function closeRelPopup() {
+        if (currentRelPopup) {
+            currentRelPopup.remove();
+            currentRelPopup = null;
+        }
+        document.removeEventListener('click', closeRelPopupOnClickOutside);
+    }
+    
+    function closeRelPopupOnClickOutside(event) {
+        if (currentRelPopup && !currentRelPopup.contains(event.target)) {
+            closeRelPopup();
+        }
+    }
+    
     function filterBySource(sourceId) {
         // Clear other filters
         document.getElementById('filter-rel-type').value = '';
@@ -6755,13 +7113,22 @@
                 ? elementDiagrams.map(d => `<a href="#" class="element-link" onclick="openDiagramEditor('${escapeHtml(d.id)}'); return false;">${escapeHtml(d.name)}</a>`).join(', ')
                 : '-';
             
+            // Count relationships from and to this element
+            const relsFrom = relationships.filter(r => r.sourceId === e.id);
+            const relsTo = relationships.filter(r => r.targetId === e.id);
+            const relFromCount = relsFrom.length;
+            const relToCount = relsTo.length;
+            
+            // Z/Do buttons HTML
+            const relButtonsHtml = relCount > 0 ? ` <small>(${relCount})</small> <button type="button" class="rel-btn-small" onclick="showRelPopup(event, '${escapeHtml(e.id)}', 'from')" title="${t('relFrom')}">${t('relFrom')}</button><button type="button" class="rel-btn-small" onclick="showRelPopup(event, '${escapeHtml(e.id)}', 'to')" title="${t('relTo')}">${t('relTo')}</button>` : '';
+            
             return `
                 <tr>
                     <td><input type="checkbox" class="element-checkbox" value="${escapeHtml(e.id)}" onchange="updateElementsBulkPanel()"></td>
                     <td><code>${escapeHtml(e.id)}</code></td>
                     <td><span class="layer-badge layer-${e.layer}">${escapeHtml(layerName)}</span></td>
                     <td>${escapeHtml(e.type)}</td>
-                    <td>${stereotypePrefix}<a href="#tab-relationships" class="element-link" onclick="filterByElement('${escapeHtml(e.id)}'); return false;" title="${escapeHtml(nameTitle)}">${escapeHtml(e.name)}</a>${relCount > 0 ? ` <small>(${relCount})</small>` : ''}${descriptionHtml}</td>
+                    <td>${stereotypePrefix}<a href="#tab-relationships" class="element-link" onclick="filterByElement('${escapeHtml(e.id)}'); return false;" title="${escapeHtml(nameTitle)}">${escapeHtml(e.name)}</a>${relButtonsHtml}${descriptionHtml}</td>
                     <td>${escapeHtml(e.určuje || '-')}</td>
                     <td>${escapeHtml(e.příznaky || '-')}</td>
                     <td>${diagramsHtml}</td>
@@ -10526,6 +10893,401 @@
     }
 
     // ============================================
+    // GitHub Integration
+    // ============================================
+    
+    // Helper funkce pro kódování/dekódování cesty
+    function ghEncode(path) {
+        return btoa(unescape(encodeURIComponent(path)));
+    }
+    
+    function ghDecode(encoded) {
+        return decodeURIComponent(escape(atob(encoded)));
+    }
+    
+    function parseGhPath(ghPath) {
+        if (!ghPath) return null;
+        const parts = ghPath.split('/');
+        if (parts.length < 3) return null;
+        return {
+            owner: parts[0],
+            repo: parts[1],
+            path: parts.slice(2).join('/')
+        };
+    }
+    
+    function saveGitHubToken() {
+        const token = document.getElementById('github-token').value.trim();
+        if (token) {
+            localStorage.setItem('archimate-github-token', token);
+            showGitHubStatus(t('githubTokenSaved'), 'success');
+        } else {
+            localStorage.removeItem('archimate-github-token');
+            showGitHubStatus(t('githubTokenRemoved'), 'info');
+        }
+    }
+    
+    function showGitHubStatus(message, type) {
+        const statusEl = document.getElementById('github-status');
+        statusEl.style.display = 'block';
+        statusEl.textContent = message;
+        statusEl.style.background = type === 'success' ? '#e8f5e9' : 
+                                    type === 'error' ? '#ffebee' : '#e3f2fd';
+        statusEl.style.color = type === 'success' ? '#2e7d32' : 
+                               type === 'error' ? '#c62828' : '#1565c0';
+    }
+    
+    function loadFromGitHub() {
+        const ghPath = document.getElementById('github-path').value.trim();
+        if (!ghPath) {
+            showGitHubStatus(t('githubPathRequired'), 'error');
+            return;
+        }
+        
+        const token = localStorage.getItem('archimate-github-token');
+        const parsed = parseGhPath(ghPath);
+        if (!parsed) {
+            showGitHubStatus(t('githubInvalidPath'), 'error');
+            return;
+        }
+        
+        showGitHubStatus(t('githubLoading'), 'info');
+        
+        const apiUrl = `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/contents/${parsed.path}`;
+        const headers = { 'Accept': 'application/json' };
+        if (token) headers['Authorization'] = 'token ' + token;
+        
+        fetch(apiUrl, { headers: headers })
+        .then(res => {
+            if (!res.ok) {
+                if (res.status === 404) throw new Error(t('githubFileNotFound'));
+                if (res.status === 401) throw new Error(t('githubUnauthorized'));
+                throw new Error('HTTP ' + res.status);
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.content) {
+                // Malý soubor — obsah je base64 v JSON odpovědi
+                return decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+            } else if (data.sha) {
+                // Velký soubor (>1 MB) — stáhnout přes Git Blob API (CORS-friendly)
+                const blobUrl = `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/git/blobs/${data.sha}`;
+                const blobHeaders = { 'Accept': 'application/json' };
+                if (token) blobHeaders['Authorization'] = 'token ' + token;
+                return fetch(blobUrl, { headers: blobHeaders }).then(r => {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.json();
+                }).then(blob => {
+                    // Blob API vrací base64-kódovaný obsah
+                    return decodeURIComponent(escape(atob(blob.content.replace(/\n/g, ''))));
+                });
+            } else {
+                throw new Error(t('githubNoContent'));
+            }
+        })
+        .then(content => {
+            const obj = JSON.parse(content);
+            
+            // Uložit ghPath do modelu
+            if (!obj.model) obj.model = {};
+            obj.model.ghPath = ghPath;
+            
+            // Importovat data
+            if (obj.model) modelMetadata = obj.model;
+            if (obj.elements) elements = obj.elements;
+            if (obj.relationships) relationships = obj.relationships;
+            if (obj.diagrams) diagrams = obj.diagrams;
+            if (obj.adr) adrRecords = obj.adr;
+            if (obj.notes) notes = obj.notes;
+            if (obj.tasks) tasks = obj.tasks;
+            
+            saveToLocalStorage();
+            
+            // Překreslit UI
+            loadModelMetadataToForm();
+            renderModelProperties();
+            renderElementsTable();
+            renderRelationshipsTable();
+            renderDiagramsTable();
+            renderAdrTable();
+            renderNotesTable();
+            renderTasksTable();
+            populateElementSelects();
+            updateTypeFilter();
+            updateStereotypeSuggestions();
+            updatePříznakySuggestions();
+            updateStereotypeFilter();
+            updatePříznakyFilters();
+            updateRelNameSuggestions();
+            updateRelSourceTargetFilters();
+            updateDiagramFilters();
+            updateTaskAssigneeFilter();
+            updateModelStats();
+            
+            // Aktualizovat URL
+            history.replaceState(null, '', location.pathname + '?gh=' + ghEncode(ghPath));
+            
+            showGitHubStatus(t('githubLoadSuccess'), 'success');
+            updateGitHubLinkPreview();
+            // Přehrát zvuk načtení
+            playLoadSound();
+        })
+        .catch(err => {
+            showGitHubStatus(t('githubLoadError') + ': ' + err.message, 'error');
+        });
+    }
+    
+    function saveToGitHub() {
+        const token = localStorage.getItem('archimate-github-token');
+        if (!token) {
+            showGitHubStatus(t('githubTokenRequired'), 'error');
+            return;
+        }
+        
+        let ghPath = document.getElementById('github-path').value.trim();
+        if (!ghPath && modelMetadata.ghPath) {
+            ghPath = modelMetadata.ghPath;
+            document.getElementById('github-path').value = ghPath;
+        }
+        
+        if (!ghPath) {
+            showGitHubStatus(t('githubPathRequired'), 'error');
+            return;
+        }
+        
+        const parsed = parseGhPath(ghPath);
+        if (!parsed) {
+            showGitHubStatus(t('githubInvalidPath'), 'error');
+            return;
+        }
+        
+        // Uložit ghPath do modelu
+        modelMetadata.ghPath = ghPath;
+        
+        // Nastavit loading state na tlačítko
+        const saveBtn = document.querySelector('[onclick="saveToGitHub()"]');
+        const originalBtnText = saveBtn ? saveBtn.innerHTML : '';
+        if (saveBtn) {
+            saveBtn.innerHTML = '⏳ ' + t('githubSaving');
+            saveBtn.disabled = true;
+        }
+        
+        showGitHubStatus(t('githubSaving'), 'info');
+        
+        const apiUrl = `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/contents/${parsed.path}`;
+        const headers = { 'Authorization': 'token ' + token, 'Accept': 'application/json' };
+        
+        // Krok 1: GET pro zjištění SHA (pokud soubor existuje)
+        fetch(apiUrl, { headers: headers })
+        .then(res => {
+            if (res.status === 404) return null;
+            if (!res.ok && res.status !== 404) throw new Error('HTTP ' + res.status);
+            return res.json();
+        })
+        .then(existing => {
+            // Připravit data k uložení
+            const data = {
+                exportDate: new Date().toISOString(),
+                archimateVersion: '3.2',
+                model: modelMetadata,
+                elements: elements,
+                relationships: relationships,
+                diagrams: diagrams,
+                adr: adrRecords,
+                notes: notes,
+                tasks: tasks
+            };
+            
+            const json = JSON.stringify(data, null, 2);
+            const body = {
+                message: 'Update: ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
+                content: btoa(unescape(encodeURIComponent(json)))
+            };
+            if (existing && existing.sha) body.sha = existing.sha;
+            
+            return fetch(apiUrl, {
+                method: 'PUT',
+                headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+        })
+        .then(res => {
+            if (!res.ok) {
+                return res.json().then(e => { 
+                    throw new Error(e.message || 'HTTP ' + res.status); 
+                });
+            }
+            return res.json();
+        })
+        .then(result => {
+            // Obnovit tlačítko
+            if (saveBtn) {
+                saveBtn.innerHTML = originalBtnText;
+                saveBtn.disabled = false;
+            }
+            // Aktualizovat URL
+            history.replaceState(null, '', location.pathname + '?gh=' + ghEncode(ghPath));
+            saveToLocalStorage();
+            showGitHubStatus(t('githubSaveSuccess'), 'success');
+            updateGitHubLinkPreview();
+            // Přehrát zvuk úspěchu
+            playSuccessSound();
+        })
+        .catch(err => {
+            // Obnovit tlačítko
+            if (saveBtn) {
+                saveBtn.innerHTML = originalBtnText;
+                saveBtn.disabled = false;
+            }
+            showGitHubStatus(t('githubSaveError') + ': ' + err.message, 'error');
+        });
+    }
+    
+    function smartSave() {
+        // Rozhodne kam ukládat: GitHub (pokud je nastaven token a cesta) nebo soubor
+        const token = localStorage.getItem('archimate-github-token');
+        const ghPath = document.getElementById('github-path')?.value?.trim() || modelMetadata.ghPath;
+        
+        if (token && ghPath) {
+            // Má token a cestu → uložit do GitHub
+            saveToGitHub();
+        } else {
+            // Nemá token nebo cestu → uložit jako soubor
+            exportJSON();
+        }
+    }
+    
+    function copyGitHubLink() {
+        const ghPath = document.getElementById('github-path').value.trim() || modelMetadata.ghPath;
+        if (!ghPath) {
+            showGitHubStatus(t('githubPathRequired'), 'error');
+            return;
+        }
+        
+        const link = location.origin + location.pathname + '?gh=' + ghEncode(ghPath);
+        navigator.clipboard.writeText(link).then(() => {
+            showGitHubStatus(t('githubLinkCopied'), 'success');
+        }).catch(() => {
+            // Fallback
+            prompt(t('githubCopyManually'), link);
+        });
+    }
+    
+    function updateGitHubLinkPreview() {
+        const ghPath = document.getElementById('github-path').value.trim() || modelMetadata.ghPath;
+        const previewEl = document.getElementById('github-link-preview');
+        
+        if (ghPath) {
+            const link = location.origin + location.pathname + '?gh=' + ghEncode(ghPath);
+            previewEl.innerHTML = `<strong>${t('githubDirectLink')}:</strong><br><a href="${link}" target="_blank">${link}</a>`;
+            previewEl.style.display = 'block';
+        } else {
+            previewEl.style.display = 'none';
+        }
+    }
+    
+    function initGitHubFromUrl() {
+        const params = new URLSearchParams(location.search);
+        const ghParam = params.get('gh');
+        if (ghParam) {
+            try {
+                const ghPath = ghDecode(ghParam);
+                document.getElementById('github-path').value = ghPath;
+                // Automaticky načíst
+                setTimeout(() => loadFromGitHub(), 100);
+            } catch(e) {
+                // Neplatný base64
+            }
+        }
+        
+        // Načíst uložený token (pro zobrazení že je nastaven)
+        const token = localStorage.getItem('archimate-github-token');
+        if (token) {
+            document.getElementById('github-token').value = token;
+        }
+        
+        // Načíst cestu z modelu
+        if (modelMetadata.ghPath) {
+            document.getElementById('github-path').value = modelMetadata.ghPath;
+            updateGitHubLinkPreview();
+        }
+    }
+    
+    // ============================================
+    // Sound Effects (Web Audio API)
+    // ============================================
+    
+    let audioContext = null;
+    
+    function getAudioContext() {
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        return audioContext;
+    }
+    
+    function playSuccessSound() {
+        try {
+            const ctx = getAudioContext();
+            const now = ctx.currentTime;
+            
+            // Veselá vzestupná melodie (C-E-G-C)
+            const notes = [262, 330, 392, 523]; // C4, E4, G4, C5
+            const duration = 0.12;
+            
+            notes.forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                
+                gain.gain.setValueAtTime(0.3, now + i * duration);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + i * duration + duration * 0.9);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start(now + i * duration);
+                osc.stop(now + i * duration + duration);
+            });
+        } catch (e) {
+            // Audio not supported
+        }
+    }
+    
+    function playLoadSound() {
+        try {
+            const ctx = getAudioContext();
+            const now = ctx.currentTime;
+            
+            // Krátké "ding-dong" oznámení
+            const notes = [523, 659]; // C5, E5
+            const duration = 0.15;
+            
+            notes.forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                
+                gain.gain.setValueAtTime(0.25, now + i * duration);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + i * duration + duration * 0.8);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start(now + i * duration);
+                osc.stop(now + i * duration + duration);
+            });
+        } catch (e) {
+            // Audio not supported
+        }
+    }
+
+    // ============================================
     // Reference Tab
     // ============================================
     
@@ -11360,6 +12122,20 @@
         }
     }
     
+    function switchExportSubtab(subtab) {
+        // Update buttons
+        document.querySelectorAll('.export-subtab').forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+        });
+        document.getElementById('export-subtab-' + subtab).classList.add('active');
+        document.getElementById('export-subtab-' + subtab).setAttribute('aria-selected', 'true');
+        
+        // Update content
+        document.querySelectorAll('.export-subtab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById('export-content-' + subtab).classList.add('active');
+    }
+    
     function updateDiagramAddTypes() {
         const layer = document.getElementById('diagram-add-layer').value;
         const typeSelect = document.getElementById('diagram-add-type');
@@ -11548,8 +12324,140 @@
                 </tr>
             `;
         }).join('');
+        
+        // Also update the relationship search results
+        filterDiagramRelationships();
     }
     
+    function filterDiagramRelationships() {
+        const container = document.getElementById('diagram-add-rel-results');
+        if (!container || !currentDiagramId) return;
+        
+        const filter = (document.getElementById('diagram-add-rel-filter')?.value || '').toLowerCase();
+        const diagram = diagrams.find(d => d.id === currentDiagramId);
+        if (!diagram) return;
+        
+        // Get element IDs already on diagram
+        const diagramElementIds = new Set(diagram.elementIds || []);
+        
+        // Get relationships already implied by diagram elements
+        const existingRelIds = new Set();
+        relationships.forEach(r => {
+            if (diagramElementIds.has(r.sourceId) && diagramElementIds.has(r.targetId)) {
+                existingRelIds.add(r.id);
+            }
+        });
+        
+        // Filter relationships that can be added (at least one element not on diagram, or relationship not yet shown)
+        let availableRels = relationships.filter(r => {
+            // Don't show if both elements already on diagram
+            if (diagramElementIds.has(r.sourceId) && diagramElementIds.has(r.targetId)) {
+                return false;
+            }
+            return true;
+        });
+        
+        // Apply text filter
+        if (filter) {
+            availableRels = availableRels.filter(r => {
+                const source = elements.find(e => e.id === r.sourceId);
+                const target = elements.find(e => e.id === r.targetId);
+                const sourceName = source ? source.name.toLowerCase() : '';
+                const targetName = target ? target.name.toLowerCase() : '';
+                const relName = (r.name || '').toLowerCase();
+                const relDesc = (r.description || '').toLowerCase();
+                const relType = r.type.toLowerCase();
+                
+                return sourceName.includes(filter) || 
+                       targetName.includes(filter) || 
+                       relName.includes(filter) || 
+                       relDesc.includes(filter) ||
+                       relType.includes(filter);
+            });
+        }
+        
+        if (availableRels.length === 0) {
+            container.innerHTML = `<p style="padding: 10px; color: #666;">${t('noRelationshipsFound')}</p>`;
+            return;
+        }
+        
+        // Limit to 50 results
+        const limited = availableRels.slice(0, 50);
+        
+        container.innerHTML = `
+            <table class="data-table" style="font-size: 13px;">
+                <thead>
+                    <tr>
+                        <th>${t('source')}</th>
+                        <th>${t('relationshipType')}</th>
+                        <th>${t('name')}</th>
+                        <th>${t('target')}</th>
+                        <th>${t('actions')}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${limited.map(r => {
+                        const source = elements.find(e => e.id === r.sourceId);
+                        const target = elements.find(e => e.id === r.targetId);
+                        const sourceOnDiagram = diagramElementIds.has(r.sourceId);
+                        const targetOnDiagram = diagramElementIds.has(r.targetId);
+                        
+                        return `
+                            <tr>
+                                <td style="${sourceOnDiagram ? '' : 'color: #999;'}">${source ? escapeHtml(source.name) : escapeHtml(r.sourceId)}${sourceOnDiagram ? '' : ' ⊕'}</td>
+                                <td><strong>${escapeHtml(r.type)}</strong></td>
+                                <td>${escapeHtml(r.name || '-')}</td>
+                                <td style="${targetOnDiagram ? '' : 'color: #999;'}">${target ? escapeHtml(target.name) : escapeHtml(r.targetId)}${targetOnDiagram ? '' : ' ⊕'}</td>
+                                <td><button type="button" class="btn-primary" style="padding: 2px 8px; font-size: 12px;" onclick="addRelationshipToDiagram('${escapeHtml(r.id)}')">${t('add')}</button></td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            </table>
+            ${availableRels.length > 50 ? `<p style="padding: 5px 10px; color: #666; font-size: 12px;">${t('showingFirst')} 50 ${t('of')} ${availableRels.length}</p>` : ''}
+        `;
+    }
+    
+    function addRelationshipToDiagram(relId) {
+        if (!currentDiagramId) return;
+        
+        const diagram = diagrams.find(d => d.id === currentDiagramId);
+        if (!diagram) return;
+        
+        const rel = relationships.find(r => r.id === relId);
+        if (!rel) return;
+        
+        // Ensure elementIds array exists
+        if (!diagram.elementIds) diagram.elementIds = [];
+        
+        // Add both source and target elements if not already on diagram
+        let addedElements = [];
+        if (!diagram.elementIds.includes(rel.sourceId)) {
+            diagram.elementIds.push(rel.sourceId);
+            const source = elements.find(e => e.id === rel.sourceId);
+            if (source) addedElements.push(source.name);
+        }
+        if (!diagram.elementIds.includes(rel.targetId)) {
+            diagram.elementIds.push(rel.targetId);
+            const target = elements.find(e => e.id === rel.targetId);
+            if (target) addedElements.push(target.name);
+        }
+        
+        saveToLocalStorage();
+        renderDiagramElements();
+        renderDiagramRelationships();
+        
+        // Brief confirmation
+        if (addedElements.length > 0) {
+            const resultsEl = document.getElementById('diagram-add-rel-results');
+            const originalContent = resultsEl.innerHTML;
+            resultsEl.innerHTML = `<p style="padding: 10px; color: #28a745; font-weight: bold;">✓ ${t('added')}: ${addedElements.join(', ')}</p>`;
+            setTimeout(() => {
+                filterDiagramRelationships();
+            }, 1500);
+        }
+    }
+
     function renderDiagramPreview() {
         const container = document.getElementById('diagram-svg-container');
         
@@ -14502,6 +15410,9 @@
         // Render Tasks table
         renderTasksTable();
         updateTaskAssigneeFilter();
+        
+        // Initialize GitHub integration
+        initGitHubFromUrl();
     });
     
     // ============================================
