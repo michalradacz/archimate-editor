@@ -5,7 +5,7 @@ Webový editor pro tvorbu a správu architektonických modelů podle standardu A
 ## Online verze a stažení
 
 - **Online verze:** https://egdilna.github.io/nastroje/archimate
-- **GitHub:** https://github.com/michalradacz/archimate-editor
+- **GitHub:** https://github.com/egdilna/nastroje
 
 Na GitHubu najdete:
 - Editor ke stažení jako jeden HTML soubor
@@ -31,10 +31,11 @@ Na GitHubu najdete:
 12. [Import a export](#import-a-export)
 13. [Slučování modelů](#slučování-modelů)
 14. [Hromadné operace s příznaky](#hromadné-operace-s-příznaky)
-15. [DokuWiki plugin](#dokuwiki-plugin)
-16. [Tipy a triky](#tipy-a-triky)
-17. [Klávesové zkratky](#klávesové-zkratky)
-18. [Referenční příručka ArchiMate](#referenční-příručka-archimate)
+15. [GitHub integrace](#github-integrace)
+16. [DokuWiki plugin](#dokuwiki-plugin)
+17. [Tipy a triky](#tipy-a-triky)
+18. [Klávesové zkratky](#klávesové-zkratky)
+19. [Referenční příručka ArchiMate](#referenční-příručka-archimate)
 
 ---
 
@@ -44,28 +45,21 @@ ArchiMate Editor je kompletní nástroj pro modelování podnikové architektury
 
 ### Hlavní vlastnosti
 
-
-Pokročilý editor architektury v jazyce ArchiMate, který může ale sloužit i nearchitektům
-
-
 - **ArchiMate 3.2** - podpora všech 60 typů prvků a 11 typů vazeb s kontrolou validity
 - **Vícejazyčné rozhraní** - čeština a angličtina
 - **Automatické ukládání** - data se ukládají do prohlížeče
-- **Tvorba po katalozích**: Možnost tvořit architekturu přes katalog prvků s jejich vlastnostmi a katalog vazeb, ze kterých se pak sestavují příznaky, packages a diagramy a výstupy
-- **Vizuální modelování**: Vizuální editor diagramů
-- **Import/export** - formáty AJX (JSON) a ArchiMate Open Exchange XML, plná podpora všech rozšíření AJX, diagramy lze exportovat v PNG a SVG, export vygenerovaných textových výstupů podle uživatelských šablon textu
+- **Import/export** - formáty AJX (JSON) a ArchiMate Open Exchange XML
 - **Slučování modelů** - import vybraných částí z jiného modelu
 - **Úkoly** - evidence a sledování úkolů pro rozvoj architektury
 - **Poznámky** - Markdown poznámky s verzováním
 - **ADR (Architecture Decision Records)** - správa architektonických rozhodnutí
 - **Generátor textu** - tvorba dokumentace z modelu pomocí šablon
-- **Diagramy** - vizuální náhled s exportem do SVG
+- **Diagramy** - vizuální editor s drag & drop a export do SVG/PNG
 - **Hromadné operace** - práce s příznaky (tagy)
 - **Přístupnost** - plně přístupné rozhraní pro odečítače obrazovky
-- **Integrace s GitHub a GIT**: Možnost načíst a ukládat modely a projekty v GIT repozitáři, přístup je zajištěn přes API klíč, takže to bude fungovat i u privátních repos.
 - **DokuWiki integrace** - plugin pro spolupráci v týmu
 
-
+---
 
 ## Formát AJX
 
@@ -284,142 +278,130 @@ Po kliknutí na **Otevřít** se zobrazí editor s třemi podzáložkami:
 Vizuální náhled diagramu:
 - Prvky jsou zobrazeny jako obdélníky s barvou podle vrstvy
 - Vazby jsou zobrazeny jako čáry s odpovídajícími značkami
-- Tlačítko **Stáhnout SVG** exportuje náhled jako vektorový obrázek
+- Automatické rozložení podle vrstev (layered) nebo mřížky (grid)
+
+### Vizuální editor diagramů
+
+Editor obsahuje pokročilý vizuální editor pro interaktivní úpravu diagramů.
+
+#### Otevření vizuálního editoru
+
+- V tabulce diagramů klikněte na tlačítko **✏️ Vizuálně**
+- V náhledu diagramu klikněte na **✏️ Upravit vizuálně**
+
+#### Rozhraní vizuálního editoru
+
+Editor se otevře v celoobrazovkovém modálním okně s těmito částmi:
+
+- **Levý panel (Paleta)** - seznam dostupných prvků seskupených podle vrstvy
+- **Střední část (Canvas)** - pracovní plocha s mřížkou pro editaci
+- **Pravý panel (Vlastnosti)** - vlastnosti vybraného prvku nebo vazby
+
+#### Práce s prvky
+
+- **Přidání prvku** - přetáhněte prvek z palety na canvas nebo dvakrát klikněte
+- **Přesunutí** - klikněte a táhněte prvek na novou pozici
+- **Změna velikosti** - použijte rohové úchyty vybraného prvku
+- **Odebrání** - vyberte prvek a klikněte na "Odebrat z diagramu" v panelu vlastností
+
+#### Práce s vazbami
+
+- Vazby se automaticky vytvoří mezi prvky, které mají vztah v modelu
+- **Skrytí vazby** - v panelu vlastností můžete vazbu skrýt
+- Vazby se překreslují automaticky při přesunu prvků
+
+#### Ovládání canvasu
+
+- **Zoom** - tlačítka +/- v toolbaru nebo kolečko myši
+- **Zoom 1:1** - resetuje přiblížení na 100%
+- **Přizpůsobit** - přizpůsobí zoom tak, aby byl vidět celý diagram
+- **Posouvání** - prostřední tlačítko myši nebo tažení na prázdné ploše
+
+#### Uložení
+
+- Klikněte na **Uložit** pro uložení pozic a stylů prvků
+- Pozice a velikosti prvků se ukládají do diagramu
+
+### Export diagramů
+
+V náhledu diagramu jsou k dispozici tlačítka pro export:
+
+| Tlačítko | Popis |
+|----------|-------|
+| **Stáhnout SVG** | Export diagramu jako vektorový SVG soubor |
+| **Stáhnout PNG** | Export diagramu jako rastrový PNG obrázek (2x rozlišení) |
 
 ---
 
 ## Úkoly
 
-Systém úkolů umožňuje evidovat a sledovat práci potřebnou pro rozvoj architektury s kompletní auditní stopou.
+Úkoly slouží k evidenci a sledování práce na architektuře.
 
 ### Vytvoření úkolu
 
-1. Klikněte **+ Nový úkol**
-2. Vyplňte povinné pole **Název**
-3. Nastavte **Stav** a **Prioritu**
-4. Volitelně vyplňte:
-   - **Číslo** - automaticky generováno
-   - **Řešitel** - kdo úkol řeší
-   - **Zadavatel** - kdo úkol založil
-   - **Termín** - datum dokončení
-   - **Příznaky** - tagy pro kategorizaci
-   - **Popis úkolu** - detailní popis (Markdown)
-   - **Aktuální stav** - poznámky k průběhu řešení
-   - **Propojené prvky/vazby** - vazba na model
-5. Klikněte **Uložit**
+1. Zadejte **název** úkolu
+2. Vyberte **prioritu** (Nízká, Střední, Vysoká, Kritická)
+3. Zadejte **řešitele** a **zadavatele**
+4. Nastavte **termín**
+5. Přidejte **popis** (podporuje Markdown)
+6. Volitelně propojte s **prvky** nebo **vazbami** modelu
 
 ### Stavy úkolu
 
 | Stav | Ikona | Popis |
 |------|-------|-------|
-| Nový | ⚪ | Nově založený úkol |
-| Probíhá | 🔵 | Aktivně řešený úkol |
-| Blokováno | 🔴 | Úkol je blokován |
-| Ke kontrole | 🟡 | Čeká na kontrolu/schválení |
-| Hotovo | 🟢 | Dokončený úkol |
-| Zrušeno | ⚫ | Zrušený úkol |
+| Nový | ⚪ | Nově vytvořený úkol |
+| Otevřený | 🔵 | Úkol je v řešení |
+| Pozastavený | ⏸️ | Úkol je pozastaven |
+| Dokončený | 🟢 | Úkol je dokončen |
+| Zrušený | 🔴 | Úkol byl zrušen |
 
-### Priority
+### Aktuální stav
 
-| Priorita | Barva | Popis |
-|----------|-------|-------|
-| Kritická | 🔴 červená | Nejvyšší priorita |
-| Vysoká | 🟠 oranžová | Vysoká priorita |
-| Střední | 🟡 žlutá | Běžná priorita |
-| Nízká | 🟢 zelená | Nízká priorita |
-
-### Filtrování úkolů
-
-- **Stav** - filtr podle stavu
-- **Priorita** - filtr podle priority
-- **Řešitel** - filtr podle přiřazeného řešitele
-- **Hledat** - fulltextové vyhledávání
-
-### Historie stavů
-
-Každá změna stavu nebo aktuálního stavu se zaznamenává do historie včetně:
-- Datum a čas změny
-- Kdo změnu provedl
-- Popis aktuálního stavu v době změny
-
-### Export úkolů
-
-- **📄 Uložit jako Markdown** - stáhne jednotlivý úkol jako .md soubor
-- **📋 Kopírovat Markdown** - zkopíruje do schránky
-- **📦 Exportovat všechny úkoly** - stáhne všechny úkoly jako jeden soubor
-
-### Propojení s modelem
-
-Úkoly lze propojit s prvky a vazbami modelu pomocí multi-selectu. V náhledu úkolu jsou propojené položky klikatelné.
-
-### Indikátor zpoždění
-
-Úkoly po termínu jsou v tabulce zvýrazněny červeně s ikonou ⚠️.
+Ke každému úkolu můžete přidávat poznámky o aktuálním stavu (podporuje Markdown).
 
 ---
 
 ## Poznámky
 
-Systém poznámek umožňuje vytvářet dokumentaci s podporou Markdown a verzování.
+Poznámky slouží k zaznamenání informací souvisejících s architekturou.
 
 ### Vytvoření poznámky
 
-1. Klikněte **+ Nová poznámka**
-2. Vyplňte **Název** a **Autor**
-3. Volitelně přidejte **Příznaky** (tagy)
-4. Napište **Obsah** (podporuje Markdown)
-5. Propojte s **prvky** a **vazbami** modelu
-6. Klikněte **Uložit**
+1. Zadejte **název** poznámky
+2. Zadejte **autora**
+3. Napište **obsah** (podporuje Markdown)
+4. Volitelně přidejte **příznaky** a propojte s prvky/vazbami
 
 ### Verzování
 
-- Každé uložení vytvoří novou verzi
-- V editoru lze zobrazit historii verzí
-- Lze obnovit předchozí verzi
-
-### Náhled poznámky
-
-- Kliknutím na název otevřete náhled
-- Markdown se renderuje do formátovaného HTML
-- Propojené prvky/vazby jsou klikatelné
-
-### Kopírování obsahu
-
-- **📋** v tabulce - rychlé kopírování obsahu do schránky
-- **📋 Kopírovat** v náhledu - kopírování s potvrzením
+Poznámky mají automatické verzování:
+- Každá změna vytvoří novou verzi
+- Historie verzí je dostupná v detailu poznámky
+- Lze zobrazit a obnovit předchozí verze
 
 ---
 
 ## Architektonická rozhodnutí (ADR)
 
-ADR (Architecture Decision Records) slouží k evidenci a sledování architektonických rozhodnutí s kompletním životním cyklem.
+ADR (Architecture Decision Records) dokumentují důležitá architektonická rozhodnutí.
 
-### Vytvoření ADR
+### Struktura ADR
 
-1. Klikněte **+ Nové ADR**
-2. Vyplňte povinné pole **Název**
-3. Nastavte **Stav** rozhodnutí
-4. Volitelně vyplňte:
-   - **Číslo** - automaticky generováno (podporuje alfanumerické)
-   - **Autor**, **Schvalovatel**, **Rozhodovatelé**
-   - **Kontext** - pozadí a důvod rozhodnutí (Markdown)
-   - **Rozhodnutí** - samotné rozhodnutí (Markdown)
-   - **Důsledky** - dopady rozhodnutí (Markdown)
-   - **Alternativy** - zvažované možnosti
-   - **Implementace** - stav a termíny implementace
-   - **Související ADR** - nahrazuje, je nahrazeno, souvisí
-   - **Propojené prvky/vazby** - vazba na model
-   - **Odkazy** - externí URL reference
-5. Klikněte **Uložit**
+- **Číslo** - automaticky generované pořadové číslo
+- **Název** - stručný popis rozhodnutí
+- **Stav** - aktuální stav rozhodnutí
+- **Autor** a **Schvalovatel**
+- **Kontext** - situace vedoucí k rozhodnutí
+- **Rozhodnutí** - co bylo rozhodnuto
+- **Důsledky** - dopady rozhodnutí
 
 ### Stavy ADR
 
 | Stav | Ikona | Popis |
 |------|-------|-------|
-| Rozpracováno | ⚪ | Příprava rozhodnutí |
-| Navrženo | 🔵 | Čeká na schválení |
-| Projednáváno | 💬 | Probíhá diskuze |
-| Vráceno | 🔙 | Vráceno k přepracování |
+| Návrh | ⚪ | Rozhodnutí v návrhu |
+| Diskutováno | 💬 | V diskusi |
 | Schváleno | 🟢 | Schválené rozhodnutí |
 | Zamítnuto | 🔴 | Zamítnuté rozhodnutí |
 | Aktualizováno | 🔄 | Rozhodnutí bylo aktualizováno |
@@ -507,14 +489,26 @@ Zadejte šablonu s placeholdery ve složených závorkách:
 |--------|-------|
 | **Export AJX** | Stažení modelu ve formátu AJX (JSON) |
 | **Kopírovat AJX** | Zkopíruje AJX data do schránky |
-| **Export XML** | ArchiMate Open Exchange formát |
+| **Export XML** | ArchiMate Open Exchange formát (včetně vizuálních dat) |
 | **Export CSV** | Prvky a vazby jako CSV soubory |
+
+### XML export s vizuálními daty
+
+Při exportu do ArchiMate Open Exchange XML se ukládají také vizuální informace z diagramů:
+- Pozice prvků (x, y)
+- Velikosti prvků (šířka, výška)
+- Barvy výplně a okrajů
+- Lomové body vazeb (bendpoints)
+
+Tyto informace jsou kompatibilní s nástrojem Archi a dalšími nástroji podporujícími ArchiMate Open Exchange formát.
 
 ### Import
 
 Podporované formáty:
 - **AJX** - ArchiMate JSON eXchange (.ajx)
 - **XML** - ArchiMate Open Exchange (.xml)
+
+Při importu XML se načítají také vizuální data diagramů, pokud jsou v souboru obsažena.
 
 #### Možnosti importu
 
@@ -566,6 +560,40 @@ Importované položky dostanou automaticky příznak `Import z: [název zdrojov�
 - Zaškrtněte položky pro operaci
 - **Vybrat vše** / **Odebrat vše**
 - **Vybrat aktuálně filtrované** - vybere položky odpovídající aktivním filtrům
+
+---
+
+## GitHub integrace
+
+Editor umožňuje ukládání a načítání modelu přímo z GitHub repozitáře. Každé uložení vytvoří commit s historií změn.
+
+### Nastavení
+
+1. Vytvořte **Personal Access Token** na https://github.com/settings/tokens?type=beta
+   - Vyberte repozitář, kam chcete ukládat
+   - Oprávnění: Contents → Read and write
+2. V záložce **Export/Import** najděte sekci **GitHub integrace**
+3. Vložte token a klikněte **Uložit token**
+4. Zadejte cestu k souboru ve formátu `owner/repo/cesta/soubor.ajx`
+
+### Použití
+
+| Tlačítko | Popis |
+|----------|-------|
+| **📥 Načíst z GitHub** | Načte model ze zadané cesty |
+| **📤 Uložit do GitHub** | Uloží model na zadanou cestu (vytvoří commit) |
+| **🔗 Kopírovat odkaz** | Zkopíruje přímý odkaz na model |
+
+### Přímé odkazy
+
+Cesta k souboru se kóduje do URL parametru `?gh=...`, takže můžete sdílet přímý odkaz na konkrétní model. Při otevření odkazu se model automaticky načte z GitHubu.
+
+### Bezpečnost
+
+- Token se ukládá pouze v localStorage prohlížeče
+- Token se nikdy neukládá do datového souboru ani do URL
+- Pro veřejné repozitáře je token potřeba pouze pro zápis
+- Pro privátní repozitáře je token potřeba i pro čtení
 
 ---
 
@@ -678,9 +706,9 @@ Pravidelně exportujte model do AJX souboru. Data v prohlížeči mohou být sma
 
 Editor je open-source nástroj dostupný na GitHubu.
 
-- **Online verze:** https://mrt.site44.com/archimate-editor.html
-- **GitHub repozitář:** https://github.com/michalradacz/archimate-editor
-- **Hlášení chyb:** https://github.com/michalradacz/archimate-editor/issues
+- **Online verze:** https://egdilna.github.io/nastroje/archimate
+- **GitHub repozitář:** https://github.com/egdilna/nastroje
+- **Hlášení chyb:** https://github.com/egdilna/nastroje/issues
 
 ### Systémové požadavky
 
@@ -696,5 +724,5 @@ Editor je open-source nástroj dostupný na GitHubu.
 
 ---
 
-*Verze dokumentace: 2.0*
+*Verze dokumentace: 3.0*
 *ArchiMate® je registrovaná ochranná známka The Open Group.*

@@ -1883,6 +1883,7 @@
                             <button type="button" class="btn-secondary" onclick="renderDiagramPreview()" data-i18n="redraw">Překreslit</button>
                             <button type="button" class="btn-secondary" onclick="downloadDiagramSVG()" data-i18n="downloadSvg">Stáhnout SVG</button>
                             <button type="button" class="btn-secondary" onclick="downloadDiagramPNG()" data-i18n="downloadPng">Stáhnout PNG</button>
+                            <button type="button" class="btn-success" onclick="exportDiagramDOCX()" data-i18n="exportDocx">📄 Export DOCX</button>
                         </div>
                         <div class="svg-container" id="diagram-svg-container" role="img" aria-label="Náhled diagramu">
                             <p style="padding: 20px; color: #666;" data-i18n="addElementsForPreview">Přidejte prvky na diagram pro zobrazení náhledu.</p>
@@ -3165,6 +3166,7 @@
             diagramPreview: 'Náhled diagramu',
             downloadSvg: 'Stáhnout SVG',
             downloadPng: 'Stáhnout PNG',
+            exportDocx: 'Export DOCX',
             selectDiagram: 'Vyberte diagram',
             selectDiagramFirst: 'Nejprve vyberte diagram',
             
@@ -3839,6 +3841,7 @@
             diagramPreview: 'Diagram Preview',
             downloadSvg: 'Download SVG',
             downloadPng: 'Download PNG',
+            exportDocx: 'Export DOCX',
             selectDiagram: 'Select diagram',
             selectDiagramFirst: 'Please select a diagram first',
             
@@ -5181,6 +5184,12 @@
         document.getElementById('stat-layers').textContent = usedLayers.size;
     }
     
+    function updateDocumentTitle() {
+        const baseName = 'ArchiMate Editor';
+        const modelName = modelMetadata.name ? modelMetadata.name.trim() : '';
+        document.title = modelName ? `${modelName} - ${baseName}` : baseName;
+    }
+    
     function saveModelMetadata() {
         modelMetadata.id = document.getElementById('model-id').value.trim() || 'id-model-001';
         modelMetadata.name = document.getElementById('model-name').value.trim();
@@ -5198,6 +5207,7 @@
         };
         
         saveToLocalStorage();
+        updateDocumentTitle();
         alert(t('metadataSaved'));
     }
     
@@ -5235,6 +5245,7 @@
         document.getElementById('dc-description').value = dc.description || '';
         
         updateModelHeader();
+        updateDocumentTitle();
     }
     
     function addModelProperty() {
@@ -10845,26 +10856,34 @@
     
     function saveToLocalStorage() {
         try {
-            localStorage.setItem('archimate-model', JSON.stringify(modelMetadata));
-            localStorage.setItem('archimate-elements', JSON.stringify(elements));
-            localStorage.setItem('archimate-relationships', JSON.stringify(relationships));
-            localStorage.setItem('archimate-diagrams', JSON.stringify(diagrams));
-            localStorage.setItem('archimate-adr', JSON.stringify(adrRecords));
-            localStorage.setItem('archimate-notes', JSON.stringify(notes));
-            localStorage.setItem('archimate-tasks', JSON.stringify(tasks));
+            // Use sessionStorage for model data (separate per tab/window)
+            sessionStorage.setItem('archimate-model', JSON.stringify(modelMetadata));
+            sessionStorage.setItem('archimate-elements', JSON.stringify(elements));
+            sessionStorage.setItem('archimate-relationships', JSON.stringify(relationships));
+            sessionStorage.setItem('archimate-diagrams', JSON.stringify(diagrams));
+            sessionStorage.setItem('archimate-adr', JSON.stringify(adrRecords));
+            sessionStorage.setItem('archimate-notes', JSON.stringify(notes));
+            sessionStorage.setItem('archimate-tasks', JSON.stringify(tasks));
         } catch (e) {
         }
     }
     
     function loadFromLocalStorage() {
+        // If URL has gh parameter, don't load from storage - we'll load from GitHub
+        const params = new URLSearchParams(location.search);
+        if (params.get('gh')) {
+            return; // Skip loading from storage, will load from URL
+        }
+        
         try {
-            const savedModel = localStorage.getItem('archimate-model');
-            const savedElements = localStorage.getItem('archimate-elements');
-            const savedRelationships = localStorage.getItem('archimate-relationships');
-            const savedDiagrams = localStorage.getItem('archimate-diagrams');
-            const savedAdr = localStorage.getItem('archimate-adr');
-            const savedNotes = localStorage.getItem('archimate-notes');
-            const savedTasks = localStorage.getItem('archimate-tasks');
+            // Use sessionStorage for model data
+            const savedModel = sessionStorage.getItem('archimate-model');
+            const savedElements = sessionStorage.getItem('archimate-elements');
+            const savedRelationships = sessionStorage.getItem('archimate-relationships');
+            const savedDiagrams = sessionStorage.getItem('archimate-diagrams');
+            const savedAdr = sessionStorage.getItem('archimate-adr');
+            const savedNotes = sessionStorage.getItem('archimate-notes');
+            const savedTasks = sessionStorage.getItem('archimate-tasks');
             
             if (savedModel) {
                 modelMetadata = JSON.parse(savedModel);
@@ -11190,7 +11209,15 @@
     function initGitHubFromUrl() {
         const params = new URLSearchParams(location.search);
         const ghParam = params.get('gh');
+        
+        // Načíst uložený token (pro zobrazení že je nastaven)
+        const token = localStorage.getItem('archimate-github-token');
+        if (token) {
+            document.getElementById('github-token').value = token;
+        }
+        
         if (ghParam) {
+            // URL parameter has priority - load from GitHub
             try {
                 const ghPath = ghDecode(ghParam);
                 document.getElementById('github-path').value = ghPath;
@@ -11199,18 +11226,12 @@
             } catch(e) {
                 // Neplatný base64
             }
-        }
-        
-        // Načíst uložený token (pro zobrazení že je nastaven)
-        const token = localStorage.getItem('archimate-github-token');
-        if (token) {
-            document.getElementById('github-token').value = token;
-        }
-        
-        // Načíst cestu z modelu
-        if (modelMetadata.ghPath) {
-            document.getElementById('github-path').value = modelMetadata.ghPath;
-            updateGitHubLinkPreview();
+        } else {
+            // No URL parameter - use saved path from model metadata if available
+            if (modelMetadata.ghPath) {
+                document.getElementById('github-path').value = modelMetadata.ghPath;
+                updateGitHubLinkPreview();
+            }
         }
     }
     
@@ -13065,6 +13086,254 @@
         }
         closeDiagramEditor();
         openDiagramVisualEditor(currentDiagramId);
+    }
+    
+    // DOCX library loader
+    let docxLibLoaded = false;
+    
+    async function loadDocxLib() {
+        if (docxLibLoaded) return;
+        
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/docx@8.5.0/build/index.umd.js';
+            script.onload = () => {
+                docxLibLoaded = true;
+                resolve();
+            };
+            script.onerror = () => reject(new Error('Failed to load docx library'));
+            document.head.appendChild(script);
+        });
+    }
+    
+    async function getDiagramPNGBlob() {
+        const container = document.getElementById('diagram-svg-container');
+        const svg = container.querySelector('svg');
+        if (!svg) return null;
+        
+        const svgRect = svg.getBoundingClientRect();
+        const width = parseInt(svg.getAttribute('width')) || svgRect.width || 800;
+        const height = parseInt(svg.getAttribute('height')) || svgRect.height || 600;
+        
+        const canvas = document.createElement('canvas');
+        const scale = 2;
+        canvas.width = width * scale;
+        canvas.height = height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(scale, scale);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, width, height);
+        
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+        
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, width, height);
+                URL.revokeObjectURL(url);
+                canvas.toBlob(blob => resolve({ blob, width: width * scale, height: height * scale }), 'image/png');
+            };
+            img.onerror = function() {
+                URL.revokeObjectURL(url);
+                reject(new Error('Failed to generate PNG'));
+            };
+            img.src = url;
+        });
+    }
+    
+    async function exportDiagramDOCX() {
+        if (!currentDiagramId) {
+            alert(t('selectDiagramFirst') || 'Nejprve vyberte diagram');
+            return;
+        }
+        
+        const diagram = diagrams.find(d => d.id === currentDiagramId);
+        if (!diagram) return;
+        
+        // Show loading
+        const btn = event.target;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '⏳ ' + (currentLanguage === 'cs' ? 'Generuji...' : 'Generating...');
+        btn.disabled = true;
+        
+        try {
+            // Load docx library
+            await loadDocxLib();
+            
+            // Get PNG image
+            const pngData = await getDiagramPNGBlob();
+            const pngArrayBuffer = pngData ? await pngData.blob.arrayBuffer() : null;
+            
+            // Get diagram relationships
+            const diagramRels = getDiagramRelationships(currentDiagramId);
+            
+            // Get diagram elements
+            const diagramElements = (diagram.elementIds || [])
+                .map(id => elements.find(e => e.id === id))
+                .filter(e => e);
+            
+            // Build document content
+            const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, ImageRun,
+                    HeadingLevel, BorderStyle, WidthType, AlignmentType } = docx;
+            
+            const border = { style: BorderStyle.SINGLE, size: 1, color: "CCCCCC" };
+            const borders = { top: border, bottom: border, left: border, right: border };
+            
+            const children = [];
+            
+            // H1: Model name
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_1,
+                children: [new TextRun({ text: modelMetadata.name || 'ArchiMate Model', bold: true })]
+            }));
+            
+            // H2: Diagram name
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: diagram.name || 'Diagram', bold: true })]
+            }));
+            
+            // Image
+            if (pngArrayBuffer) {
+                // Scale image to fit page (max width ~6 inches = 5486400 EMU)
+                const maxWidth = 5486400;
+                const aspectRatio = pngData.height / pngData.width;
+                let imgWidth = Math.min(pngData.width * 9525 / 2, maxWidth); // Convert pixels to EMU, accounting for 2x scale
+                let imgHeight = imgWidth * aspectRatio;
+                
+                children.push(new Paragraph({
+                    children: [
+                        new ImageRun({
+                            data: pngArrayBuffer,
+                            transformation: { width: Math.round(imgWidth / 9525), height: Math.round(imgHeight / 9525) },
+                            type: 'png'
+                        })
+                    ]
+                }));
+            }
+            
+            // Diagram description
+            if (diagram.description) {
+                children.push(new Paragraph({
+                    children: [new TextRun({ text: diagram.description })]
+                }));
+            }
+            
+            // H2: Relationships
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: currentLanguage === 'cs' ? 'Vazby v diagramu' : 'Relationships in diagram', bold: true })]
+            }));
+            
+            if (diagramRels.length > 0) {
+                const relRows = [
+                    // Header row
+                    new TableRow({
+                        children: [
+                            new TableCell({ borders, width: { size: 6000, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun({ text: 'Statement', bold: true })] })] }),
+                            new TableCell({ borders, width: { size: 3360, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun({ text: currentLanguage === 'cs' ? 'Popis vazby' : 'Relationship description', bold: true })] })] })
+                        ]
+                    })
+                ];
+                
+                diagramRels.forEach(r => {
+                    const statement = generateStatement(r);
+                    relRows.push(new TableRow({
+                        children: [
+                            new TableCell({ borders, width: { size: 6000, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun({ text: statement })] })] }),
+                            new TableCell({ borders, width: { size: 3360, type: WidthType.DXA }, children: [new Paragraph({ children: [new TextRun({ text: r.description || '' })] })] })
+                        ]
+                    }));
+                });
+                
+                children.push(new Table({
+                    width: { size: 9360, type: WidthType.DXA },
+                    columnWidths: [6000, 3360],
+                    rows: relRows
+                }));
+            } else {
+                children.push(new Paragraph({
+                    children: [new TextRun({ text: currentLanguage === 'cs' ? 'Diagram neobsahuje žádné vazby.' : 'Diagram contains no relationships.', italics: true })]
+                }));
+            }
+            
+            // H2: Included elements
+            children.push(new Paragraph({
+                heading: HeadingLevel.HEADING_2,
+                children: [new TextRun({ text: currentLanguage === 'cs' ? 'Zahrnuté prvky' : 'Included elements', bold: true })]
+            }));
+            
+            if (diagramElements.length > 0) {
+                diagramElements.forEach(el => {
+                    // Element name with stereotype
+                    const nameText = el.stereotype ? `«${el.stereotype}» ${el.name}` : el.name;
+                    children.push(new Paragraph({
+                        spacing: { before: 200 },
+                        children: [new TextRun({ text: nameText, bold: true })]
+                    }));
+                    
+                    // Description
+                    if (el.description) {
+                        children.push(new Paragraph({
+                            children: [new TextRun({ text: el.description })]
+                        }));
+                    }
+                    
+                    // Určuje
+                    if (el.určuje) {
+                        children.push(new Paragraph({
+                            children: [
+                                new TextRun({ text: currentLanguage === 'cs' ? 'Určuje: ' : 'Specifies: ', italics: true }),
+                                new TextRun({ text: el.určuje })
+                            ]
+                        }));
+                    }
+                });
+            } else {
+                children.push(new Paragraph({
+                    children: [new TextRun({ text: currentLanguage === 'cs' ? 'Diagram neobsahuje žádné prvky.' : 'Diagram contains no elements.', italics: true })]
+                }));
+            }
+            
+            // Create document
+            const doc = new Document({
+                styles: {
+                    default: { document: { run: { font: "Arial", size: 24 } } },
+                    paragraphStyles: [
+                        { id: "Heading1", name: "Heading 1", basedOn: "Normal", next: "Normal", quickFormat: true,
+                          run: { size: 32, bold: true, font: "Arial" },
+                          paragraph: { spacing: { before: 240, after: 240 } } },
+                        { id: "Heading2", name: "Heading 2", basedOn: "Normal", next: "Normal", quickFormat: true,
+                          run: { size: 28, bold: true, font: "Arial" },
+                          paragraph: { spacing: { before: 180, after: 180 } } }
+                    ]
+                },
+                sections: [{
+                    properties: {
+                        page: {
+                            size: { width: 12240, height: 15840 },
+                            margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 }
+                        }
+                    },
+                    children: children
+                }]
+            });
+            
+            // Generate and download
+            const buffer = await Packer.toBlob(doc);
+            const filename = `${(diagram.name || 'diagram').replace(/[^a-zA-Z0-9čďěňřšťžýáíéúůČĎĚŇŘŠŤŽÝÁÍÉÚŮ ]/gi, '_')}.docx`;
+            
+            await saveFileWithDialog(buffer, filename, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', ['.docx']);
+            
+        } catch (err) {
+            console.error('DOCX export error:', err);
+            alert((currentLanguage === 'cs' ? 'Chyba při exportu DOCX: ' : 'DOCX export error: ') + err.message);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
     }
 
     // ============================================
