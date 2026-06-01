@@ -656,6 +656,95 @@
         .diagram-subtab-content.active {
             display: block;
         }
+        /* Export/Import subtabs */
+        .export-subtabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 0;
+            flex-wrap: wrap;
+        }
+        .export-subtab {
+            padding: 10px 20px;
+            background: #e9e9e9;
+            border: none;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            margin-bottom: -2px;
+        }
+        .export-subtab:hover {
+            background: #ddd;
+        }
+        .export-subtab.active {
+            background: white;
+            border: 2px solid #ddd;
+            border-bottom: 2px solid white;
+        }
+        .export-subtab-content {
+            display: none;
+        }
+        .export-subtab-content.active {
+            display: block;
+        }
+        /* Popup pro Z/Do vazby */
+        .rel-popup {
+            position: absolute;
+            z-index: 1000;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 10px;
+            max-width: 350px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .rel-popup-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .rel-popup-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+        }
+        .rel-popup-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .rel-popup-list li {
+            padding: 4px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+        .rel-popup-list li:last-child {
+            border-bottom: none;
+        }
+        .rel-popup-empty {
+            color: #666;
+            font-style: italic;
+        }
+        .rel-btn-small {
+            padding: 1px 4px;
+            font-size: 10px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 2px;
+        }
+        .rel-btn-small:hover {
+            background: #e0e0e0;
+        }
         .svg-container {
             background: white;
             border: 1px solid #ccc;
@@ -1099,7 +1188,7 @@
                 <button type="button" onclick="document.getElementById('quick-open-file').click()" accesskey="o" style="padding: 8px 16px; background: #17a2b8; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;" title="Alt+O">
                     📂 <span data-i18n="openFile">Otevřít</span>
                 </button>
-                <button type="button" onclick="exportJSON()" accesskey="s" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;" title="Alt+S">
+                <button type="button" onclick="smartSave()" accesskey="s" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;" title="Alt+S">
                     💾 <span data-i18n="saveFile">Uložit</span>
                 </button>
             </div>
@@ -1775,6 +1864,15 @@
                                 </tbody>
                             </table>
                         </div>
+                        
+                        <h3 style="margin-top: 20px;" data-i18n="addRelToDiagram">Přidat vazbu na diagram</h3>
+                        <div class="form-group">
+                            <label for="diagram-add-rel-filter" data-i18n="searchRelationship">Hledat vazbu...</label>
+                            <input type="text" id="diagram-add-rel-filter" placeholder="Hledat ve zdroji, cíli, názvu, popisu..." oninput="filterDiagramRelationships()" data-i18n-placeholder="searchRelationship">
+                        </div>
+                        <div id="diagram-add-rel-results" style="max-height: 250px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; margin-top: 10px;">
+                            <p style="padding: 10px; color: #666;" data-i18n="noRelationshipsFound">Žádné vazby nenalezeny</p>
+                        </div>
                     </div>
                     
                     <!-- Subtab: Náhled diagramu -->
@@ -1784,6 +1882,7 @@
                             <button type="button" class="btn-secondary" onclick="renderDiagramPreview()" data-i18n="redraw">Překreslit</button>
                             <button type="button" class="btn-secondary" onclick="downloadDiagramSVG()" data-i18n="downloadSvg">Stáhnout SVG</button>
                             <button type="button" class="btn-secondary" onclick="downloadDiagramPNG()" data-i18n="downloadPng">Stáhnout PNG</button>
+                            <button type="button" class="btn-secondary" onclick="exportDiagramDOCX()" data-i18n="exportDocx">📄 Export DOCX</button>
                         </div>
                         <div class="svg-container" id="diagram-svg-container" role="img" aria-label="Náhled diagramu">
                             <p style="padding: 20px; color: #666;" data-i18n="addElementsForPreview">Přidejte prvky na diagram pro zobrazení náhledu.</p>
@@ -1880,10 +1979,27 @@
 
         <!-- TAB: Export/Import -->
         <div id="tab-export" class="tab-content" role="tabpanel" aria-labelledby="btn-export">
-            <div class="panels">
-                <div class="panel">
-                    <h2 data-i18n="export">Export</h2>
-                    
+            <div class="panel full-width">
+                <nav class="export-subtabs" role="tablist" aria-label="Export a import">
+                    <button class="export-subtab active" role="tab" aria-selected="true" onclick="switchExportSubtab('export')" id="export-subtab-export" data-i18n="export">
+                        Export
+                    </button>
+                    <button class="export-subtab" role="tab" aria-selected="false" onclick="switchExportSubtab('import')" id="export-subtab-import" data-i18n="import">
+                        Import
+                    </button>
+                    <button class="export-subtab" role="tab" aria-selected="false" onclick="switchExportSubtab('merge')" id="export-subtab-merge" data-i18n="mergeModels">
+                        Sloučení
+                    </button>
+                    <button class="export-subtab" role="tab" aria-selected="false" onclick="switchExportSubtab('csv')" id="export-subtab-csv" data-i18n="importCsv">
+                        Import CSV
+                    </button>
+                    <button class="export-subtab" role="tab" aria-selected="false" onclick="switchExportSubtab('github')" id="export-subtab-github">
+                        GitHub
+                    </button>
+                </nav>
+                
+                <!-- Subtab: Export -->
+                <div id="export-content-export" class="export-subtab-content active">
                     <div class="actions">
                         <button type="button" class="btn-success" onclick="exportJSON()" data-i18n="exportJson">Export AJX</button>
                         <button type="button" class="btn-secondary" onclick="copyJSONToClipboard()" data-i18n="copyJsonClipboard">📋 Zkopírovat AJX</button>
@@ -1908,9 +2024,8 @@
                     <div id="export-preview" class="code-preview" data-i18n="selectExportPreview">Vyberte export pro náhled...</div>
                 </div>
                 
-                <div class="panel">
-                    <h2 data-i18n="import">Import</h2>
-                    
+                <!-- Subtab: Import -->
+                <div id="export-content-import" class="export-subtab-content">
                     <div class="import-area" id="import-drop-area" 
                          ondrop="handleFileDrop(event)" 
                          ondragover="handleDragOver(event)" 
@@ -1924,7 +2039,7 @@
                         <p style="margin-top: 10px; color: #666; font-size: 13px;" data-i18n="supportedFormats">Podporované formáty: AJX, ArchiMate XML</p>
                     </div>
                     
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; margin-top: 20px;">
                         <label for="import-data" data-i18n="pasteDataManually">Nebo vložte data ručně:</label>
                         <button type="button" class="btn-secondary" onclick="pasteFromClipboard()" style="font-size: 12px; padding: 4px 8px;" data-i18n="pasteFromClipboard">📋 Vložit ze schránky</button>
                     </div>
@@ -1936,8 +2051,8 @@
                     </div>
                 </div>
                 
-                <div class="panel">
-                    <h2 data-i18n="mergeModels">Sloučit s jiným modelem</h2>
+                <!-- Subtab: Sloučení modelů -->
+                <div id="export-content-merge" class="export-subtab-content">
                     <p style="color: #666; margin-bottom: 15px;" data-i18n="mergeDescription">Importuje prvky, vazby a diagramy z jiného modelu do aktuálního. K nově přidaným položkám se přidá příznak s názvem zdrojového modelu.</p>
                     
                     <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 15px;">
@@ -1990,9 +2105,8 @@
                     <div id="merge-result" style="display:none; margin-top: 15px; padding: 10px; border-radius: 4px;"></div>
                 </div>
                 
-                <!-- Import elementů z CSV/TSV -->
-                <div class="panel">
-                    <h2 data-i18n="importElementsCsv">Import prvků z CSV/TSV</h2>
+                <!-- Subtab: Import CSV -->
+                <div id="export-content-csv" class="export-subtab-content">
                     <p style="color: #666; margin-bottom: 15px;" data-i18n="importElementsCsvDesc">Importuje prvky z CSV nebo TSV souboru. První řádek by měl obsahovat záhlaví sloupců.</p>
                     
                     <div class="form-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 15px;">
@@ -2019,38 +2133,35 @@
                         <h3 style="margin: 0 0 10px 0;" data-i18n="columnMapping">Mapování sloupců</h3>
                         <p style="color: #666; font-size: 13px; margin-bottom: 10px;" data-i18n="columnMappingDesc">Přiřaďte sloupce ze souboru k polím prvku. Prázdné = neimportovat.</p>
                         
-                        <div class="form-grid" style="grid-template-columns: repeat(5, 1fr); gap: 10px;">
+                        <div class="form-grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px;">
                             <div class="form-group">
                                 <label for="csv-map-id">ID:</label>
-                                <select id="csv-map-id"><option value="">-- Generovat --</option></select>
-                            </div>
-                            <div class="form-group">
-                                <label for="csv-map-type" data-i18n="type">Typ:</label>
-                                <select id="csv-map-type"><option value="">-- Nevybráno --</option></select>
+                                <select id="csv-map-id" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
                             </div>
                             <div class="form-group">
                                 <label for="csv-map-name" data-i18n="name">Název:</label>
-                                <select id="csv-map-name"><option value="">-- Nevybráno --</option></select>
+                                <select id="csv-map-name" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
                             </div>
                             <div class="form-group">
-                                <label for="csv-map-documentation" data-i18n="description">Popis:</label>
-                                <select id="csv-map-documentation"><option value="">-- Nevybráno --</option></select>
+                                <label for="csv-map-type" data-i18n="type">Typ:</label>
+                                <select id="csv-map-type" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="csv-map-documentation" data-i18n="documentation">Dokumentace:</label>
+                                <select id="csv-map-documentation" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
                             </div>
                             <div class="form-group">
                                 <label for="csv-map-specialization" data-i18n="stereotype">Stereotyp:</label>
-                                <select id="csv-map-specialization"><option value="">-- Nevybráno --</option></select>
+                                <select id="csv-map-specialization" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
                             </div>
-                        </div>
-                        
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label for="csv-map-tags" data-i18n="příznaky">Příznaky:</label>
-                            <select id="csv-map-tags" style="width: auto;"><option value="">-- Nevybráno --</option></select>
-                            <small style="color: #666; margin-left: 10px;" data-i18n="csvTagsHelp">Hodnoty oddělené čárkou budou rozděleny na jednotlivé příznaky.</small>
-                        </div>
-                        
-                        <div class="form-group" style="margin-top: 10px;">
-                            <label for="csv-map-určuje" data-i18n="určuje">Určuje:</label>
-                            <select id="csv-map-určuje" style="width: auto;"><option value="">-- Nevybráno --</option></select>
+                            <div class="form-group">
+                                <label for="csv-map-tags" data-i18n="příznaky">Příznaky:</label>
+                                <select id="csv-map-tags" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="csv-map-určuje" data-i18n="určuje">Určuje:</label>
+                                <select id="csv-map-určuje" style="width: 100%;"><option value="">-- Nevybráno --</option></select>
+                            </div>
                         </div>
                         
                         <div style="margin-top: 15px; padding: 10px; background: white; border: 1px solid #ddd; border-radius: 4px; max-height: 200px; overflow: auto;">
@@ -2068,6 +2179,37 @@
                     </div>
                     
                     <div id="csv-import-result" style="display:none; margin-top: 15px; padding: 10px; border-radius: 4px;"></div>
+                </div>
+                
+                <!-- Subtab: GitHub -->
+                <div id="export-content-github" class="export-subtab-content">
+                    <p style="color: #666; margin-bottom: 15px;" data-i18n="githubIntegrationDesc">Ukládejte a načítejte model přímo z GitHub repozitáře. Každé uložení vytvoří commit s historií změn.</p>
+                    
+                    <div class="form-grid" style="grid-template-columns: 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label for="github-token" data-i18n="githubToken">GitHub Personal Access Token:</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="password" id="github-token" style="flex: 1;" placeholder="ghp_xxxxxxxxxxxx">
+                                <button type="button" class="btn-secondary" onclick="saveGitHubToken()" data-i18n="saveToken">Uložit token</button>
+                            </div>
+                            <p style="color: #666; font-size: 12px; margin-top: 5px;" data-i18n="githubTokenNote">Token se ukládá pouze v tomto prohlížeči. <a href="https://github.com/settings/tokens?type=beta" target="_blank" data-i18n="createToken">Vytvořit token</a> (oprávnění: Contents → Read and write)</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="github-path" data-i18n="githubPath">Cesta k souboru (owner/repo/cesta/soubor.ajx):</label>
+                            <input type="text" id="github-path" placeholder="moje-org/archimate-modely/projekty/model.ajx">
+                        </div>
+                        
+                        <div id="github-status" style="display: none; padding: 10px; background: #e8f5e9; border-radius: 4px; font-size: 13px;"></div>
+                        
+                        <div class="actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button type="button" class="btn-primary" onclick="loadFromGitHub()" data-i18n="loadFromGitHub">📥 Načíst z GitHub</button>
+                            <button type="button" class="btn-success" onclick="saveToGitHub()" data-i18n="saveToGitHub">📤 Uložit do GitHub</button>
+                            <button type="button" class="btn-secondary" onclick="copyGitHubLink()" data-i18n="copyGitHubLink">🔗 Kopírovat odkaz</button>
+                        </div>
+                        
+                        <div id="github-link-preview" style="display: none; padding: 10px; background: #f5f5f5; border-radius: 4px; font-size: 12px; word-break: break-all;"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2835,6 +2977,34 @@
 
     <script>
     // ============================================
+    // Service Worker Cleanup (removes legacy SW)
+    // ============================================
+    (function() {
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                if (registrations.length > 0) {
+                    var unregisterPromises = registrations.map(function(reg) {
+                        return reg.unregister();
+                    });
+                    Promise.all(unregisterPromises).then(function() {
+                        if ('caches' in window) {
+                            caches.keys().then(function(cacheNames) {
+                                return Promise.all(cacheNames.map(function(cacheName) {
+                                    return caches.delete(cacheName);
+                                }));
+                            }).then(function() {
+                                location.reload();
+                            });
+                        } else {
+                            location.reload();
+                        }
+                    });
+                }
+            });
+        }
+    })();
+    
+    // ============================================
     // Internationalization (i18n)
     // ============================================
     
@@ -3049,6 +3219,18 @@
             diagImportNote: 'Při výběru diagramu se automaticky vyberou i jeho prvky a jejich vazby.',
             diagSelectedCount: 'diagramů vybráno',
             diagToImport: 'diagramů k importu',
+            importCsv: 'Import CSV',
+            addRelToDiagram: 'Přidat vazbu na diagram',
+            searchRelationship: 'Hledat vazbu...',
+            relFrom: 'Z',
+            relTo: 'Do',
+            noRelationshipsFound: 'Žádné vazby nenalezeny',
+            relationsFrom: 'Vazby Z tohoto prvku',
+            relationsTo: 'Vazby DO tohoto prvku',
+            noRelationsFrom: 'Žádné vazby z tohoto prvku',
+            noRelationsTo: 'Žádné vazby do tohoto prvku',
+            exportDocx: 'Export DOCX',
+            includedElements: 'Zahrnuté prvky',
             
             // Notes translations
             tasksTab: 'Úkoly',
@@ -3474,7 +3656,36 @@
             selectBothElements: '-- Vyberte oba prvky --',
             elementsNotFound: '-- Prvky nenalezeny --',
             selectTypeShort: '-- Typ --',
-            selectElementShort: '-- Prvek --'
+            selectElementShort: '-- Prvek --',
+            
+            // GitHub Integration
+            githubIntegration: 'GitHub integrace',
+            githubIntegrationDesc: 'Ukládejte a načítejte model přímo z GitHub repozitáře. Každé uložení vytvoří commit s historií změn.',
+            githubToken: 'GitHub Personal Access Token:',
+            saveToken: 'Uložit token',
+            githubTokenNote: 'Token se ukládá pouze v tomto prohlížeči.',
+            createToken: 'Vytvořit token',
+            githubPath: 'Cesta k souboru (owner/repo/cesta/soubor.ajx):',
+            loadFromGitHub: '📥 Načíst z GitHub',
+            saveToGitHub: '📤 Uložit do GitHub',
+            copyGitHubLink: '🔗 Kopírovat odkaz',
+            githubTokenSaved: 'Token byl uložen',
+            githubTokenRemoved: 'Token byl odebrán',
+            githubPathRequired: 'Zadejte cestu k souboru',
+            githubInvalidPath: 'Neplatná cesta (použijte formát: owner/repo/cesta/soubor.ajx)',
+            githubLoading: 'Načítám z GitHub...',
+            githubFileNotFound: 'Soubor nebyl nalezen',
+            githubUnauthorized: 'Neautorizováno - zkontrolujte token',
+            githubNoContent: 'Soubor nemá obsah',
+            githubLoadSuccess: 'Model byl úspěšně načten z GitHub',
+            githubLoadError: 'Chyba při načítání',
+            githubTokenRequired: 'Pro ukládání je potřeba nastavit GitHub token',
+            githubSaving: 'Ukládám do GitHub...',
+            githubSaveSuccess: 'Model byl úspěšně uložen do GitHub',
+            githubSaveError: 'Chyba při ukládání',
+            githubLinkCopied: 'Odkaz byl zkopírován do schránky',
+            githubCopyManually: 'Zkopírujte odkaz:',
+            githubDirectLink: 'Přímý odkaz na model'
         },
         en: {
             // App
@@ -3684,6 +3895,18 @@
             diagImportNote: 'Selecting a diagram will automatically select its elements and their relationships.',
             diagSelectedCount: 'diagrams selected',
             diagToImport: 'diagrams to import',
+            importCsv: 'Import CSV',
+            addRelToDiagram: 'Add relationship to diagram',
+            searchRelationship: 'Search relationship...',
+            relFrom: 'From',
+            relTo: 'To',
+            noRelationshipsFound: 'No relationships found',
+            relationsFrom: 'Relations FROM this element',
+            relationsTo: 'Relations TO this element',
+            noRelationsFrom: 'No relations from this element',
+            noRelationsTo: 'No relations to this element',
+            exportDocx: 'Export DOCX',
+            includedElements: 'Included elements',
             
             // Notes translations
             tasksTab: 'Tasks',
@@ -4109,7 +4332,36 @@
             selectBothElements: '-- Select both elements --',
             elementsNotFound: '-- Elements not found --',
             selectTypeShort: '-- Type --',
-            selectElementShort: '-- Element --'
+            selectElementShort: '-- Element --',
+            
+            // GitHub Integration
+            githubIntegration: 'GitHub Integration',
+            githubIntegrationDesc: 'Save and load model directly from a GitHub repository. Each save creates a commit with history.',
+            githubToken: 'GitHub Personal Access Token:',
+            saveToken: 'Save token',
+            githubTokenNote: 'Token is stored only in this browser.',
+            createToken: 'Create token',
+            githubPath: 'File path (owner/repo/path/file.ajx):',
+            loadFromGitHub: '📥 Load from GitHub',
+            saveToGitHub: '📤 Save to GitHub',
+            copyGitHubLink: '🔗 Copy link',
+            githubTokenSaved: 'Token has been saved',
+            githubTokenRemoved: 'Token has been removed',
+            githubPathRequired: 'Enter file path',
+            githubInvalidPath: 'Invalid path (use format: owner/repo/path/file.ajx)',
+            githubLoading: 'Loading from GitHub...',
+            githubFileNotFound: 'File not found',
+            githubUnauthorized: 'Unauthorized - check your token',
+            githubNoContent: 'File has no content',
+            githubLoadSuccess: 'Model successfully loaded from GitHub',
+            githubLoadError: 'Loading error',
+            githubTokenRequired: 'GitHub token is required for saving',
+            githubSaving: 'Saving to GitHub...',
+            githubSaveSuccess: 'Model successfully saved to GitHub',
+            githubSaveError: 'Save error',
+            githubLinkCopied: 'Link copied to clipboard',
+            githubCopyManually: 'Copy link:',
+            githubDirectLink: 'Direct link to model'
         }
     };
     
@@ -4925,6 +5177,12 @@
         document.getElementById('stat-layers').textContent = usedLayers.size;
     }
     
+    function updateDocumentTitle() {
+        const baseName = 'ArchiMate Editor';
+        const modelName = modelMetadata.name ? modelMetadata.name.trim() : '';
+        document.title = modelName ? `${modelName} - ${baseName}` : baseName;
+    }
+    
     function saveModelMetadata() {
         modelMetadata.id = document.getElementById('model-id').value.trim() || 'id-model-001';
         modelMetadata.name = document.getElementById('model-name').value.trim();
@@ -4942,6 +5200,7 @@
         };
         
         saveToLocalStorage();
+        updateDocumentTitle();
         alert(t('metadataSaved'));
     }
     
@@ -4979,6 +5238,7 @@
         document.getElementById('dc-description').value = dc.description || '';
         
         updateModelHeader();
+        updateDocumentTitle();
     }
     
     function addModelProperty() {
@@ -6742,8 +7002,16 @@
             const layerInfo = ARCHIMATE_LAYERS[e.layer];
             const layerName = layerInfo ? layerInfo.name : e.layer;
             // Count relationships for this element
-            const relCount = relationships.filter(r => r.sourceId === e.id || r.targetId === e.id).length;
+            const relsFrom = relationships.filter(r => r.sourceId === e.id);
+            const relsTo = relationships.filter(r => r.targetId === e.id);
+            const relCount = relsFrom.length + relsTo.length;
             const nameTitle = relCount > 0 ? (currentLanguage === 'cs' ? `Zobrazit ${relCount} vazeb tohoto prvku` : `Show ${relCount} relationships of this element`) : (currentLanguage === 'cs' ? 'Tento prvek nemá žádné vazby' : 'This element has no relationships');
+            
+            // Z/Do buttons
+            const relButtons = relCount > 0 ? `
+                <button type="button" class="rel-btn-small" onclick="showRelPopup(event, '${escapeHtml(e.id)}', 'from')" title="${t('relationsFrom')}">Z:${relsFrom.length}</button>
+                <button type="button" class="rel-btn-small" onclick="showRelPopup(event, '${escapeHtml(e.id)}', 'to')" title="${t('relationsTo')}">Do:${relsTo.length}</button>
+            ` : '';
             
             // Description on second line
             const descriptionHtml = e.description ? `<br><small style="color:#666;">${escapeHtml(e.description)}</small>` : '';
@@ -6761,7 +7029,7 @@
                     <td><code>${escapeHtml(e.id)}</code></td>
                     <td><span class="layer-badge layer-${e.layer}">${escapeHtml(layerName)}</span></td>
                     <td>${escapeHtml(e.type)}</td>
-                    <td>${stereotypePrefix}<a href="#tab-relationships" class="element-link" onclick="filterByElement('${escapeHtml(e.id)}'); return false;" title="${escapeHtml(nameTitle)}">${escapeHtml(e.name)}</a>${relCount > 0 ? ` <small>(${relCount})</small>` : ''}${descriptionHtml}</td>
+                    <td>${stereotypePrefix}<a href="#tab-relationships" class="element-link" onclick="filterByElement('${escapeHtml(e.id)}'); return false;" title="${escapeHtml(nameTitle)}">${escapeHtml(e.name)}</a>${relCount > 0 ? ` <small>(${relCount})</small>` : ''} ${relButtons}${descriptionHtml}</td>
                     <td>${escapeHtml(e.určuje || '-')}</td>
                     <td>${escapeHtml(e.příznaky || '-')}</td>
                     <td>${diagramsHtml}</td>
@@ -6775,6 +7043,67 @@
         }).join('');
         
         updateElementsBulkPanel();
+    }
+    
+    let currentRelPopup = null;
+    
+    function showRelPopup(event, elementId, direction) {
+        event.stopPropagation();
+        closeRelPopup();
+        
+        const element = elements.find(e => e.id === elementId);
+        if (!element) return;
+        
+        const rels = direction === 'from' 
+            ? relationships.filter(r => r.sourceId === elementId)
+            : relationships.filter(r => r.targetId === elementId);
+        
+        const popup = document.createElement('div');
+        popup.className = 'rel-popup';
+        popup.innerHTML = `
+            <div class="rel-popup-header">
+                <span>${direction === 'from' ? t('relationsFrom') : t('relationsTo')}: ${escapeHtml(element.name)}</span>
+                <button type="button" class="rel-popup-close" onclick="closeRelPopup()">×</button>
+            </div>
+            ${rels.length > 0 ? `
+                <ul class="rel-popup-list">
+                    ${rels.map(r => {
+                        const other = direction === 'from' 
+                            ? elements.find(e => e.id === r.targetId)
+                            : elements.find(e => e.id === r.sourceId);
+                        const otherName = other ? other.name : (direction === 'from' ? r.targetId : r.sourceId);
+                        return `<li><strong>${escapeHtml(r.type)}</strong> → ${escapeHtml(otherName)}${r.name ? ` (${escapeHtml(r.name)})` : ''}</li>`;
+                    }).join('')}
+                </ul>
+            ` : `<p class="rel-popup-empty">${direction === 'from' ? t('noRelationsFrom') : t('noRelationsTo')}</p>`}
+        `;
+        
+        document.body.appendChild(popup);
+        currentRelPopup = popup;
+        
+        // Position popup near button
+        const rect = event.target.getBoundingClientRect();
+        popup.style.left = Math.min(rect.left, window.innerWidth - popup.offsetWidth - 10) + 'px';
+        popup.style.top = (rect.bottom + 5) + 'px';
+        
+        // Close on click outside
+        setTimeout(() => {
+            document.addEventListener('click', closeRelPopupOnClickOutside);
+        }, 10);
+    }
+    
+    function closeRelPopup() {
+        if (currentRelPopup) {
+            currentRelPopup.remove();
+            currentRelPopup = null;
+        }
+        document.removeEventListener('click', closeRelPopupOnClickOutside);
+    }
+    
+    function closeRelPopupOnClickOutside(event) {
+        if (currentRelPopup && !currentRelPopup.contains(event.target)) {
+            closeRelPopup();
+        }
     }
 
     // ============================================
@@ -10111,6 +10440,10 @@
         const mappingFields = ['csv-map-id', 'csv-map-type', 'csv-map-name', 'csv-map-documentation', 'csv-map-specialization', 'csv-map-tags', 'csv-map-určuje'];
         mappingFields.forEach(fieldId => {
             const select = document.getElementById(fieldId);
+            if (!select) {
+                console.warn('CSV import: Missing element ' + fieldId);
+                return;
+            }
             const currentValue = select.value;
             select.innerHTML = fieldId === 'csv-map-id' 
                 ? '<option value="">-- ' + t('generateAuto') + ' --</option>'
@@ -10149,6 +10482,7 @@
         
         Object.entries(mappings).forEach(([fieldId, aliases]) => {
             const select = document.getElementById(fieldId);
+            if (!select) return;
             const matchIndex = headerLower.findIndex(h => aliases.includes(h));
             if (matchIndex !== -1) {
                 select.value = matchIndex;
@@ -10349,14 +10683,19 @@
             return;
         }
         
-        const idCol = document.getElementById('csv-map-id').value;
-        const typeCol = document.getElementById('csv-map-type').value;
-        const nameCol = document.getElementById('csv-map-name').value;
-        const docCol = document.getElementById('csv-map-documentation').value;
-        const specCol = document.getElementById('csv-map-specialization').value;
-        const tagsCol = document.getElementById('csv-map-tags').value;
-        const určujeCol = document.getElementById('csv-map-určuje').value;
-        const collisionMode = document.getElementById('csv-import-collision').value;
+        const getSelectValue = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value : '';
+        };
+        
+        const idCol = getSelectValue('csv-map-id');
+        const typeCol = getSelectValue('csv-map-type');
+        const nameCol = getSelectValue('csv-map-name');
+        const docCol = getSelectValue('csv-map-documentation');
+        const specCol = getSelectValue('csv-map-specialization');
+        const tagsCol = getSelectValue('csv-map-tags');
+        const určujeCol = getSelectValue('csv-map-určuje');
+        const collisionMode = getSelectValue('csv-import-collision');
         
         if (typeCol === '') {
             alert(t('csvTypeRequired'));
@@ -10473,31 +10812,37 @@
     }
 
     // ============================================
-    // Local Storage
+    // Local Storage (using sessionStorage for model isolation per tab)
     // ============================================
     
     function saveToLocalStorage() {
         try {
-            localStorage.setItem('archimate-model', JSON.stringify(modelMetadata));
-            localStorage.setItem('archimate-elements', JSON.stringify(elements));
-            localStorage.setItem('archimate-relationships', JSON.stringify(relationships));
-            localStorage.setItem('archimate-diagrams', JSON.stringify(diagrams));
-            localStorage.setItem('archimate-adr', JSON.stringify(adrRecords));
-            localStorage.setItem('archimate-notes', JSON.stringify(notes));
-            localStorage.setItem('archimate-tasks', JSON.stringify(tasks));
+            sessionStorage.setItem('archimate-model', JSON.stringify(modelMetadata));
+            sessionStorage.setItem('archimate-elements', JSON.stringify(elements));
+            sessionStorage.setItem('archimate-relationships', JSON.stringify(relationships));
+            sessionStorage.setItem('archimate-diagrams', JSON.stringify(diagrams));
+            sessionStorage.setItem('archimate-adr', JSON.stringify(adrRecords));
+            sessionStorage.setItem('archimate-notes', JSON.stringify(notes));
+            sessionStorage.setItem('archimate-tasks', JSON.stringify(tasks));
         } catch (e) {
         }
     }
     
     function loadFromLocalStorage() {
+        // If URL has gh parameter, skip loading from storage - will load from GitHub
+        const params = new URLSearchParams(location.search);
+        if (params.get('gh')) {
+            return;
+        }
+        
         try {
-            const savedModel = localStorage.getItem('archimate-model');
-            const savedElements = localStorage.getItem('archimate-elements');
-            const savedRelationships = localStorage.getItem('archimate-relationships');
-            const savedDiagrams = localStorage.getItem('archimate-diagrams');
-            const savedAdr = localStorage.getItem('archimate-adr');
-            const savedNotes = localStorage.getItem('archimate-notes');
-            const savedTasks = localStorage.getItem('archimate-tasks');
+            const savedModel = sessionStorage.getItem('archimate-model');
+            const savedElements = sessionStorage.getItem('archimate-elements');
+            const savedRelationships = sessionStorage.getItem('archimate-relationships');
+            const savedDiagrams = sessionStorage.getItem('archimate-diagrams');
+            const savedAdr = sessionStorage.getItem('archimate-adr');
+            const savedNotes = sessionStorage.getItem('archimate-notes');
+            const savedTasks = sessionStorage.getItem('archimate-tasks');
             
             if (savedModel) {
                 modelMetadata = JSON.parse(savedModel);
@@ -10522,6 +10867,447 @@
             }
             
         } catch (e) {
+        }
+    }
+
+    // ============================================
+    // GitHub Integration
+    // ============================================
+    
+    // Helper funkce pro kódování/dekódování cesty
+    function ghEncode(path) {
+        return btoa(unescape(encodeURIComponent(path)));
+    }
+    
+    function ghDecode(encoded) {
+        return decodeURIComponent(escape(atob(encoded)));
+    }
+    
+    function parseGhPath(ghPath) {
+        if (!ghPath) return null;
+        const parts = ghPath.split('/');
+        if (parts.length < 3) return null;
+        return {
+            owner: parts[0],
+            repo: parts[1],
+            path: parts.slice(2).join('/')
+        };
+    }
+    
+    function saveGitHubToken() {
+        const token = document.getElementById('github-token').value.trim();
+        if (token) {
+            localStorage.setItem('archimate-github-token', token);
+            showGitHubStatus(t('githubTokenSaved'), 'success');
+        } else {
+            localStorage.removeItem('archimate-github-token');
+            showGitHubStatus(t('githubTokenRemoved'), 'info');
+        }
+    }
+    
+    function playSuccessSound() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.type = 'sine';
+            gain.gain.value = 0.3;
+            
+            // Vzestupná melodie (úspěch)
+            const now = ctx.currentTime;
+            osc.frequency.setValueAtTime(523, now);        // C5
+            osc.frequency.setValueAtTime(659, now + 0.1);  // E5
+            osc.frequency.setValueAtTime(784, now + 0.2);  // G5
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+            
+            osc.start(now);
+            osc.stop(now + 0.4);
+        } catch (e) {}
+    }
+    
+    function playLoadSound() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.type = 'sine';
+            gain.gain.value = 0.3;
+            
+            // Jiná melodie pro načtení
+            const now = ctx.currentTime;
+            osc.frequency.setValueAtTime(440, now);        // A4
+            osc.frequency.setValueAtTime(554, now + 0.1);  // C#5
+            osc.frequency.setValueAtTime(659, now + 0.2);  // E5
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+            
+            osc.start(now);
+            osc.stop(now + 0.35);
+        } catch (e) {}
+    }
+    
+    function smartSave() {
+        const ghPath = document.getElementById('github-path').value.trim() || modelMetadata.ghPath;
+        if (ghPath && localStorage.getItem('archimate-github-token')) {
+            saveToGitHub();
+        } else {
+            exportJSON();
+        }
+    }
+    
+    function showGitHubStatus(message, type) {
+        const statusEl = document.getElementById('github-status');
+        statusEl.style.display = 'block';
+        statusEl.textContent = message;
+        statusEl.style.background = type === 'success' ? '#e8f5e9' : 
+                                    type === 'error' ? '#ffebee' : '#e3f2fd';
+        statusEl.style.color = type === 'success' ? '#2e7d32' : 
+                               type === 'error' ? '#c62828' : '#1565c0';
+    }
+    
+    function renderAll() {
+        loadModelMetadataToForm();
+        renderModelProperties();
+        renderElementsTable();
+        renderRelationshipsTable();
+        renderDiagramsTable();
+        renderLayersReference();
+        populateElementSelects();
+        updateTypeFilter();
+        updateStereotypeSuggestions();
+        updatePříznakySuggestions();
+        updateStereotypeFilter();
+        updatePříznakyFilters();
+        updateRelNameSuggestions();
+        updateRelSourceTargetFilters();
+        updateDiagramFilters();
+        updateModelStats();
+        updateGeneratorPlaceholders();
+        renderAdrTable();
+        renderNotesTable();
+        renderTasksTable();
+        updateTaskAssigneeFilter();
+        updateDocumentTitle();
+    }
+    
+    function loadFromGitHub() {
+        const ghPath = document.getElementById('github-path').value.trim();
+        if (!ghPath) {
+            showGitHubStatus(t('githubPathRequired'), 'error');
+            return;
+        }
+        
+        const token = localStorage.getItem('archimate-github-token');
+        const parsed = parseGhPath(ghPath);
+        if (!parsed) {
+            showGitHubStatus(t('githubInvalidPath'), 'error');
+            return;
+        }
+        
+        showGitHubStatus(t('githubLoading'), 'info');
+        
+        const apiUrl = `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/contents/${parsed.path}`;
+        const headers = { 'Accept': 'application/json' };
+        if (token) headers['Authorization'] = 'token ' + token;
+        
+        fetch(apiUrl, { headers: headers })
+        .then(res => {
+            if (!res.ok) {
+                const err = new Error(res.status === 404 ? t('githubFileNotFound') : res.status === 401 ? t('githubUnauthorized') : 'HTTP ' + res.status);
+                err.status = res.status;
+                throw err;
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.content) {
+                // Malý soubor — obsah je base64 v JSON odpovědi
+                return decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+            } else if (data.sha) {
+                // Velký soubor (>1 MB) — stáhnout přes Git Blob API (CORS-friendly)
+                const blobUrl = `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/git/blobs/${data.sha}`;
+                const blobHeaders = { 'Accept': 'application/json' };
+                if (token) blobHeaders['Authorization'] = 'token ' + token;
+                return fetch(blobUrl, { headers: blobHeaders }).then(r => {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.json();
+                }).then(blob => {
+                    // Blob API vrací base64-kódovaný obsah
+                    return decodeURIComponent(escape(atob(blob.content.replace(/\n/g, ''))));
+                });
+            } else {
+                throw new Error(t('githubNoContent'));
+            }
+        })
+        .then(content => {
+            const obj = JSON.parse(content);
+            
+            // Uložit ghPath do modelu
+            if (!obj.model) obj.model = {};
+            obj.model.ghPath = ghPath;
+            
+            // Importovat data
+            if (obj.model) modelMetadata = obj.model;
+            if (obj.elements) elements = obj.elements;
+            if (obj.relationships) relationships = obj.relationships;
+            if (obj.diagrams) diagrams = obj.diagrams;
+            if (obj.adr) adrRecords = obj.adr;
+            if (obj.notes) notes = obj.notes;
+            if (obj.tasks) tasks = obj.tasks;
+            
+            saveToLocalStorage();
+            renderAll();
+            
+            // Aktualizovat URL
+            history.replaceState(null, '', location.pathname + '?gh=' + ghEncode(ghPath));
+            
+            showGitHubStatus(t('githubLoadSuccess'), 'success');
+            updateGitHubLinkPreview();
+            playLoadSound();
+        })
+        .catch(err => {
+            // Pokud chyba a nemáme token (nebo 401/404), nabídnout zadání tokenu
+            if (!token || err.status === 401 || err.status === 404) {
+                showTokenPromptDialog();
+            } else {
+                showGitHubStatus(t('githubLoadError') + ': ' + err.message, 'error');
+            }
+        });
+    }
+    
+    function showTokenPromptDialog() {
+        // Vytvoří jednoduchý modal dialog pro zadání API tokenu
+        const existingDialog = document.getElementById('token-prompt-dialog');
+        if (existingDialog) existingDialog.remove();
+        
+        const dialog = document.createElement('div');
+        dialog.id = 'token-prompt-dialog';
+        dialog.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:10000;';
+        dialog.innerHTML = `
+            <div style="background:white;padding:24px;border-radius:8px;max-width:450px;width:90%;box-shadow:0 4px 20px rgba(0,0,0,0.3);">
+                <h3 style="margin:0 0 16px 0;">${t('githubTokenRequired')}</h3>
+                <p style="margin:0 0 16px 0;color:#666;">${currentLanguage === 'cs' ? 'Pro přístup k tomuto souboru je potřeba GitHub Personal Access Token (PAT) s oprávněním repo.' : 'A GitHub Personal Access Token (PAT) with repo scope is required to access this file.'}</p>
+                <input type="password" id="token-prompt-input" placeholder="ghp_..." style="width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;font-size:14px;box-sizing:border-box;">
+                <div style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end;">
+                    <button type="button" onclick="closeTokenPromptDialog()" style="padding:8px 16px;border:1px solid #ccc;background:#f5f5f5;border-radius:4px;cursor:pointer;">${t('cancel')}</button>
+                    <button type="button" onclick="submitTokenPromptDialog()" style="padding:8px 16px;border:none;background:#28a745;color:white;border-radius:4px;cursor:pointer;font-weight:bold;">${t('confirm')}</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(dialog);
+        
+        // Focus na input
+        setTimeout(() => {
+            const input = document.getElementById('token-prompt-input');
+            if (input) input.focus();
+        }, 100);
+        
+        // Enter pro potvrzení
+        dialog.querySelector('#token-prompt-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') submitTokenPromptDialog();
+            if (e.key === 'Escape') closeTokenPromptDialog();
+        });
+    }
+    
+    function closeTokenPromptDialog() {
+        const dialog = document.getElementById('token-prompt-dialog');
+        if (dialog) dialog.remove();
+        showGitHubStatus(t('githubLoadError'), 'error');
+    }
+    
+    function submitTokenPromptDialog() {
+        const input = document.getElementById('token-prompt-input');
+        const token = input ? input.value.trim() : '';
+        
+        if (!token) {
+            input.style.borderColor = 'red';
+            return;
+        }
+        
+        // Uložit token
+        localStorage.setItem('archimate-github-token', token);
+        const tokenEl = document.getElementById('github-token');
+        if (tokenEl) tokenEl.value = token;
+        
+        // Zavřít dialog
+        const dialog = document.getElementById('token-prompt-dialog');
+        if (dialog) dialog.remove();
+        
+        // Znovu načíst
+        loadFromGitHub();
+    }
+    
+    function saveToGitHub() {
+        const token = localStorage.getItem('archimate-github-token');
+        if (!token) {
+            showGitHubStatus(t('githubTokenRequired'), 'error');
+            return;
+        }
+        
+        let ghPath = document.getElementById('github-path').value.trim();
+        if (!ghPath && modelMetadata.ghPath) {
+            ghPath = modelMetadata.ghPath;
+            document.getElementById('github-path').value = ghPath;
+        }
+        
+        if (!ghPath) {
+            showGitHubStatus(t('githubPathRequired'), 'error');
+            return;
+        }
+        
+        const parsed = parseGhPath(ghPath);
+        if (!parsed) {
+            showGitHubStatus(t('githubInvalidPath'), 'error');
+            return;
+        }
+        
+        // Uložit ghPath do modelu
+        modelMetadata.ghPath = ghPath;
+        
+        // Přesýpací hodiny na tlačítku
+        const saveBtn = document.querySelector('[onclick="saveToGitHub()"]');
+        const originalText = saveBtn ? saveBtn.innerHTML : '';
+        if (saveBtn) {
+            saveBtn.innerHTML = '⏳ ' + t('githubSaving');
+            saveBtn.disabled = true;
+            saveBtn.style.cursor = 'wait';
+        }
+        
+        showGitHubStatus(t('githubSaving'), 'info');
+        
+        const apiUrl = `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/contents/${parsed.path}`;
+        const headers = { 'Authorization': 'token ' + token, 'Accept': 'application/json' };
+        
+        // Krok 1: GET pro zjištění SHA (pokud soubor existuje)
+        fetch(apiUrl, { headers: headers })
+        .then(res => {
+            if (res.status === 404) return null;
+            if (!res.ok && res.status !== 404) throw new Error('HTTP ' + res.status);
+            return res.json();
+        })
+        .then(existing => {
+            // Připravit data k uložení
+            const data = {
+                exportDate: new Date().toISOString(),
+                archimateVersion: '3.2',
+                model: modelMetadata,
+                elements: elements,
+                relationships: relationships,
+                diagrams: diagrams,
+                adr: adrRecords,
+                notes: notes,
+                tasks: tasks
+            };
+            
+            const json = JSON.stringify(data, null, 2);
+            const body = {
+                message: 'Update: ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
+                content: btoa(unescape(encodeURIComponent(json)))
+            };
+            if (existing && existing.sha) body.sha = existing.sha;
+            
+            return fetch(apiUrl, {
+                method: 'PUT',
+                headers: { 'Authorization': 'token ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+        })
+        .then(res => {
+            if (!res.ok) {
+                return res.json().then(e => { 
+                    throw new Error(e.message || 'HTTP ' + res.status); 
+                });
+            }
+            return res.json();
+        })
+        .then(result => {
+            // Aktualizovat URL
+            history.replaceState(null, '', location.pathname + '?gh=' + ghEncode(ghPath));
+            saveToLocalStorage();
+            showGitHubStatus(t('githubSaveSuccess'), 'success');
+            updateGitHubLinkPreview();
+            playSuccessSound();
+            
+            // Obnovit tlačítko
+            if (saveBtn) {
+                saveBtn.innerHTML = originalText;
+                saveBtn.disabled = false;
+                saveBtn.style.cursor = '';
+            }
+        })
+        .catch(err => {
+            showGitHubStatus(t('githubSaveError') + ': ' + err.message, 'error');
+            // Obnovit tlačítko
+            if (saveBtn) {
+                saveBtn.innerHTML = originalText;
+                saveBtn.disabled = false;
+                saveBtn.style.cursor = '';
+            }
+        });
+    }
+    
+    function copyGitHubLink() {
+        const ghPath = document.getElementById('github-path').value.trim() || modelMetadata.ghPath;
+        if (!ghPath) {
+            showGitHubStatus(t('githubPathRequired'), 'error');
+            return;
+        }
+        
+        const link = location.origin + location.pathname + '?gh=' + ghEncode(ghPath);
+        navigator.clipboard.writeText(link).then(() => {
+            showGitHubStatus(t('githubLinkCopied'), 'success');
+        }).catch(() => {
+            // Fallback
+            prompt(t('githubCopyManually'), link);
+        });
+    }
+    
+    function updateGitHubLinkPreview() {
+        const ghPath = document.getElementById('github-path').value.trim() || modelMetadata.ghPath;
+        const previewEl = document.getElementById('github-link-preview');
+        
+        if (ghPath) {
+            const link = location.origin + location.pathname + '?gh=' + ghEncode(ghPath);
+            previewEl.innerHTML = `<strong>${t('githubDirectLink')}:</strong><br><a href="${link}" target="_blank">${link}</a>`;
+            previewEl.style.display = 'block';
+        } else {
+            previewEl.style.display = 'none';
+        }
+    }
+    
+    function initGitHubFromUrl() {
+        const params = new URLSearchParams(location.search);
+        const ghParam = params.get('gh');
+        
+        // Load saved token first
+        const token = localStorage.getItem('archimate-github-token');
+        if (token) {
+            const tokenEl = document.getElementById('github-token');
+            if (tokenEl) tokenEl.value = token;
+        }
+        
+        if (ghParam) {
+            // URL parameter has priority - load from GitHub
+            try {
+                const ghPath = ghDecode(ghParam);
+                const pathEl = document.getElementById('github-path');
+                if (pathEl) pathEl.value = ghPath;
+                setTimeout(() => loadFromGitHub(), 100);
+            } catch(e) {
+                // Invalid base64
+            }
+        } else {
+            // No URL parameter - use saved path from model metadata
+            if (modelMetadata.ghPath) {
+                const pathEl = document.getElementById('github-path');
+                if (pathEl) pathEl.value = modelMetadata.ghPath;
+                updateGitHubLinkPreview();
+            }
         }
     }
 
@@ -11360,6 +12146,20 @@
         }
     }
     
+    function switchExportSubtab(subtab) {
+        // Update buttons
+        document.querySelectorAll('.export-subtab').forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+        });
+        document.getElementById('export-subtab-' + subtab).classList.add('active');
+        document.getElementById('export-subtab-' + subtab).setAttribute('aria-selected', 'true');
+        
+        // Update content
+        document.querySelectorAll('.export-subtab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById('export-content-' + subtab).classList.add('active');
+    }
+    
     function updateDiagramAddTypes() {
         const layer = document.getElementById('diagram-add-layer').value;
         const typeSelect = document.getElementById('diagram-add-type');
@@ -11548,6 +12348,109 @@
                 </tr>
             `;
         }).join('');
+        
+        // Also update the add relationship search
+        filterDiagramRelationships();
+    }
+    
+    function filterDiagramRelationships() {
+        const container = document.getElementById('diagram-add-rel-results');
+        if (!container) return;
+        
+        if (!currentDiagramId) {
+            container.innerHTML = `<p style="padding: 10px; color: #666;">${t('noRelationshipsFound')}</p>`;
+            return;
+        }
+        
+        const diagram = diagrams.find(d => d.id === currentDiagramId);
+        if (!diagram) return;
+        
+        const filterEl = document.getElementById('diagram-add-rel-filter');
+        const filter = filterEl ? filterEl.value.toLowerCase() : '';
+        
+        // Get relationships already shown on diagram
+        const existingRelIds = new Set(getDiagramRelationships(currentDiagramId).map(r => r.id));
+        const diagramElementIds = new Set(diagram.elementIds);
+        
+        // Show ALL relationships that match filter, not just those with both elements on diagram
+        const availableRels = relationships.filter(r => {
+            // Skip if already on diagram
+            if (existingRelIds.has(r.id)) return false;
+            
+            // Apply text filter
+            if (filter) {
+                const source = elements.find(e => e.id === r.sourceId);
+                const target = elements.find(e => e.id === r.targetId);
+                const searchText = [
+                    r.name || '',
+                    r.type || '',
+                    r.documentation || '',
+                    r.příznaky || '',
+                    source ? source.name : '',
+                    source ? (source.description || '') : '',
+                    source ? (source.příznaky || '') : '',
+                    target ? target.name : '',
+                    target ? (target.description || '') : '',
+                    target ? (target.příznaky || '') : ''
+                ].join(' ').toLowerCase();
+                return searchText.includes(filter);
+            }
+            return true;
+        });
+        
+        if (availableRels.length === 0) {
+            container.innerHTML = `<p style="padding: 10px; color: #666;">${t('noRelationshipsFound')}</p>`;
+            return;
+        }
+        
+        container.innerHTML = availableRels.slice(0, 50).map(r => {
+            const source = elements.find(e => e.id === r.sourceId);
+            const target = elements.find(e => e.id === r.targetId);
+            const sourceOnDiagram = diagramElementIds.has(r.sourceId);
+            const targetOnDiagram = diagramElementIds.has(r.targetId);
+            // Indicate if elements will be added
+            const addNote = (!sourceOnDiagram || !targetOnDiagram) 
+                ? `<br><small style="color:#c90;">${currentLanguage === 'cs' ? '(přidá i prvky na diagram)' : '(will also add elements)'}</small>` 
+                : '';
+            return `
+                <div style="padding: 8px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="flex: 1;">
+                        <strong>${source ? escapeHtml(source.name) : r.sourceId}</strong>
+                        <span style="color: #666;"> → ${escapeHtml(r.type)} → </span>
+                        <strong>${target ? escapeHtml(target.name) : r.targetId}</strong>
+                        ${r.name ? `<br><small style="color:#888;">${escapeHtml(r.name)}</small>` : ''}${addNote}
+                    </div>
+                    <button type="button" class="btn-primary" style="padding: 4px 8px; font-size: 12px;" onclick="addRelationshipToDiagram('${r.id}')">+ ${t('add')}</button>
+                </div>
+            `;
+        }).join('');
+        
+        if (availableRels.length > 50) {
+            container.innerHTML += `<p style="padding: 10px; color: #666; text-align: center;">... a ${availableRels.length - 50} dalších</p>`;
+        }
+    }
+    
+    function addRelationshipToDiagram(relId) {
+        if (!currentDiagramId) return;
+        
+        const rel = relationships.find(r => r.id === relId);
+        if (!rel) return;
+        
+        const diagram = diagrams.find(d => d.id === currentDiagramId);
+        if (!diagram) return;
+        
+        // Ensure both source and target are on diagram
+        if (!diagram.elementIds.includes(rel.sourceId)) {
+            diagram.elementIds.push(rel.sourceId);
+        }
+        if (!diagram.elementIds.includes(rel.targetId)) {
+            diagram.elementIds.push(rel.targetId);
+        }
+        
+        renderDiagramRelationships();
+        renderDiagramElements();
+        saveToLocalStorage();
+        playSuccessSound();
     }
     
     function renderDiagramPreview() {
@@ -12148,6 +13051,178 @@
             alert('Chyba při generování PNG');
         };
         img.src = url;
+    }
+    
+    let docxLibLoaded = false;
+    
+    async function loadDocxLib() {
+        if (docxLibLoaded) return true;
+        try {
+            await new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.min.js';
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+            docxLibLoaded = true;
+            return true;
+        } catch (e) {
+            alert('Nepodařilo se načíst DOCX knihovnu');
+            return false;
+        }
+    }
+    
+    async function getDiagramPNGBlob() {
+        const container = document.getElementById('diagram-svg-container');
+        const svg = container.querySelector('svg');
+        if (!svg) return null;
+        
+        const svgRect = svg.getBoundingClientRect();
+        const width = parseInt(svg.getAttribute('width')) || svgRect.width || 800;
+        const height = parseInt(svg.getAttribute('height')) || svgRect.height || 600;
+        
+        const canvas = document.createElement('canvas');
+        const scale = 2;
+        canvas.width = width * scale;
+        canvas.height = height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(scale, scale);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, width, height);
+        
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+        
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, width, height);
+                URL.revokeObjectURL(url);
+                canvas.toBlob(blob => resolve(blob), 'image/png');
+            };
+            img.onerror = function() {
+                URL.revokeObjectURL(url);
+                resolve(null);
+            };
+            img.src = url;
+        });
+    }
+    
+    async function exportDiagramDOCX() {
+        if (!currentDiagramId) {
+            alert(t('selectDiagramFirst') || 'Nejprve vyberte diagram');
+            return;
+        }
+        
+        const diagram = diagrams.find(d => d.id === currentDiagramId);
+        if (!diagram) return;
+        
+        if (!await loadDocxLib()) return;
+        
+        const pngBlob = await getDiagramPNGBlob();
+        if (!pngBlob) {
+            alert(t('alertDiagramEmpty'));
+            return;
+        }
+        
+        const { Document, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, HeadingLevel, ImageRun, Packer } = docx;
+        
+        // Get diagram relationships
+        const diagramRels = getDiagramRelationships(currentDiagramId);
+        
+        // Get diagram elements
+        const diagramElements = diagram.elementIds.map(id => elements.find(e => e.id === id)).filter(Boolean);
+        
+        // Create relationship rows
+        const relRows = diagramRels.map(r => {
+            const statement = generateStatement(r);
+            return new TableRow({
+                children: [
+                    new TableCell({ children: [new Paragraph(statement)] }),
+                    new TableCell({ children: [new Paragraph(r.documentation || '-')] })
+                ]
+            });
+        });
+        
+        // Create element paragraphs
+        const elementParagraphs = diagramElements.flatMap(e => [
+            new Paragraph({
+                children: [new TextRun({ text: e.name, bold: true })],
+            }),
+            new Paragraph({
+                children: [new TextRun({ text: e.documentation || e.description || '-' })]
+            }),
+            new Paragraph({
+                children: [new TextRun({ text: `${t('určuje')}: ${e.určuje || '-'}`, italics: true })]
+            }),
+            new Paragraph({ text: '' })
+        ]);
+        
+        // Read PNG as array buffer
+        const pngArrayBuffer = await pngBlob.arrayBuffer();
+        
+        const doc = new Document({
+            sections: [{
+                children: [
+                    // Model name
+                    new Paragraph({
+                        text: modelMetadata.name || 'ArchiMate Model',
+                        heading: HeadingLevel.HEADING_1
+                    }),
+                    // Diagram name
+                    new Paragraph({
+                        text: diagram.name,
+                        heading: HeadingLevel.HEADING_2
+                    }),
+                    // Diagram image
+                    new Paragraph({
+                        children: [
+                            new ImageRun({
+                                data: pngArrayBuffer,
+                                transformation: { width: 600, height: 400 },
+                                type: 'png'
+                            })
+                        ]
+                    }),
+                    // Diagram description
+                    new Paragraph({ text: diagram.documentation || '' }),
+                    new Paragraph({ text: '' }),
+                    // Relationships section
+                    new Paragraph({
+                        text: t('relationships'),
+                        heading: HeadingLevel.HEADING_2
+                    }),
+                    ...(relRows.length > 0 ? [
+                        new Table({
+                            width: { size: 100, type: WidthType.PERCENTAGE },
+                            rows: [
+                                new TableRow({
+                                    children: [
+                                        new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: 'Statement', bold: true })] })] }),
+                                        new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: t('description'), bold: true })] })] })
+                                    ]
+                                }),
+                                ...relRows
+                            ]
+                        })
+                    ] : [new Paragraph({ text: t('diagramNoRelationships') })]),
+                    new Paragraph({ text: '' }),
+                    // Elements section
+                    new Paragraph({
+                        text: t('includedElements') || 'Zahrnuté prvky',
+                        heading: HeadingLevel.HEADING_2
+                    }),
+                    ...elementParagraphs
+                ]
+            }]
+        });
+        
+        const blob = await Packer.toBlob(doc);
+        const filename = diagram.name.replace(/[^a-zA-Z0-9]/g, '_') + '.docx';
+        await saveFileWithDialog(blob, filename, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', ['.docx']);
+        playSuccessSound();
     }
     
     function openDiagramVisualEditorFromPreview() {
@@ -14502,6 +15577,17 @@
         // Render Tasks table
         renderTasksTable();
         updateTaskAssigneeFilter();
+        
+        // Initialize GitHub integration
+        initGitHubFromUrl();
+        
+        // Ctrl+S keyboard shortcut for saving
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                smartSave();
+            }
+        });
     });
     
     // ============================================
